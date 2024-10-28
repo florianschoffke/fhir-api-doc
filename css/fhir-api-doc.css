@@ -5,36 +5,55 @@
     --fhir-api-doc-delete-color: 249, 62, 62;
 }
 
-.api-doc {
+.fhir-api-doc {
     font-family: sans-serif /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */;
     font-size: 14px;
 }
 
-.api-doc th {
-    text-align: left;
+
+.fhir-api-doc a {
+    color: #000;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+    padding-bottom: 2px;
+    text-decoration: none;
 }
 
-.api-doc .operation-block {
+.fhir-api-doc a:hover {
+    color: #0d7395;
+}
+
+.fhir-api-doc a:active {
+    color: #000;
+}
+
+.fhir-api-doc p {
+    padding: 0px;
+}
+
+.fhir-api-doc th {
+    text-align: left;
+    font-weight:bold;
+    font-style: italic;
+}
+
+.fhir-api-doc .operation-block {
     border: 1px solid #000;
     border-radius: 4px;
     margin: 0 0 15px;
 }
 
-.api-doc .operation-block-summary {
+.fhir-api-doc .operation-block-summary {
     all: inherit;
     border: 0;
-    cursor: pointer;
+    cursor:default;
     flex: 1;
     padding: 0;
     margin: 0;
-
     align-items: center;
-    cursor: pointer;
     display: flex;
     box-shadow: 0 0 3px rgba(0, 0, 0, .19);
     border-bottom-left-radius: 0%;
     border-bottom-right-radius: 0%;
-
 }
 
 .api-method .operation-block-summary .operation-block-summary-control {
@@ -43,12 +62,11 @@
     border-bottom-right-radius: 0%;
     border-bottom: 0;
     border: 0px;
-    cursor: pointer;
     padding: 0;
     border: none;
 }
 
-.api-doc .operation-block-summary-method {
+.fhir-api-doc .operation-block-summary-method {
     border-radius: 3px;
     color: #fff;
     font-family: sans-serif;
@@ -61,7 +79,7 @@
     border-style: none;
 }
 
-.api-doc .operation-block-summary-path {
+.fhir-api-doc .operation-block-summary-path {
     align-items: center;
     color: #3b4151;
     display: flex;
@@ -71,93 +89,24 @@
     word-break: break-word;
 }
 
-/* FOR GET METHOD */
-
-.api-doc .operation-block.operation-block-get {
-    background-color: rgba(var(--fhir-api-doc-get-color), 0.1);
-    border-color: rgba(var(--fhir-api-doc-get-color), 1.0);
-}
-
-.api-doc .operation-block.operation-block-get .operation-block-summary-control {
-    all: inherit;
-}
-
-.api-doc .operation-block-summary-get .operation-block-summary-control {
-    background-color: rgba(var(--fhir-api-doc-get-color), 1.0);
-    border-color: rgba(var(--fhir-api-doc-get-color), 1.0);
-}
-
-.api-doc .operation-block-summary-get .operation-block-summary-method {
-    background-color: rgba(var(--fhir-api-doc-get-color), 1.0);
-    border-color: rgba(var(--fhir-api-doc-get-color), 1.0);
-}
-
-/* FOR POST METHOD */
-
-.api-doc .operation-block.operation-block-post {
-    background-color: rgba(var(--fhir-api-doc-post-color), 0.1);
-    border-color: rgba(var(--fhir-api-doc-post-color), 1.0);
-} 
-
-.api-doc .operation-block.operation-block-post .operation-block-summary-control {
-    all: inherit;
-}
-
-.api-doc .operation-block-summary-post .operation-block-summary-method {
-    background-color: rgba(var(--fhir-api-doc-post-color), 1.0);
-    border-color: rgba(var(--fhir-api-doc-post-color), 1.0);
-}
-
-/* FOR PUT METHOD */
-
-.api-doc .operation-block.operation-block-put {
-    background-color: rgba(var(--fhir-api-doc-put-color), 0.1);
-    border-color: rgba(var(--fhir-api-doc-put-color), 1.0);
-} 
-
-.api-doc .operation-block.operation-block-put .operation-block-summary-control {
-    all: inherit;
-}
-
-.api-doc .operation-block-summary-put .operation-block-summary-method {
-    background-color: rgba(var(--fhir-api-doc-put-color), 1.0);
-    border-color: rgba(var(--fhir-api-doc-put-color), 1.0);
-}
-
-/* FOR DELETE METHOD */
-
-.api-doc .operation-block.operation-block-delete {
-    background-color: rgba(var(--fhir-api-doc-delete-color), 0.1);
-    border-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
-} 
-
-.api-doc .operation-block.operation-block-delete .operation-block-summary-control {
-    all: inherit;
-}
-
-.api-doc .operation-block-summary-delete .operation-block-summary-method {
-    background-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
-    border-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
-}
-
-.api-doc .operation-block-description {
+.fhir-api-doc .operation-block-description {
     padding: 20px;
 }
 
-.api-doc .operation-block-description.operation-example {
+.fhir-api-doc .operation-block-description.operation-example {
     padding: 0px;
     padding-left: 20px;
     padding-right: 20px;
 }
 
-.api-doc .operation-block-section-header {
+.fhir-api-doc .operation-block-section-header {
     background-color: #ffffff;
     padding: 10px;
     padding-left: 20px;
     font-weight: bold;
 }
 
-.api-doc .example {
+.fhir-api-doc .example {
     border-radius: 4px;
     background-color: #ffffff;
     font-family: sans-serif;
@@ -174,7 +123,7 @@
 
 }
 
-.api-doc .example .label {
+.fhir-api-doc .example .label {
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
     border-top-right-radius: 0px;
@@ -186,32 +135,136 @@
     min-width: 60px;
 }
 
-.api-doc .inline-button {
+.fhir-api-doc .inline-button {
     display: inline-block;
     margin-right: 10px; /* Abstand zwischen den Buttons */
 }
 
-.api-doc .active-button {
+.fhir-api-doc button:hover {
     opacity: 0.5;
 }
 
-.api-doc .example-buttons-container{
+.fhir-api-doc .active-button {
+    opacity: 0.5;
+}
+
+
+
+.fhir-api-doc .example-buttons-container{
     padding: 3px;
     text-align: right;
 }
 
-.api-doc table {
+.fhir-api-doc table {
     max-width: 100%;
 }
 
-.api-doc code {
+.fhir-api-doc code {
     color: inherit;
 }
 
-.api-doc pre {
+.fhir-api-doc pre {
     background-color: #242424;
     color: rgb(255, 255, 255);
     overflow: auto; /* Scrollen ermöglichen */
     white-space: pre; /* Zeilenumbrüche vermeiden */
     padding: 10px;
+}
+
+
+/* FOR GET METHOD */
+
+.fhir-api-doc .operation-block.operation-block-get {
+    background-color: rgba(var(--fhir-api-doc-get-color), 0.1);
+    border-color: rgba(var(--fhir-api-doc-get-color), 1.0);
+}
+
+.fhir-api-doc .operation-block.operation-block-get .operation-block-summary-control {
+    all: inherit;
+}
+
+.fhir-api-doc .operation-block.operation-block-get .operation-block-summary-method {
+    background-color: rgba(var(--fhir-api-doc-get-color), 1.0);
+    border-color: rgba(var(--fhir-api-doc-get-color), 1.0);
+}
+
+
+.fhir-api-doc .operation-block.operation-block-get .example {
+    border-color: rgba(var(--fhir-api-doc-get-color), 1.0);
+}
+
+.fhir-api-doc .operation-block.operation-block-get .example .label {
+    background-color: rgba(var(--fhir-api-doc-get-color), 1.0);
+}
+
+/* FOR POST METHOD */
+
+.fhir-api-doc .operation-block.operation-block-post {
+    background-color: rgba(var(--fhir-api-doc-post-color), 0.1);
+    border-color: rgba(var(--fhir-api-doc-post-color), 1.0);
+} 
+
+.fhir-api-doc .operation-block.operation-block-post .operation-block-summary-control {
+    all: inherit;
+}
+
+.fhir-api-doc .operation-block.operation-block-post .operation-block-summary-method {
+    background-color: rgba(var(--fhir-api-doc-post-color), 1.0);
+    border-color: rgba(var(--fhir-api-doc-post-color), 1.0);
+}
+
+.fhir-api-doc .operation-block.operation-block-post .example {
+    border-color: rgba(var(--fhir-api-doc-post-color), 1.0);
+}
+
+.fhir-api-doc .operation-block.operation-block-post .example .label {
+    background-color: rgba(var(--fhir-api-doc-post-color), 1.0);
+}
+
+/* FOR PUT METHOD */
+
+.fhir-api-doc .operation-block.operation-block-put {
+    background-color: rgba(var(--fhir-api-doc-put-color), 0.1);
+    border-color: rgba(var(--fhir-api-doc-put-color), 1.0);
+} 
+
+.fhir-api-doc .operation-block.operation-block-put .operation-block-summary-control {
+    all: inherit;
+}
+
+.fhir-api-doc .operation-block.operation-block-put .operation-block-summary-method {
+    background-color: rgba(var(--fhir-api-doc-put-color), 1.0);
+    border-color: rgba(var(--fhir-api-doc-put-color), 1.0);
+}
+
+.fhir-api-doc .operation-block.operation-block-put .example {
+    border-color: rgba(var(--fhir-api-doc-put-color), 1.0);
+}
+
+.fhir-api-doc .operation-block.operation-block-put .example .label {
+    background-color: rgba(var(--fhir-api-doc-put-color), 1.0);
+}
+
+/* FOR DELETE METHOD */
+
+.fhir-api-doc .operation-block.operation-block-delete {
+    background-color: rgba(var(--fhir-api-doc-delete-color), 0.1);
+    border-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
+} 
+
+.fhir-api-doc .operation-block.operation-block-delete .operation-block-summary-control {
+    all: inherit;
+}
+
+.fhir-api-doc .operation-block.operation-block-delete .operation-block-summary-method {
+    background-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
+    border-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
+}
+
+.fhir-api-doc .operation-block.operation-block-delete .example {
+    border-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
+}
+
+.fhir-api-doc .operation-block.operation-block-delete .example .label {
+    background-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
 }

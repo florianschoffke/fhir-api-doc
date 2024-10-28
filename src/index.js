@@ -4,6 +4,25 @@ hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
 hljs.registerLanguage('json', require('highlight.js/lib/languages/json'));
 
 
+// Globale Variablen für Beschriftungen
+window.fhirApiDocLabels = window.fhirApiDocLabels || {
+    searchParams_Header: "Suchparameter",
+    searchParams_Parameter_Label: "Parameter",
+    searchParams_Type_Label: "Type",
+    searchParams_Documentation_Label: "Beschreibung",
+    searchParams_Expectation_Label: "Anforderung",
+    response_Header: "Status Codes",
+    response_StatusCode_Label: "Status Code",
+    response_Description_Label: "Beschreibung",
+    response_ErrorCode_Label: "Error Code",
+    response_Note_Label: "Bemerkung",
+    searchInclude_And_RevInclude_Header: "Suche per Include und RevInclude",
+    requestExample_Header: "Beispielanfrage",
+    responseExample_Header: "Beispielantworten",
+    operationId_Label: "OperationId"
+};
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const apiDocs = document.querySelectorAll('fhir-api-doc');
     apiDocs.forEach(apiDoc => {
@@ -70,7 +89,7 @@ async function loadData(url) {
 }
 
 
-function renderApiExample(container, buttonContainer, example, data, exampleList, buttonList = []) {
+function renderApiExample(parent, buttonParent, example, data, exampleList, buttonList = []) {
     let exampleContainer = createElement('span', [], {});
     switch (example.type.toUpperCase()) {
         case 'JSON':
@@ -127,8 +146,78 @@ function renderApiExample(container, buttonContainer, example, data, exampleList
         }
     });
     buttonList.push(toggleButton);
-    buttonContainer.appendChild(toggleButton);
-    container.appendChild(exampleContainer);
+    buttonParent.appendChild(toggleButton);
+    parent.appendChild(exampleContainer);
+}
+
+
+function addExampleElements(exampleData, container) {
+    const examplesButtonContainer = createElement('div', ['operation-block-description']);
+    container.appendChild(examplesButtonContainer);
+    const examplesContainer = createElement('div', ['operation-block-description', 'operation-example']);
+    container.appendChild(examplesContainer);
+    let exampleList = [];
+    let exampleButtonList = [];
+    exampleData.forEach(example => {
+        if('data' in example) {
+            renderApiExample(examplesContainer, examplesButtonContainer, example, example.data, exampleList, exampleButtonList);
+        } else if('url' in example) {
+            loadData(example.url).then(data => {
+                renderApiExample(examplesContainer, examplesButtonContainer, example, data, exampleList, exampleButtonList);
+
+            });
+        } else {
+            return;
+        }
+    });
+}
+
+function appendFhirDetails(fhirData, parent) {
+    // Search Parameters
+    if (fhirData.searchParams && fhirData.searchParams.length >0) {
+        const searchParametersHeader = createElement('div', ['operation-block-section-header'], {}, window.fhirApiDocLabels.searchParams_Header);
+        parent.appendChild(searchParametersHeader);
+
+        const searchParametersRows = fhirData.searchParams.map(item => [
+            `<a href="${item.definition}" target="_blank">${item.name}</a>`,
+            `<code>${item.type}</code>`,
+            item.documentation,
+            item.expectation
+        ]);
+        const cellTitles = [
+            window.fhirApiDocLabels.searchParams_Parameter_Label,
+            window.fhirApiDocLabels.searchParams_Type_Label,
+            window.fhirApiDocLabels.searchParams_Documentation_Label,
+            window.fhirApiDocLabels.searchParams_Expectation_Label
+        ];
+        const searchParametersTable = createTable(cellTitles, searchParametersRows);
+        const searchParametersContainer = createElement('div', ['operation-block-description']);
+        searchParametersContainer.appendChild(searchParametersTable);
+        parent.appendChild(searchParametersContainer);
+    }
+
+    // Search Include and RevInclude Combined
+    if (fhirData.searchInclude || fhirData.searchRevInclude) {
+        const includeRevIncludeHeader = createElement('div', ['operation-block-section-header'], {}, window.fhirApiDocLabels.searchInclude_And_RevInclude_Header);
+        parent.appendChild(includeRevIncludeHeader);
+
+        const includeRevIncludeRows = [];
+        const maxLength = Math.max(
+            fhirData.searchInclude ? fhirData.searchInclude.length : 0,
+            fhirData.searchRevInclude ? fhirData.searchRevInclude.length : 0
+        );
+
+        for (let i = 0; i < maxLength; i++) {
+            const include = fhirData.searchInclude && fhirData.searchInclude[i] ? fhirData.searchInclude[i] : '';
+            const revInclude = fhirData.searchRevInclude && fhirData.searchRevInclude[i] ? fhirData.searchRevInclude[i] : '';
+            includeRevIncludeRows.push([include, revInclude]);
+        }
+
+        const includeRevIncludeTable = createTable(['Include', 'RevInclude'], includeRevIncludeRows);
+        const includeRevIncludeContainer = createElement('div', ['operation-block-description']);
+        includeRevIncludeContainer.appendChild(includeRevIncludeTable);
+        parent.appendChild(includeRevIncludeContainer);
+    }
 }
 
 
@@ -138,11 +227,11 @@ function renderApiDocumentation(container, apiData) {
             const pathData = apiData.paths[path];
             Object.keys(pathData).forEach((method) => {
                 const methodData = pathData[method];
-                const section = createElement('div', ['api-doc']);
+                const section = createElement('div', ['fhir-api-doc']);
 
                 // Operation Block
-                const operation = createElement('div', ['operation-block']);
-                section.appendChild(operation);
+                const operationMainBlock = createElement('div', ['operation-block']);
+                section.appendChild(operationMainBlock);
 
                 // Operation Summary
                 const operationSummary = createElement('div', ['operation-block-summary']);
@@ -157,161 +246,106 @@ function renderApiDocumentation(container, apiData) {
                 operationSummaryControl.appendChild(operationSummaryPath);
 
                 operationSummary.appendChild(operationSummaryControl);
-                operation.appendChild(operationSummary);
+                operationMainBlock.appendChild(operationSummary);
 
                 // Operation Description
                 const operationDescription = createElement('div', ['operation-block-description']);
-                if ('operationId' in methodData) {
-                    const operationId = createElement('div', [], {}, `<p>OperationId: <b>${methodData.operationId}</b></p>`);
+                if (methodData.operationId) {
+                    const operationId = createElement('div', [], {}, `<p>${window.fhirApiDocLabels.operationId_Label}: <b>${methodData.operationId}</b></p>`);
                     operationDescription.appendChild(operationId);
                 }
-                if ('description' in methodData) {
+                if (methodData.description) {
                     const description = createElement('div', [], {}, `<p>${methodData.description}</p>`);
                     operationDescription.appendChild(description);
                 }
-                operation.appendChild(operationDescription);
+                operationMainBlock.appendChild(operationDescription);
 
-                // Search Parameters
-                if ('searchParameters' in methodData) {
-                    const searchParametersHeader = createElement('div', ['operation-block-section-header'], {}, 'Suchparameter');
-                    operation.appendChild(searchParametersHeader);
-
-                    const searchParametersRows = methodData.searchParameters.map(item => [
-                        `<a href="${item.definition}" target="_blank">${item.name}</a>`,
-                        `<code>${item.type}</code>`,
-                        item.path,
-                        item.conformance
-                    ]);
-                    const searchParametersTable = createTable(['Parameter', 'Type', 'Paths (Expression)', 'Anforderung'], searchParametersRows);
-                    const searchParametersContainer = createElement('div', ['operation-block-description']);
-                    searchParametersContainer.appendChild(searchParametersTable);
-                    operation.appendChild(searchParametersContainer);
-                }
-
-                // Search Include and RevInclude Combined
-                if ('searchInclude' in methodData || 'searchRevInclude' in methodData) {
-                    const includeRevIncludeHeader = createElement('div', ['operation-block-section-header'], {}, 'Suche per Include und RevInclude');
-                    operation.appendChild(includeRevIncludeHeader);
-
-                    const includeRevIncludeRows = [];
-                    const maxLength = Math.max(
-                        methodData.searchInclude ? methodData.searchInclude.length : 0,
-                        methodData.searchRevInclude ? methodData.searchRevInclude.length : 0
-                    );
-
-                    for (let i = 0; i < maxLength; i++) {
-                        const include = methodData.searchInclude && methodData.searchInclude[i] ? methodData.searchInclude[i] : '';
-                        const revInclude = methodData.searchRevInclude && methodData.searchRevInclude[i] ? methodData.searchRevInclude[i] : '';
-                        includeRevIncludeRows.push([include, revInclude]);
+                if(methodData.fhir) {
+                    const fhirDetailsConatiner = createElement('div', [], {});
+                    operationMainBlock.appendChild(fhirDetailsConatiner);
+                    const fhirData = methodData.fhir;
+                    if (fhirData.capabilityStatement) {
+                        if(fhirData.capabilityStatement.data) {
+                            const parsedFhirData = parseFhirCapabilityStatement(fhirData.capabilityStatement.data, fhirData.capabilityStatement.forResourceType);
+                            appendFhirDetails(parsedFhirData, fhirDetailsConatiner);
+                        } else if(fhirData.capabilityStatement.url) {
+                            loadData(fhirData.capabilityStatement.url).then(data => {
+                                const parsedFhirData = parseFhirCapabilityStatement(data, fhirData.capabilityStatement.forResourceType);
+                                appendFhirDetails(parsedFhirData, fhirDetailsConatiner);
+                            });
+                        }
+                    } else {
+                        appendFhirDetails(fhirData, fhirDetailsConatiner);
                     }
-
-                    const includeRevIncludeTable = createTable(['Include', 'RevInclude'], includeRevIncludeRows);
-                    const includeRevIncludeContainer = createElement('div', ['operation-block-description']);
-                    includeRevIncludeContainer.appendChild(includeRevIncludeTable);
-                    operation.appendChild(includeRevIncludeContainer);
+                }
+                if(methodData.requestExamples && methodData.requestExamples.length >0) {
+                    const examplesRequestHeader = createElement('div', ['operation-block-section-header'], {}, window.fhirApiDocLabels.requestExample_Header);
+                    operationMainBlock.appendChild(examplesRequestHeader);
+                    addExampleElements(methodData.requestExamples, operationMainBlock);
                 }
                 // Responses
-                if ('responses' in methodData) {
-                    const responsesHeader = createElement('div', ['operation-block-section-header'], {}, 'Antworten');
-                    operation.appendChild(responsesHeader);
+                if (methodData.responses) {
+                    const responsesHeader = createElement('div', ['operation-block-section-header'], {}, window.fhirApiDocLabels.response_Header);
+                    operationMainBlock.appendChild(responsesHeader);
 
                     let isFirstResponse = true;
                     const responseContainer = createElement('div', ['operation-block-description']);
-                    const responseTable = createElement('table', [], {});
+                    const responseTable = createElement('table', [], {style: 'width: 100%;'});
                     const responseThead = createElement('thead');
                     const responseHeaderRow = createElement('tr');
-                    const responseHeaders = ['Status Code', 'Beschreibung', 'Error Code', 'Bemerkung'];
+                    const responseHeaders = [
+                        window.fhirApiDocLabels.response_StatusCode_Label, 
+                        window.fhirApiDocLabels.response_Description_Label, 
+                        window.fhirApiDocLabels.response_ErrorCode_Label, 
+                        window.fhirApiDocLabels.response_Note_Label
+                    ];
                     responseHeaders.forEach(headerText => {
                         const th = createElement('th', [], {}, headerText);
                         responseHeaderRow.appendChild(th);
                     });
-                    responseTable.appendChild(responseHeaderRow);
+                    responseThead.appendChild(responseHeaderRow);
+                    responseTable.appendChild(responseThead);
                     const responseTbody = createElement('tbody');
-                    Object.keys(methodData.responses).forEach(statusCode => {
-                        const response = methodData.responses[statusCode];
-                        const rows = [[
-                            statusCode,
-                            response.description,
-                            response.errorCode,
-                            response.note
-                        ]]
+                    methodData.responses.forEach(item => {
+                        const rowData = [
+                            item.statusCode,
+                            item.description,
+                            item.errorCode,
+                            item.note
+                        ];
                         const row = createElement('tr');
-                        rows.forEach(rowData => {
-                            const row = createElement('tr');
-                            rowData.forEach(cellData => {
-                                const cell = createElement('td', [], {}, cellData);
-                                row.appendChild(cell);
-                            });
-                            responseTbody.appendChild(row);
+                        rowData.forEach(cellData => {
+                            const cell = createElement('td', [], {}, cellData);
+                            row.appendChild(cell);
                         });
-                        let exampleList = [];
-                        if('examples' in response) {
-                            const exampleButtonRow = createElement('tr');
-                            const exampleButtonCell = createElement('td', ["example-buttons-container"], {colspan: `${rows[0].length}`});
-                            exampleButtonRow.appendChild(exampleButtonCell);
-                            responseTbody.appendChild(exampleButtonRow);
-                            const row = createElement('tr');
-                            const cell = createElement('td', [],{colspan: `${rows[0].length}; max-width: 100%;`});
-                            response.examples.forEach(example => {
-                                if('data' in example) {
-                                    renderApiResponseExample(responseContainer, exampleButtonCell, example, example.data, exampleList, rows[0].length);
-                                } else if('url' in example) {
-                                    loadData(example.url).then(data => {
-                                        renderApiResponseExample(responseContainer, exampleButtonCell, example, data, exampleList, rows[0].length);
-                                    });
-                                } else {
-                                    return;
-                                }
-                                row.appendChild(cell);
-                                responseTbody.append(row);
-                            });
-                        }
-                        isFirstResponse = false;
+                        responseTbody.appendChild(row);
                     });
                     responseTable.appendChild(responseTbody);
                     responseContainer.appendChild(responseTable);
-                    operation.appendChild(responseContainer);
+                    operationMainBlock.appendChild(responseContainer);
                 }
-                if('examples' in methodData) {
-                    const examplesHeader = createElement('div', ['operation-block-section-header'], {}, 'Beispielantworten');
-                    operation.appendChild(examplesHeader);
-
-                    const examplesButtonContainer = createElement('div', ['operation-block-description']);
-                    operation.appendChild(examplesButtonContainer);
-                    const examplesContainer = createElement('div', ['operation-block-description', 'operation-example']);
-                    operation.appendChild(examplesContainer);
-                    let exampleList = [];
-                    let exampleButtonList = [];
-                    methodData.examples.forEach(example => {
-                        if('data' in example) {
-                            renderApiExample(examplesContainer, examplesButtonContainer, example, example.data, exampleList, exampleButtonList);
-                        } else if('url' in example) {
-                            loadData(example.url).then(data => {
-                                renderApiExample(examplesContainer, examplesButtonContainer, example, data, exampleList, exampleButtonList);
-
-                            });
-                        } else {
-                            return;
-                        }
-                    });
+                if(methodData.responseExamples && methodData.responseExamples.length >0) {
+                    const examplesHeader = createElement('div', ['operation-block-section-header'], {}, window.fhirApiDocLabels.responseExample_Header);
+                    operationMainBlock.appendChild(examplesHeader);
+                    addExampleElements(methodData.responseExamples, operationMainBlock);
                 }
 
                 // Methodentyp
                 switch (method.toUpperCase()) {
                     case 'GET':
-                        operation.classList.add('operation-block-get');
+                        operationMainBlock.classList.add('operation-block-get');
                         operationSummary.classList.add('operation-block-summary-get');
                         break;
                     case 'POST':
-                        operation.classList.add('operation-block-post');
+                        operationMainBlock.classList.add('operation-block-post');
                         operationSummary.classList.add('operation-block-summary-post');
                         break;
                     case 'PUT':
-                        operation.classList.add('operation-block-put');
+                        operationMainBlock.classList.add('operation-block-put');
                         operationSummary.classList.add('operation-block-summary-put');
                         break;
                     case 'DELETE':
-                        operation.classList.add('operation-block-delete');
+                        operationMainBlock.classList.add('operation-block-delete');
                         operationSummary.classList.add('operation-block-summary-delete');
                         break;
                 }
@@ -320,6 +354,56 @@ function renderApiDocumentation(container, apiData) {
             });
         });
     }
+}
+
+
+function parseFhirCapabilityStatement(data, resourceType) {
+    const capabilityStatement = JSON.parse(data);
+    const resources = capabilityStatement.rest?.[0]?.resource || [];
+    const resource = resources.find(res => res.type === resourceType);
+
+    if (!resource) {
+        console.error(`${resourceType} not found!`);
+        return {};
+    }
+
+    let details = {};
+
+    // Funktion zur Übersetzung der expectation-Werte
+    function translateExpectation(expectation) {
+        const translations = {
+            "SHALL": "MUSS",
+            "SHOULD": "SOLLTE",
+            "MAY": "DARF",
+            "OPTIONAL": "OPTIONAL"
+        };
+        return translations[expectation] || expectation;
+    }
+
+    // Suchparameter hinzufügen
+    if (resource.searchParam && resource.searchParam.length > 0) {
+        details.searchParams = resource.searchParam.map(param => {
+            const expectationExtension = param.extension?.find(ext => ext.url === "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation");
+            const searchParamDetail = {
+                name: param.name,
+                definition: param.definition,
+                type: param.type,
+                documentation: param.documentation || 'Keine Beschreibung',
+            };
+            if (expectationExtension) {
+                searchParamDetail.expectation = translateExpectation(expectationExtension.valueCode);
+            }
+            return searchParamDetail;
+        });
+    }
+
+    if(resource.searchInclude && resource.searchInclude.length >0 ) {
+        details.searchInclude = [...resource.searchInclude];
+    }
+    if(resource.searchRevInclude && resource.searchRevInclude.length >0 ) {
+        details.searchRevInclude = [...resource.searchRevInclude];
+    }
+    return details;
 }
 
 
