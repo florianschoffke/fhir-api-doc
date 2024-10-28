@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" sizes="any" type="image/png">
+    <title>FHIR Library Test</title>
+    <!-- <link rel="stylesheet" href="../src/style.css"> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/edge-dark.min.css">
+    <link href="/fhir-api-doc.css" rel="stylesheet" />
+    <script src="/fhir-api-doc.min.js"></script>
+</head>
+<body>
+    <h1>FHIR API DOC</h1>
+    <fhir-api-doc>
+        <script type="text/yaml">
+          paths:
+            /epa/medication/api/v1/fhir/Medication:
+              get:
+                base: "[base]"
+                summary: "Liste der Medikamente abrufen"
+                description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
+                operationId: "listMedications_MedicationSvc"
+                searchParameters:
+                  - name: "_id"
+                    definition: "http://hl7.org/fhir/SearchParameter/Resource-id"
+                    type: "token"
+                    conformance: "MUSS"
+                    path: "Resource​.id"
+                  - name: "_lastUpdated"
+                    definition: "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated"
+                    type: "date"
+                    conformance: "MUSS"
+                    path: "Resource.​meta.​lastUpdated"
+                  - name: "identifier"
+                    definition: "http://hl7.org/fhir/SearchParameter/clinical-identifier"
+                    type: "token"
+                    conformance: "MUSS"
+                    path: "Medication.identifier"
+                searchInclude:
+                  - "Medication:ingredient"
+                searchRevInclude:
+                  - "MedicationRequest:medication"
+                  - "MedicationDispense:medication"
+                  - "MedicationStatement:medication"
+                  - "Medication:ingredient"
+                  - "Provenance:target"
+                examples:
+                - name: "application/fhir+json"
+                  type: JSON
+                  data: '{"resourceType": "Medication"}'
+                - name: "Load XML"
+                  type: XML
+                  url: '/Bundle-example-searchset-medication.xml'
+                - name: "Load Json"
+                  type: JSON
+                  url: '/Bundle-example-searchset-medication.json'
+                - name: "Load HTML"
+                  type: HTML
+                  urrl: '/Bundle-example-searchset-medication.xml.html'
+                responses:
+                  '200':
+                    description: "Successful operation"
+                    errorCode: "-"
+                    note: "-"
+                    aaaexamples:
+                      application/fhir+json: '{"resourceType": "Medication"}'
+                      application/fhir+xml: "<s>"
+                  '400':
+                    description: "Unknown search parameter Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed "
+                    errorCode: "Test"
+                    note: "Test"
+      
+                  '404':
+                    description: "Keine Medikation gefunden"
+
+              post:
+                base: "[base]"
+                summary: "Liste der Medikamente abrufen"
+                description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
+                operationId: "listMedications_MedicationSvc"
+                examples:
+                - name: "application/fhir+json"
+                  type: JSON
+                  data: '{"resourceType": "Medication"}'
+                - name: "Load XML"
+                  type: XML
+                  url: '/Bundle-example-searchset-medication.xml'
+                - name: "Load Json"
+                  type: JSON
+                  url: '/Bundle-example-searchset-medication.json'
+                responses:
+                  '200':
+                    description: "Successful operation"
+                    errorCode: "-"
+                    note: "-"
+                    aaaexamples:
+                      application/fhir+json: '{"resourceType": "Medication"}'
+                      application/fhir+xml: "<s>"
+                  '400':
+                    description: "Unknown search parameter Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed "
+                    errorCode: "Test"
+                    note: "Test"
+      
+                  '404':
+                    description: "Keine Medikation gefunden"
+        </script>
+      </fhir-api-doc>
+</body>
+</html>
