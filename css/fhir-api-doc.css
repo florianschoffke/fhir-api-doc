@@ -3,6 +3,8 @@
     --fhir-api-doc-post-color: 73, 204, 144;
     --fhir-api-doc-put-color: 252, 161, 48;
     --fhir-api-doc-delete-color: 249, 62, 62;
+    --fhir-api-doc-head-color: 142, 18, 254;
+    --fhir-api-doc-patch-color: 80, 227, 194;
 }
 
 .fhir-api-doc {
@@ -110,6 +112,11 @@
     border-color: #519ad9;
     height: 30px;
     cursor: pointer;
+    margin-bottom: 5px;
+    max-width: 400px; /* Set maximum width */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
 }
 
@@ -186,4 +193,12 @@
 
 .fhir-api-doc .operation-block-delete {
     --fhir-api-doc-color: var(--fhir-api-doc-delete-color);
+}
+
+.fhir-api-doc .operation-block-head {
+    --fhir-api-doc-color: var(--fhir-api-doc-head-color);
+}
+
+.fhir-api-doc .operation-block-patch {
+    --fhir-api-doc-color: var(--fhir-api-doc-patch-color);
 }

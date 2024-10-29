@@ -30,86 +30,9 @@ window.fhirApiDocLabels = window.fhirApiDocLabels || {
 
 };
 
+
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('fhir-api-doc').forEach(apiDoc => {
-      // Extract YAML from the fhir-api-doc tag
-        function parseYAMLFromFHIRApiDoc(apiDocElement) {
-            if (!apiDocElement) {
-                console.error("fhir-api-doc tag not found");
-                return [];
-            }
-
-            // Get all <script type="text/yaml"> within the <fhir-api-doc> tag
-            const scriptTags = apiDocElement.querySelectorAll('script[type="text/yaml"]');
-            return Array.from(scriptTags).map(script => {
-                try {
-                    return {
-                        id: script.id ? `#${script.id}` : null,
-                        content: jsyaml.load(script.textContent)
-                    };
-                } catch (error) {
-                    console.error(`Error parsing YAML in script tag ${script.id ? script.id : 'without ID'}:`, error);
-                    return {
-                        id: script.id ? `#${script.id}` : null,
-                        content: null
-                    };
-                }
-            });
-        }
-
-        // Function to merge YAML objects
-        function mergeObjects(base, derived) {
-            if (!base) return derived;
-
-            const result = Array.isArray(base) ? [...base] : { ...base };
-
-            for (const key in derived) {
-                if (Array.isArray(base[key]) && Array.isArray(derived[key])) {
-                    // Merge arrays while avoiding duplicates
-                    result[key] = [...base[key], ...derived[key].filter(item => !base[key].some(baseItem => baseItem.name === item.name))];
-                } else if (derived[key] instanceof Object && key in base) {
-                    result[key] = mergeObjects(base[key], derived[key]);
-                } else {
-                    result[key] = derived[key];
-                }
-            }
-            return result;
-        }
-
-        // Function to process YAML data, including generic include logic
-        function loadYAMLWithIncludes(yamlList) {
-            const yamlMap = Object.fromEntries(yamlList.filter(item => item.id).map(item => [item.id, item.content]));
-
-            function processIncludes(obj) {
-                for (const key in obj) {
-                    if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
-                        if (obj[key].include) {
-                            const baseKey = obj[key].include;
-                            const baseData = yamlMap[baseKey] || {};
-                            if (!yamlMap[baseKey]) {
-                                console.error(`Include key ${baseKey} not found`);
-                            }
-                            // Merging baseData into the specific point where include is found
-                            obj[key] = mergeObjects(baseData, obj[key]);
-                            delete obj[key].include; // Remove the include key after merging
-                        }
-                        processIncludes(obj[key]); // Continue recursively
-                    }
-                }
-            }
-
-            yamlList.forEach(dataItem => {
-                if (dataItem.content) {
-                    processIncludes(dataItem.content);
-                } else {
-                    console.error(`YAML content for ${dataItem.id} is null or undefined`);
-                }
-            });
-
-            // Merge all YAML objects
-            return yamlList.reduce((acc, item) => mergeObjects(acc, item.content), {});
-        }
-
         // Process YAML data from the <fhir-api-doc>
         const yamlList = parseYAMLFromFHIRApiDoc(apiDoc);
         const finalConfig = loadYAMLWithIncludes(yamlList);
@@ -121,6 +44,91 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+// Extract YAML from the fhir-api-doc tag
+function parseYAMLFromFHIRApiDoc(apiDocElement) {
+    if (!apiDocElement) {
+        console.error("fhir-api-doc tag not found");
+        return [];
+    }
+
+    // Get all <script type="text/yaml"> within the document by id if it is included
+    const scriptTags = Array.from(apiDocElement.querySelectorAll('script[type="text/yaml"]'));
+    return scriptTags.map(script => {
+        try {
+            return {
+                id: script.id ? `#${script.id}` : null,
+                content: jsyaml.load(script.textContent)
+            };
+        } catch (error) {
+            console.error(`Error parsing YAML in script tag ${script.id ? script.id : 'without ID'}:`, error);
+            return {
+                id: script.id ? `#${script.id}` : null,
+                content: null
+            };
+        }
+    });
+}
+
+// Function to merge YAML objects
+function mergeObjects(base, derived) {
+    if (!base) return derived;
+
+    const result = Array.isArray(base) ? [...base] : { ...base };
+
+    for (const key in derived) {
+        if (Array.isArray(base[key]) && Array.isArray(derived[key])) {
+            // Merge arrays while avoiding duplicates
+            result[key] = [...base[key], ...derived[key].filter(item => !base[key].some(baseItem => baseItem.name === item.name))];
+        } else if (typeof derived[key] === 'object' && !Array.isArray(derived[key]) && key in base) {
+            result[key] = mergeObjects(base[key], derived[key]);
+        } else {
+            result[key] = derived[key];
+        }
+    }
+    return result;
+}
+
+// Function to process YAML data, including generic include logic
+function loadYAMLWithIncludes(yamlList) {
+    const yamlMap = Object.fromEntries(yamlList.filter(item => item.id).map(item => [item.id, item.content]));
+
+    function processIncludes(obj) {
+        for (const key in obj) {
+            if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+                if (obj[key].include) {
+                    const baseKey = obj[key].include;
+                    const baseScript = document.querySelector(baseKey);
+                    if (!baseScript) {
+                        console.error(`Include key ${baseKey} not found`);
+                        continue;
+                    }
+                    try {
+                        const baseData = jsyaml.load(baseScript.textContent) || {};
+                        // Only include the data specified by the include key
+                        obj[key] = mergeObjects(baseData, obj[key]);
+                    } catch (error) {
+                        console.error(`Error loading base YAML from include key ${baseKey}:`, error);
+                        continue;
+                    }
+                    delete obj[key].include; // Remove the include key after merging
+                }
+                processIncludes(obj[key]); // Continue recursively
+            }
+        }
+    }
+
+    yamlList.forEach(dataItem => {
+        if (dataItem.content) {
+            processIncludes(dataItem.content);
+        } else {
+            console.error(`YAML content for ${dataItem.id} is null or undefined`);
+        }
+    });
+
+    // Merge all YAML objects
+    return yamlList.reduce((acc, item) => mergeObjects(acc, item.content), {});
+}
 
 const createElement = (tag, { classes = [], attributes = {}, innerHTML = '', children = [] } = {}) => {
     const element = Object.assign(document.createElement(tag), { innerHTML });
@@ -228,9 +236,14 @@ const appendFhirDetails = (fhirData, parent) => {
 };
 
 const renderApiDocumentation = (container, apiData) => {
+    const httpMethods = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD'];
     if (apiData.paths) {
         Object.entries(apiData.paths).forEach(([path, pathData]) => {
             Object.entries(pathData).forEach(([method, methodData]) => {
+                if (!httpMethods.includes(method.toUpperCase())) {
+                    console.log(`${method.toUpperCase()} is not a valid HTTP method. Skipping to next.`);
+                    return;
+                }
                 const section = createElement('div', { classes: ['fhir-api-doc'] });
                 const operationMainBlock = createElement('div', { classes: ['operation-block'], children: [
                     createElement('div', { classes: ['operation-block-summary'], children: [
@@ -239,7 +252,7 @@ const renderApiDocumentation = (container, apiData) => {
                             attributes: { 'aria-expanded': false },
                             children: [
                                 createElement('span', { classes: ['operation-block-summary-method'], innerHTML: method.toUpperCase() }),
-                                createElement('div', { classes: ['operation-block-summary-path'], innerHTML: methodData.base ? `${methodData.base}${path}` : path })
+                                createElement('div', { classes: ['operation-block-summary-path'], innerHTML: apiData.base ? `${apiData.base}${path}` : path })
                             ]
                         })
                     ]
@@ -306,21 +319,7 @@ const renderApiDocumentation = (container, apiData) => {
                 }
 
                 // Method type
-                switch (method.toUpperCase()) {
-                    case 'GET':
-                        operationMainBlock.classList.add('operation-block-get');
-                        break;
-                    case 'POST':
-                        operationMainBlock.classList.add('operation-block-post');
-                        break;
-                    case 'PUT':
-                        operationMainBlock.classList.add('operation-block-put');
-                        break;
-                    case 'DELETE':
-                        operationMainBlock.classList.add('operation-block-delete');
-                        break;
-                }
-
+                operationMainBlock.classList.add(`operation-block-${method.toLowerCase()}`);
                 section.appendChild(operationMainBlock);
                 container.appendChild(section);
             });

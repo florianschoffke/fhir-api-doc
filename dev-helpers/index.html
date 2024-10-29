@@ -16,7 +16,9 @@
 <body>
     <h1>FHIR API DOC</h1>
 
+
     <fhir-api-doc>
+
       <script type="text/yaml" id="GET">
         get:
           headerParams:
@@ -28,13 +30,16 @@
             - name: "EIN INCLUDE EXAMPLE"
               type: JSON
               data: '{"resourceType": "Include"}'
-      </script>
+            - name: "EIN INCLUDE EXAMPLE EIN INCLUDE EXAMPLE EIN INCLUDE EXAMPLE EIN INCLUDE EXAMPLE"
+              type: JSON
+              data: '{"resourceType": "Include"}'
+      </script> 
         <script type="text/yaml">
+          base: "[BASE]"
           paths:
             /epa/medication/api/v1/fhir/Medication:
               include: "#GET"
               get:
-                base: "[base]"
                 description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
                 operationId: "listMedications_MedicationSvc"
                 headerParams:
@@ -100,7 +105,6 @@
                     description: "Keine Medikation gefunden"
 
               post:
-                base: "[base]"
                 description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
                 operationId: "listMedications_MedicationSvc"
                 headerParams:
@@ -169,9 +173,8 @@
                 - statusCode: '404'
                   description: "Keine Medikation gefunden"
 
-            /epa/medication/api/v1/fhir/MedicationRequest:
+            /MedicationRequest:
               put:
-                base: "http://foo.bar"
                 description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
                 operationId: "listMedications_MedicationSvc"
                 fhir:
@@ -186,13 +189,18 @@
                   capabilityStatement:
                     url: '/CapabilityStatement-epa-capabilitystatement-medication.json'
                     forResourceType: 'MedicationDispense'
+              head:
+                operationId: "HEAD"
+              patch:
+                operationId: "PATCH"
+            </script>
         </script>
       </fhir-api-doc>
 
       <fhir-api-doc>
-        <script type="texte/yaml" id="POST">
+        <script type="text/yaml" id="GET">
               headerParams:
-                - name: "x-include
+                - name: "x-include"
                   expectation: "KANN"
                   type: "string"
                   description: "Include"
@@ -200,6 +208,7 @@
                 - name: "EIN INCLUDE EXAMPLE"
                   type: JSON
                   data: '{"resourceType": "Include"}'
+
         </script>
         <script type="text/yaml" id="POST">
           headerParams:
@@ -213,11 +222,11 @@
               data: '{"resourceType": "Include"}'
       </script>
         <script type="text/yaml">
+          base: "[base]"
           paths:
             /epa/medication/api/v1/fhir/MedicationReeuest:
               post:
-                include: "#POST"
-                base: "[base]"
+                include: "#GET"
                 description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
                 operationId: "listMedications_MedicationSvc"
                 fhir:
