@@ -6,52 +6,61 @@ import json from 'highlight.js/lib/languages/json';
 hljs.registerLanguage('xml', xml);
 hljs.registerLanguage('json', json);
 
-// Globale Variablen für Beschriftungen
+// Global variables for labels
 window.fhirApiDocLabels = window.fhirApiDocLabels || {
-    headerParams_Header: "HTTP Header-Parameter",
+    headerParams_Header: "HTTP Header Parameters",
     headerParams_Parameter_Label: "Parameter",
     headerParams_Type_Label: "Type",
-    headerParams_Expectation_Label: "Anforderung",
-    headerParams_Description_Label: "Beschreibung",
-    searchParams_Header: "Suchparameter",
+    headerParams_Expectation_Label: "Requirement",
+    headerParams_Description_Label: "Description",
+    searchParams_Header: "Search Parameters",
     searchParams_Parameter_Label: "Parameter",
     searchParams_Type_Label: "Type",
-    searchParams_Documentation_Label: "Beschreibung",
-    searchParams_Expectation_Label: "Anforderung",
+    searchParams_Documentation_Label: "Description",
+    searchParams_Expectation_Label: "Requirement",
     response_Header: "Status Codes",
     response_StatusCode_Label: "Status Code",
-    response_Description_Label: "Beschreibung",
+    response_Description_Label: "Description",
     response_ErrorCode_Label: "Error Code",
-    response_Note_Label: "Bemerkung",
-    searchInclude_And_RevInclude_Header: "Suche per Include und RevInclude",
-    requestExample_Header: "Beispielanfrage",
-    responseExample_Header: "Beispielantworten",
+    response_Note_Label: "Note",
+    searchInclude_And_RevInclude_Header: "Search with Include and RevInclude",
+    requestExample_Header: "Request Example",
+    responseExample_Header: "Response Examples",
     operationId_Label: "OperationId",
-    expectation_SHALL: "MUSS",
-    expectation_SHOULD: "KANN",
-    expectation_MAY: "DARF",
+    expectation_SHALL: "MUST",
+    expectation_SHOULD: "SHOULD",
+    expectation_MAY: "MAY",
     expectation_OPTIONAL: "OPTIONAL"
 };
 
-
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('fhir-api-doc').forEach(apiDoc => {
-      // YAML aus dem fhir-api-doc-Tag extrahieren
+      // Extract YAML from the fhir-api-doc tag
         function parseYAMLFromFHIRApiDoc(apiDocElement) {
             if (!apiDocElement) {
-                console.error("fhir-api-doc-Tag nicht gefunden");
+                console.error("fhir-api-doc tag not found");
                 return [];
             }
 
-            // Alle <script type="text/yaml"> innerhalb des <fhir-api-doc> Tags holen
+            // Get all <script type="text/yaml"> within the <fhir-api-doc> tag
             const scriptTags = apiDocElement.querySelectorAll('script[type="text/yaml"]');
-            return Array.from(scriptTags).map(script => ({
-                id: script.id ? `#${script.id}` : null,
-                content: jsyaml.load(script.textContent)
-            }));
+            return Array.from(scriptTags).map(script => {
+                try {
+                    return {
+                        id: script.id ? `#${script.id}` : null,
+                        content: jsyaml.load(script.textContent)
+                    };
+                } catch (error) {
+                    console.error(`Error parsing YAML in script tag ${script.id ? script.id : 'without ID'}:`, error);
+                    return {
+                        id: script.id ? `#${script.id}` : null,
+                        content: null
+                    };
+                }
+            });
         }
 
-        // Funktion zum Zusammenführen der YAML-Objekte
+        // Function to merge YAML objects
         function mergeObjects(base, derived) {
             if (!base) return derived;
 
@@ -59,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             for (const key in derived) {
                 if (Array.isArray(base[key]) && Array.isArray(derived[key])) {
-                    // Zusammenführen von Arrays, wobei doppelte Einträge vermieden werden
+                    // Merge arrays while avoiding duplicates
                     result[key] = [...base[key], ...derived[key].filter(item => !base[key].some(baseItem => baseItem.name === item.name))];
                 } else if (derived[key] instanceof Object && key in base) {
                     result[key] = mergeObjects(base[key], derived[key]);
@@ -70,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return result;
         }
 
-        // Funktion zum Ableiten der YAML-Daten, inklusive generischer Include-Logik
+        // Function to process YAML data, including generic include logic
         function loadYAMLWithIncludes(yamlList) {
             const yamlMap = Object.fromEntries(yamlList.filter(item => item.id).map(item => [item.id, item.content]));
 
@@ -80,31 +89,38 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (obj[key].include) {
                             const baseKey = obj[key].include;
                             const baseData = yamlMap[baseKey] || {};
+                            if (!yamlMap[baseKey]) {
+                                console.error(`Include key ${baseKey} not found`);
+                            }
                             // Merging baseData into the specific point where include is found
                             obj[key] = mergeObjects(baseData, obj[key]);
-                            delete obj[key].include; // Entferne den Include-Schlüssel nach dem Zusammenführen
+                            delete obj[key].include; // Remove the include key after merging
                         }
-                        processIncludes(obj[key]); // Rekursiv weitergehen
+                        processIncludes(obj[key]); // Continue recursively
                     }
                 }
             }
 
             yamlList.forEach(dataItem => {
-                processIncludes(dataItem.content);
+                if (dataItem.content) {
+                    processIncludes(dataItem.content);
+                } else {
+                    console.error(`YAML content for ${dataItem.id} is null or undefined`);
+                }
             });
 
-            // Alle YAML-Objekte zusammenführen
+            // Merge all YAML objects
             return yamlList.reduce((acc, item) => mergeObjects(acc, item.content), {});
         }
 
-        // YAML-Daten aus dem <fhir-api-doc> verarbeiten
+        // Process YAML data from the <fhir-api-doc>
         const yamlList = parseYAMLFromFHIRApiDoc(apiDoc);
         const finalConfig = loadYAMLWithIncludes(yamlList);
 
         if (finalConfig) {
             renderApiDocumentation(apiDoc, finalConfig);
         } else {
-            console.error('Fehler beim Erstellen der Konfiguration');
+            console.error('Error creating the configuration');
         }
     });
 });
@@ -292,7 +308,7 @@ const renderApiDocumentation = (container, apiData) => {
                     appendExampleElements(methodData.responseExamples, operationMainBlock);
                 }
 
-                // Methodentyp
+                // Method type
                 switch (method.toUpperCase()) {
                     case 'GET':
                         operationMainBlock.classList.add('operation-block-get');
@@ -330,7 +346,7 @@ const parseFhirCapabilityStatement = (data, resourceType) => {
     }[expectation] || expectation);
 
     return {
-        searchParams: resourceDetails.searchParam?.map(({ name, definition, type, documentation = 'Keine Beschreibung', extension }) => ({
+        searchParams: resourceDetails.searchParam?.map(({ name, definition, type, documentation = 'No description', extension }) => ({
             name,
             definition,
             type,
