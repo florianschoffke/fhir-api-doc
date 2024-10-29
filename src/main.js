@@ -1,4 +1,4 @@
-import yaml from 'js-yaml';
+import jsyaml from 'js-yaml';
 import hljs from 'highlight.js/lib/core';
 import xml from 'highlight.js/lib/languages/xml';
 import json from 'highlight.js/lib/languages/json';
@@ -33,12 +33,78 @@ window.fhirApiDocLabels = window.fhirApiDocLabels || {
     expectation_OPTIONAL: "OPTIONAL"
 };
 
+
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('fhir-api-doc').forEach(apiDoc => {
-        const script = apiDoc.querySelector('script[type="text/yaml"]');
-        if (script) {
-            const parsedYaml = yaml.load(script.textContent);
-            renderApiDocumentation(apiDoc, parsedYaml);
+      // YAML aus dem fhir-api-doc-Tag extrahieren
+        function parseYAMLFromFHIRApiDoc(apiDocElement) {
+            if (!apiDocElement) {
+                console.error("fhir-api-doc-Tag nicht gefunden");
+                return [];
+            }
+
+            // Alle <script type="text/yaml"> innerhalb des <fhir-api-doc> Tags holen
+            const scriptTags = apiDocElement.querySelectorAll('script[type="text/yaml"]');
+            return Array.from(scriptTags).map(script => ({
+                id: script.id ? `#${script.id}` : null,
+                content: jsyaml.load(script.textContent)
+            }));
+        }
+
+        // Funktion zum Zusammenführen der YAML-Objekte
+        function mergeObjects(base, derived) {
+            if (!base) return derived;
+
+            const result = Array.isArray(base) ? [...base] : { ...base };
+
+            for (const key in derived) {
+                if (Array.isArray(base[key]) && Array.isArray(derived[key])) {
+                    // Zusammenführen von Arrays, wobei doppelte Einträge vermieden werden
+                    result[key] = [...base[key], ...derived[key].filter(item => !base[key].some(baseItem => baseItem.name === item.name))];
+                } else if (derived[key] instanceof Object && key in base) {
+                    result[key] = mergeObjects(base[key], derived[key]);
+                } else {
+                    result[key] = derived[key];
+                }
+            }
+            return result;
+        }
+
+        // Funktion zum Ableiten der YAML-Daten, inklusive generischer Include-Logik
+        function loadYAMLWithIncludes(yamlList) {
+            const yamlMap = Object.fromEntries(yamlList.filter(item => item.id).map(item => [item.id, item.content]));
+
+            function processIncludes(obj) {
+                for (const key in obj) {
+                    if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+                        if (obj[key].include) {
+                            const baseKey = obj[key].include;
+                            const baseData = yamlMap[baseKey] || {};
+                            // Merging baseData into the specific point where include is found
+                            obj[key] = mergeObjects(baseData, obj[key]);
+                            delete obj[key].include; // Entferne den Include-Schlüssel nach dem Zusammenführen
+                        }
+                        processIncludes(obj[key]); // Rekursiv weitergehen
+                    }
+                }
+            }
+
+            yamlList.forEach(dataItem => {
+                processIncludes(dataItem.content);
+            });
+
+            // Alle YAML-Objekte zusammenführen
+            return yamlList.reduce((acc, item) => mergeObjects(acc, item.content), {});
+        }
+
+        // YAML-Daten aus dem <fhir-api-doc> verarbeiten
+        const yamlList = parseYAMLFromFHIRApiDoc(apiDoc);
+        const finalConfig = loadYAMLWithIncludes(yamlList);
+
+        if (finalConfig) {
+            renderApiDocumentation(apiDoc, finalConfig);
+        } else {
+            console.error('Fehler beim Erstellen der Konfiguration');
         }
     });
 });
