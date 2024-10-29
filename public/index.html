@@ -23,6 +23,15 @@
                 base: "[base]"
                 description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
                 operationId: "listMedications_MedicationSvc"
+                headerParams:
+                  - name: "x-insurantid"
+                    expectation: "MUSS"
+                    type: "string"
+                    description: "Health Record Identifier"
+                  - name: "x-useragent"
+                    expectation: "KANN"
+                    type: "string"
+                    description: "User Agent Information"
                 fhir:
                   capabilityStatement:
                     url: '/CapabilityStatement-epa-capabilitystatement-medication.json'
@@ -80,6 +89,15 @@
                 base: "[base]"
                 description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
                 operationId: "listMedications_MedicationSvc"
+                headerParams:
+                  - name: "x-insurantid"
+                    expectation: "MUSS"
+                    type: "string"
+                    description: "Health Record Identifier"
+                  - name: "x-useragent"
+                    expectation: "KANN"
+                    type: "string"
+                    description: "User Agent Information"
                 fhir:
                   searchParams:
                     - name: "_id"
@@ -125,6 +143,17 @@
                 - name: "Load Json"
                   type: JSON
                   url: '/Bundle-example-searchset-medication.json'
+                responses:
+                - statusCode: '200'
+                  description: "Successful operation"
+                  errorCode: "-"
+                  note: "-"
+                - statusCode: '400'
+                  description: "Unknown search parameter Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed "
+                  errorCode: "Test"
+                  note: "Test"
+                - statusCode: '404'
+                  description: "Keine Medikation gefunden"
 
             /epa/medication/api/v1/fhir/MedicationRequest:
               put:
