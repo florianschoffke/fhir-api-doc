@@ -8,29 +8,26 @@ hljs.registerLanguage('json', json);
 
 // Global variables for labels
 window.fhirApiDocLabels = window.fhirApiDocLabels || {
-    headerParams_Header: "HTTP Header Parameters",
-    headerParams_Parameter_Label: "Parameter",
-    headerParams_Type_Label: "Type",
-    headerParams_Expectation_Label: "Requirement",
-    headerParams_Description_Label: "Description",
-    searchParams_Header: "Search Parameters",
-    searchParams_Parameter_Label: "Parameter",
-    searchParams_Type_Label: "Type",
-    searchParams_Documentation_Label: "Description",
-    searchParams_Expectation_Label: "Requirement",
-    response_Header: "Status Codes",
-    response_StatusCode_Label: "Status Code",
-    response_Description_Label: "Description",
-    response_ErrorCode_Label: "Error Code",
-    response_Note_Label: "Note",
-    searchInclude_And_RevInclude_Header: "Search with Include and RevInclude",
-    requestExample_Header: "Request Example",
-    responseExample_Header: "Response Examples",
-    operationId_Label: "OperationId",
-    expectation_SHALL: "MUST",
-    expectation_SHOULD: "SHOULD",
-    expectation_MAY: "MAY",
-    expectation_OPTIONAL: "OPTIONAL"
+    HeaderParams_Header: "HTTP Header Parameters",
+    Parameter_Label: "Parameter",
+    Type_Label: "Type",
+    Expectation_Label: "Requirement",
+    Description_Label: "Description",
+    SearchParams_Header: "Search Parameters",
+    Documentation_Label: "Description",
+    Response_Header: "Status Codes",
+    StatusCode_Label: "Status Code",
+    ErrorCode_Label: "Error Code",
+    Note_Label: "Note",
+    SearchInclude_And_RevInclude_Header: "Search with Include and RevInclude",
+    RequestExample_Header: "Request Example",
+    ResponseExample_Header: "Response Examples",
+    OperationId_Label: "OperationId",
+    Expectation_SHALL: "MUST",
+    Expectation_SHOULD: "SHOULD",
+    Expectation_MAY: "MAY",
+    Expectation_OPTIONAL: "OPTIONAL"
+
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -205,7 +202,7 @@ const appendExampleElements = (exampleData, container) => {
 
 const appendFhirDetails = (fhirData, parent) => {
     if (fhirData.searchParams?.length) {
-        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.searchParams_Header }));
+        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.SearchParams_Header }));
         const searchParametersRows = fhirData.searchParams.map(({ name, definition, type, documentation, expectation }) => [
             `<a href="${definition}" target="_blank">${name}</a>`,
             `<code>${type}</code>`,
@@ -213,15 +210,15 @@ const appendFhirDetails = (fhirData, parent) => {
             expectation
         ]);
         parent.appendChild(createElement('div', { classes: ['operation-block-description'], children: [createTable([
-            window.fhirApiDocLabels.searchParams_Parameter_Label,
-            window.fhirApiDocLabels.searchParams_Type_Label,
-            window.fhirApiDocLabels.searchParams_Documentation_Label,
-            window.fhirApiDocLabels.searchParams_Expectation_Label
+            window.fhirApiDocLabels.Parameter_Label,
+            window.fhirApiDocLabels.Type_Label,
+            window.fhirApiDocLabels.Documentation_Label,
+            window.fhirApiDocLabels.Expectation_Label
         ], searchParametersRows)] }));
     }
 
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
-        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.searchInclude_And_RevInclude_Header }));
+        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.SearchInclude_And_RevInclude_Header }));
         const rows = Array.from({ length: Math.max(fhirData.searchInclude?.length || 0, fhirData.searchRevInclude?.length || 0) }, (_, i) => [
             fhirData.searchInclude?.[i] || '',
             fhirData.searchRevInclude?.[i] || ''
@@ -250,14 +247,14 @@ const renderApiDocumentation = (container, apiData) => {
                 ] });
 
                 if (methodData.operationId) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], innerHTML: `${window.fhirApiDocLabels.operationId_Label}: <b>${methodData.operationId}</b>` }));
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], innerHTML: `${window.fhirApiDocLabels.OperationId_Label}: <b>${methodData.operationId}</b>` }));
                 }
                 if (methodData.description) {
                     operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], innerHTML: `${methodData.description}` }));
                 }
                 
                 if (methodData.headerParams?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.headerParams_Header }));
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.HeaderParams_Header }));
                     const headerParamsRows = methodData.headerParams.map(({ name, type, description, expectation }) => [
                         name,
                         `<code>${type}</code>`, 
@@ -265,10 +262,10 @@ const renderApiDocumentation = (container, apiData) => {
                         expectation
                     ]);
                     operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], children: [createTable([
-                        window.fhirApiDocLabels.headerParams_Parameter_Label,
-                        window.fhirApiDocLabels.headerParams_Type_Label,
-                        window.fhirApiDocLabels.headerParams_Expectation_Label,
-                        window.fhirApiDocLabels.headerParams_Description_Label
+                        window.fhirApiDocLabels.Parameter_Label,
+                        window.fhirApiDocLabels.Type_Label,
+                        window.fhirApiDocLabels.Expectation_Label,
+                        window.fhirApiDocLabels.Description_Label
                     ], headerParamsRows)] }));
                 }
 
@@ -285,11 +282,11 @@ const renderApiDocumentation = (container, apiData) => {
                 }
 
                 if (methodData.requestExamples?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.requestExample_Header }));
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.RequestExample_Header }));
                     appendExampleElements(methodData.requestExamples, operationMainBlock);
                 }
                 if (methodData.responses) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.response_Header }));
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.Response_Header }));
                     const responseRows = methodData.responses.map(({ statusCode, description, errorCode, note }) => [
                         `<code>${statusCode}</code>`, 
                         description, 
@@ -297,14 +294,14 @@ const renderApiDocumentation = (container, apiData) => {
                         note
                     ]);
                     operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], children: [createTable([
-                        window.fhirApiDocLabels.response_StatusCode_Label,
-                        window.fhirApiDocLabels.response_Description_Label,
-                        window.fhirApiDocLabels.response_ErrorCode_Label,
-                        window.fhirApiDocLabels.response_Note_Label
+                        window.fhirApiDocLabels.StatusCode_Label,
+                        window.fhirApiDocLabels.Description_Label,
+                        window.fhirApiDocLabels.ErrorCode_Label,
+                        window.fhirApiDocLabels.Note_Label
                     ], responseRows)] }));
                 }
                 if (methodData.responseExamples?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.responseExample_Header }));
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.ResponseExample_Header }));
                     appendExampleElements(methodData.responseExamples, operationMainBlock);
                 }
 
@@ -339,10 +336,10 @@ const parseFhirCapabilityStatement = (data, resourceType) => {
         return {};
     }
     const translateExpectation = (expectation) => ({
-        SHALL: window.fhirApiDocLabels.expectation_SHALL,
-        SHOULD: window.fhirApiDocLabels.expectation_SHOULD,
-        MAY: window.fhirApiDocLabels.expectation_MAY,
-        OPTIONAL: window.fhirApiDocLabels.expectation_OPTIONAL,
+        SHALL: window.fhirApiDocLabels.Expectation_SHALL,
+        SHOULD: window.fhirApiDocLabels.Expectation_SHOULD,
+        MAY: window.fhirApiDocLabels.Expectation_MAY,
+        OPTIONAL: window.fhirApiDocLabels.Expectation_OPTIONAL,
     }[expectation] || expectation);
 
     return {

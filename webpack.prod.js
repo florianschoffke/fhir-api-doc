@@ -10,7 +10,7 @@ module.exports = merge(common, {
     plugins: [
         new CopyWebpackPlugin({
             patterns: [
-                { from: 'css/*.css', to: '[name][ext]' }, // Kopiert alle CSS-Dateien aus public in dist
+                { from: 'css/*.css', to: '[name][ext]' }, // Kopiert alle CSS-Dateien aus css in dist
             ],
         }),
     ],

@@ -9,16 +9,14 @@ module.exports = merge(common, {
     plugins: [
         new CopyWebpackPlugin({
             patterns: [
-                { from: 'css/*.css', to: '[name][ext]' }, // Kopiert alle CSS-Dateien aus public in dist
-                { from: 'public/*.png', to: '[name][ext]' }, // Kopiert alle {NG-Dateien aus public in dist
-                { from: 'public/*.html', to: '[name][ext]' }, // Kopiert alle HTML-Dateien aus public in dist
-                { from: 'dev-helpers/*.*', to: '[name][ext]' }, // Kopiert alle HTML-Dateien aus public in dist
+                { from: 'css/*.css', to: '[name][ext]' }, // Kopiert alle CSS-Dateien aus css in dist
+                { from: 'dev-helpers/*.*', to: '[name][ext]' }, // Kopiert alle HTML-Dateien Bild-Dateien, Testdaten aus dev-helpers in dist
             ],
         }),
     ],
     devServer: {
         static: './dist',
-        port: 3000, // oder ein beliebiger Port für die Entwicklungsumgebung
+        port: 3000,
         open: true, // Öffnet den Browser automatisch
     },
 });
