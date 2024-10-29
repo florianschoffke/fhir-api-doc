@@ -6,7 +6,7 @@
 }
 
 .fhir-api-doc {
-    font-family: sans-serif /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */;
+    font-family: sans-serif;
     font-size: 14px;
 }
 
@@ -56,14 +56,8 @@
     border-bottom-right-radius: 0%;
 }
 
-.api-method .operation-block-summary .operation-block-summary-control {
-    all: inherit;
-    border-bottom-left-radius: 0%;
-    border-bottom-right-radius: 0%;
-    border-bottom: 0;
-    border: 0px;
-    padding: 0;
-    border: none;
+.operation-block-summary-control {
+    display: flex;
 }
 
 .fhir-api-doc .operation-block-summary-method {
@@ -94,15 +88,12 @@
 }
 
 .fhir-api-doc .operation-block-description.operation-example {
-    padding: 0px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 0px 20px;
 }
 
 .fhir-api-doc .operation-block-section-header {
     background-color: #ffffff;
-    padding: 10px;
-    padding-left: 20px;
+    padding: 10px 20px;
     font-weight: bold;
 }
 
@@ -113,21 +104,17 @@
     font-size: 12px;
     font-weight: 700;
     min-width: 60px;
-    padding: 0px;
+    padding: 0px 10px 0px 0px;
     text-align: left;
-    border-style: solid;
+    border: 1px solid;
     border-color: #519ad9;
     height: 30px;
-    padding-right: 10px;
     cursor: pointer;
 
 }
 
 .fhir-api-doc .example .label {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
+    border-radius: 4px 0 0 4px;
     background-color: #519ad9;
     color: #fff;
     padding: 8px;
@@ -137,18 +124,12 @@
 
 .fhir-api-doc .inline-button {
     display: inline-block;
-    margin-right: 10px; /* Abstand zwischen den Buttons */
+    margin-right: 10px;
 }
 
-.fhir-api-doc button:hover {
+.fhir-api-doc button:hover, .fhir-api-doc .active-button {
     opacity: 0.5;
 }
-
-.fhir-api-doc .active-button {
-    opacity: 0.5;
-}
-
-
 
 .fhir-api-doc .example-buttons-container{
     padding: 3px;
@@ -159,112 +140,50 @@
     max-width: 100%;
 }
 
+.fhir-api-doc pre {
+    background-color: #242424;
+    color: #fff;
+    overflow: auto;
+    white-space: pre;
+    padding: 10px;
+}
+
 .fhir-api-doc code {
     color: inherit;
 }
 
-.fhir-api-doc pre {
-    background-color: #242424;
-    color: rgb(255, 255, 255);
-    overflow: auto; /* Scrollen ermöglichen */
-    white-space: pre; /* Zeilenumbrüche vermeiden */
-    padding: 10px;
+/* Common styles for operation-block by method */
+.fhir-api-doc .operation-block[class*="operation-block-"] {
+    border-color: rgba(var(--fhir-api-doc-color), 1.0);
+    background-color: rgba(var(--fhir-api-doc-color), 0.1);
+}
+
+.fhir-api-doc .operation-block-summary-method[class*="operation-block-"] {
+    background-color: rgba(var(--fhir-api-doc-color), 1.0);
+}
+
+.fhir-api-doc .operation-block[class*="operation-block-"] .example {
+    border-color: rgba(var(--fhir-api-doc-color), 1.0);
+}
+
+.fhir-api-doc .operation-block[class*="operation-block-"] .example .label {
+    background-color: rgba(var(--fhir-api-doc-color), 1.0);
 }
 
 
-/* FOR GET METHOD */
-
-.fhir-api-doc .operation-block.operation-block-get {
-    background-color: rgba(var(--fhir-api-doc-get-color), 0.1);
-    border-color: rgba(var(--fhir-api-doc-get-color), 1.0);
+/* Specific method colors */
+.fhir-api-doc .operation-block-get {
+    --fhir-api-doc-color: var(--fhir-api-doc-get-color);
 }
 
-.fhir-api-doc .operation-block.operation-block-get .operation-block-summary-control {
-    all: inherit;
+.fhir-api-doc .operation-block-post {
+    --fhir-api-doc-color: var(--fhir-api-doc-post-color);
 }
 
-.fhir-api-doc .operation-block.operation-block-get .operation-block-summary-method {
-    background-color: rgba(var(--fhir-api-doc-get-color), 1.0);
-    border-color: rgba(var(--fhir-api-doc-get-color), 1.0);
+.fhir-api-doc .operation-block-put {
+    --fhir-api-doc-color: var(--fhir-api-doc-put-color);
 }
 
-
-.fhir-api-doc .operation-block.operation-block-get .example {
-    border-color: rgba(var(--fhir-api-doc-get-color), 1.0);
-}
-
-.fhir-api-doc .operation-block.operation-block-get .example .label {
-    background-color: rgba(var(--fhir-api-doc-get-color), 1.0);
-}
-
-/* FOR POST METHOD */
-
-.fhir-api-doc .operation-block.operation-block-post {
-    background-color: rgba(var(--fhir-api-doc-post-color), 0.1);
-    border-color: rgba(var(--fhir-api-doc-post-color), 1.0);
-} 
-
-.fhir-api-doc .operation-block.operation-block-post .operation-block-summary-control {
-    all: inherit;
-}
-
-.fhir-api-doc .operation-block.operation-block-post .operation-block-summary-method {
-    background-color: rgba(var(--fhir-api-doc-post-color), 1.0);
-    border-color: rgba(var(--fhir-api-doc-post-color), 1.0);
-}
-
-.fhir-api-doc .operation-block.operation-block-post .example {
-    border-color: rgba(var(--fhir-api-doc-post-color), 1.0);
-}
-
-.fhir-api-doc .operation-block.operation-block-post .example .label {
-    background-color: rgba(var(--fhir-api-doc-post-color), 1.0);
-}
-
-/* FOR PUT METHOD */
-
-.fhir-api-doc .operation-block.operation-block-put {
-    background-color: rgba(var(--fhir-api-doc-put-color), 0.1);
-    border-color: rgba(var(--fhir-api-doc-put-color), 1.0);
-} 
-
-.fhir-api-doc .operation-block.operation-block-put .operation-block-summary-control {
-    all: inherit;
-}
-
-.fhir-api-doc .operation-block.operation-block-put .operation-block-summary-method {
-    background-color: rgba(var(--fhir-api-doc-put-color), 1.0);
-    border-color: rgba(var(--fhir-api-doc-put-color), 1.0);
-}
-
-.fhir-api-doc .operation-block.operation-block-put .example {
-    border-color: rgba(var(--fhir-api-doc-put-color), 1.0);
-}
-
-.fhir-api-doc .operation-block.operation-block-put .example .label {
-    background-color: rgba(var(--fhir-api-doc-put-color), 1.0);
-}
-
-/* FOR DELETE METHOD */
-
-.fhir-api-doc .operation-block.operation-block-delete {
-    background-color: rgba(var(--fhir-api-doc-delete-color), 0.1);
-    border-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
-} 
-
-.fhir-api-doc .operation-block.operation-block-delete .operation-block-summary-control {
-    all: inherit;
-}
-
-.fhir-api-doc .operation-block.operation-block-delete .operation-block-summary-method {
-    background-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
-    border-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
-}
-
-.fhir-api-doc .operation-block.operation-block-delete .example {
-    border-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
-}
-
-.fhir-api-doc .operation-block.operation-block-delete .example .label {
-    background-color: rgba(var(--fhir-api-doc-delete-color), 1.0);
+.fhir-api-doc .operation-block-delete {
+    --fhir-api-doc-color: var(--fhir-api-doc-delete-color);
 }
