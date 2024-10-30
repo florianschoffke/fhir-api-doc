@@ -91,6 +91,7 @@
 
 .fhir-api-doc .operation-block-description.low-padding {
     padding: 0px;
+    padding-bottom: 10px;
     padding-left: 20px;
 }
 
@@ -155,6 +156,15 @@
 
 .fhir-api-doc table {
     max-width: 100%;
+}
+
+.fhir-api-doc table tr td {
+    border-bottom: 1px solid rgba(192, 192, 192, 0.2);
+    border-spacing: 0;
+}
+
+.fhir-api-doc table tr:last-child td {
+    border-bottom: none;
 }
 
 .fhir-api-doc pre {
