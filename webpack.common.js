@@ -6,7 +6,7 @@ module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'fhir-api-doc.min.js',
+        filename: 'ig.apidoc.gematik.min.js',
         library: 'FHIRAPIDOC',
         libraryTarget: 'umd',
         umdNamedDefine: true,

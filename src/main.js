@@ -96,21 +96,22 @@ function loadYAMLWithIncludes(yamlList) {
     function processIncludes(obj) {
         for (const key in obj) {
             if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
-                if (obj[key].include) {
-                    const baseKey = obj[key].include;
-                    const baseScript = document.querySelector(baseKey);
-                    if (!baseScript) {
-                        console.error(`Include key ${baseKey} not found`);
-                        continue;
-                    }
-                    try {
-                        const baseData = jsyaml.load(baseScript.textContent) || {};
-                        // Only include the data specified by the include key
-                        obj[key] = mergeObjects(baseData, obj[key]);
-                    } catch (error) {
-                        console.error(`Error loading base YAML from include key ${baseKey}:`, error);
-                        continue;
-                    }
+                if (obj[key].include && Array.isArray(obj[key].include)) {
+                    obj[key].include.forEach(baseKey => {
+                        const baseScript = document.querySelector(baseKey);
+                        if (!baseScript) {
+                            console.error(`Include key ${baseKey} not found`);
+                            return;
+                        }
+                        try {
+                            const baseData = jsyaml.load(baseScript.textContent) || {};
+                            // Only include the data specified by the include key
+                            obj[key] = mergeObjects(baseData, obj[key]);
+                        } catch (error) {
+                            console.error(`Error loading base YAML from include key ${baseKey}:`, error);
+                            return;
+                        }
+                    });
                     delete obj[key].include; // Remove the include key after merging
                 }
                 processIncludes(obj[key]); // Continue recursively
