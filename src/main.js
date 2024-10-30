@@ -12,22 +12,22 @@ window.fhirApiDocLabels = window.fhirApiDocLabels || {
     HeaderParams_Header: "HTTP Header Parameters",
     Parameter_Label: "Parameter",
     Type_Label: "Type",
-    Expectation_Label: "Requirement",
-    Description_Label: "Description",
-    SearchParams_Header: "Search Parameters",
-    Documentation_Label: "Description",
+    Expectation_Label: "Anforderung",
+    Description_Label: "Beschreibung",
+    SearchParams_Header: "Suchparameter",
+    Documentation_Label: "Beschreibung",
     Response_Header: "Status Codes",
     StatusCode_Label: "Status Code",
     ErrorCode_Label: "Error Code",
-    Note_Label: "Note",
-    SearchInclude_And_RevInclude_Header: "Search with Include and RevInclude",
-    RequestExample_Header: "Request Example",
-    ResponseExample_Header: "Response Examples",
+    Note_Label: "Beschreibung",
+    SearchInclude_And_RevInclude_Header: "Suche per Include oder RevInclude",
+    RequestExample_Header: "Beispielanfragen",
+    ResponseExample_Header: "Beispielantworten",
     OperationId_Label: "OperationId",
-    Expectation_SHALL: "MUST",
-    Expectation_SHOULD: "SHOULD",
-    Expectation_MAY: "MAY",
-    Expectation_OPTIONAL: "OPTIONAL"
+    Expectation_SHALL: "MUSS",
+    Expectation_SHOULD: "KANN",
+    Expectation_SHOULD_NOT: "DARF NICHT",
+    Expectation_MAY: "OPTIONAL"
 
 };
 
@@ -348,10 +348,10 @@ const parseFhirCapabilityStatement = (data, resourceType) => {
         return {};
     }
     const translateExpectation = (expectation) => ({
-        SHALL: window.fhirApiDocLabels.Expectation_SHALL,
-        SHOULD: window.fhirApiDocLabels.Expectation_SHOULD,
-        MAY: window.fhirApiDocLabels.Expectation_MAY,
-        OPTIONAL: window.fhirApiDocLabels.Expectation_OPTIONAL,
+        "SHALL": window.fhirApiDocLabels.Expectation_SHALL,
+        'SHOULD': window.fhirApiDocLabels.Expectation_SHOULD,
+        'SHOULD-NOT': window.fhirApiDocLabels.Expectation_SHOULD_NOT,
+        'MAY': window.fhirApiDocLabels.Expectation_MAY
     }[expectation] || expectation);
 
     return {
