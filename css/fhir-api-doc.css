@@ -89,6 +89,15 @@
     padding: 20px;
 }
 
+.fhir-api-doc .operation-block-description.low-padding {
+    padding: 0px;
+    padding-left: 20px;
+}
+
+.fhir-api-doc .operation-block-description.with-table {
+    overflow: scroll;
+}
+
 .fhir-api-doc .operation-block-description.operation-example {
     padding: 0px 20px;
 }
@@ -145,6 +154,8 @@
 
 .fhir-api-doc table {
     max-width: 100%;
+    /* overflow: auto; */
+    /* white-space: pre; */
 }
 
 .fhir-api-doc pre {

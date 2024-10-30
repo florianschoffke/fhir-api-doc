@@ -8,6 +8,7 @@ hljs.registerLanguage('json', json);
 
 // Global variables for labels
 window.fhirApiDocLabels = window.fhirApiDocLabels || {
+    ContentTypes_Label: "Content Types",
     HeaderParams_Header: "HTTP Header Parameters",
     Parameter_Label: "Parameter",
     Type_Label: "Type",
@@ -217,7 +218,7 @@ const appendFhirDetails = (fhirData, parent) => {
             documentation,
             expectation
         ]);
-        parent.appendChild(createElement('div', { classes: ['operation-block-description'], children: [createTable([
+        parent.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
             window.fhirApiDocLabels.Parameter_Label,
             window.fhirApiDocLabels.Type_Label,
             window.fhirApiDocLabels.Documentation_Label,
@@ -231,7 +232,7 @@ const appendFhirDetails = (fhirData, parent) => {
             fhirData.searchInclude?.[i] || '',
             fhirData.searchRevInclude?.[i] || ''
         ]);
-        parent.appendChild(createElement('div', { classes: ['operation-block-description'], children: [createTable(['Include', 'RevInclude'], rows)] }));
+        parent.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable(['Include', 'RevInclude'], rows)] }));
     }
 };
 
@@ -258,10 +259,22 @@ const renderApiDocumentation = (container, apiData) => {
                     ]
                     })
                 ] });
-
+                let withLowPadding = false;
                 if (methodData.operationId) {
                     operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], innerHTML: `${window.fhirApiDocLabels.OperationId_Label}: <b>${methodData.operationId}</b>` }));
+                    withLowPadding = true;
                 }
+
+                if (methodData.contentTypes?.length) {
+                    const contentTypeHtml= methodData.contentTypes.map(value => `<b>${value}</b>`);
+                    let classesContentType = ['operation-block-description'];
+                    if (withLowPadding) {
+                        classesContentType.push('low-padding');
+                    }
+                    operationMainBlock.appendChild(createElement('div', { classes: classesContentType, innerHTML: `${window.fhirApiDocLabels.ContentTypes_Label}: <b>${contentTypeHtml.join(", ")}</b>` }));
+
+                }
+
                 if (methodData.description) {
                     operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], innerHTML: `${methodData.description}` }));
                 }
@@ -274,7 +287,7 @@ const renderApiDocumentation = (container, apiData) => {
                         description, 
                         expectation
                     ]);
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], children: [createTable([
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
                         window.fhirApiDocLabels.Parameter_Label,
                         window.fhirApiDocLabels.Type_Label,
                         window.fhirApiDocLabels.Expectation_Label,
@@ -306,7 +319,7 @@ const renderApiDocumentation = (container, apiData) => {
                         errorCode, 
                         note
                     ]);
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], children: [createTable([
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
                         window.fhirApiDocLabels.StatusCode_Label,
                         window.fhirApiDocLabels.Description_Label,
                         window.fhirApiDocLabels.ErrorCode_Label,

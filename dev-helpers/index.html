@@ -30,7 +30,8 @@
             - name: "EIN INCLUDE EXAMPLE"
               type: JSON
               data: '{"resourceType": "Include"}'
-            - name: "EIN INCLUDE EXAMPLE EIN INCLUDE EXAMPLE EIN INCLUDE EXAMPLE EIN INCLUDE EXAMPLE"
+            - name: |
+                EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE
               type: JSON
               data: '{"resourceType": "Include"}'
       </script> 
@@ -40,7 +41,16 @@
             /epa/medication/api/v1/fhir/Medication:
               include: "#GET"
               get:
-                description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
+                contentTypes:
+                  - "application/fhir+xml"
+                  - "application/fhir+json"
+                description: |
+                  Gibt eine Liste von <code>Medikamenten-Ressourcen</code> zurück. 
+                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+                  nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+                  sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
+                  Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit 
+                  amet. Lorem ipsum dolor sit amet, c
                 operationId: "listMedications_MedicationSvc"
                 headerParams:
                   - name: "x-insurantid"
