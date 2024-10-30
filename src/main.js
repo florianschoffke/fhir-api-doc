@@ -9,15 +9,15 @@ hljs.registerLanguage('json', json);
 // Global variables for labels
 window.fhirApiDocLabels = window.fhirApiDocLabels || {
     ContentTypes_Label: "Content Types",
-    HeaderParams_Header: "HTTP Header Parameters",
+    HeaderParams_Header: "HTTP Header-Parameter",
     Parameter_Label: "Parameter",
     Type_Label: "Type",
     Expectation_Label: "Anforderung",
     Description_Label: "Beschreibung",
     SearchParams_Header: "Suchparameter",
     Documentation_Label: "Beschreibung",
-    Response_Header: "Status Codes",
-    StatusCode_Label: "Status Code",
+    Response_Header: "Antwort Status-Codes",
+    StatusCode_Label: "Code",
     ErrorCode_Label: "Error Code",
     Note_Label: "Beschreibung",
     SearchInclude_And_RevInclude_Header: "Suche per Include oder RevInclude",
@@ -28,7 +28,6 @@ window.fhirApiDocLabels = window.fhirApiDocLabels || {
     Expectation_SHOULD: "KANN",
     Expectation_SHOULD_NOT: "DARF NICHT",
     Expectation_MAY: "OPTIONAL"
-
 };
 
 
@@ -311,6 +310,12 @@ const renderApiDocumentation = (container, apiData) => {
                     operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.RequestExample_Header }));
                     appendExampleElements(methodData.requestExamples, operationMainBlock);
                 }
+
+                if (methodData.responseExamples?.length) {
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.ResponseExample_Header }));
+                    appendExampleElements(methodData.responseExamples, operationMainBlock);
+                }
+
                 if (methodData.responses) {
                     operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.Response_Header }));
                     const responseRows = methodData.responses.map(({ statusCode, description, errorCode, note }) => [
@@ -325,10 +330,6 @@ const renderApiDocumentation = (container, apiData) => {
                         window.fhirApiDocLabels.ErrorCode_Label,
                         window.fhirApiDocLabels.Note_Label
                     ], responseRows)] }));
-                }
-                if (methodData.responseExamples?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.ResponseExample_Header }));
-                    appendExampleElements(methodData.responseExamples, operationMainBlock);
                 }
 
                 // Method type
