@@ -27,11 +27,35 @@ window.fhirApiDocLabels = window.fhirApiDocLabels || {
     Expectation_SHALL: "MUSS",
     Expectation_SHOULD: "KANN",
     Expectation_SHOULD_NOT: "DARF NICHT",
-    Expectation_MAY: "OPTIONAL"
+    Expectation_MAY: "OPTIONAL",
+    Copy_Button_Label: "Code kopieren",
+    Copied_Button_Label: "Code wird kopiert"
 };
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    renderCodeBlocks();
+    renderAllApiDocumentations();
+});
+
+
+function renderCodeBlocks() {
+    document.querySelectorAll('code').forEach(codeElement => {
+        // Überprüfen, ob das übergeordnete Element ein <pre>-Tag ist
+        const parentElement = codeElement.parentElement;
+        if (parentElement && parentElement.tagName.toLowerCase() === 'pre') {
+            const classes = Array.from(codeElement.classList);
+            const languageClass = classes.find((cls) => cls.includes("language-"));
+            
+            if (languageClass && !languageClass.includes('plaintext')) {
+                const button = createCopyButton(codeElement.textContent);
+                parentElement.insertBefore(button, codeElement);
+            }
+        }
+    });
+}
+
+function renderAllApiDocumentations() {
     document.querySelectorAll('fhir-api-doc').forEach(apiDoc => {
         // Process YAML data from the <fhir-api-doc>
         const yamlList = parseYAMLFromFHIRApiDoc(apiDoc);
@@ -43,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error('Error creating the configuration');
         }
     });
-});
+}
 
 // Extract YAML from the fhir-api-doc tag
 function parseYAMLFromFHIRApiDoc(apiDocElement) {
@@ -169,8 +193,36 @@ const loadData = async (url) => {
     }
 };
 
+const createCopyButton = (data, language = null) => {
+    const wrapper = createElement('div', { classes: ['gem-ig-copy-container'] });
+    const languageElement = createElement('span', { classes: ['gem-id-code-lang'] })
+    if (language) {
+        languageElement.innerText = language.toLowerCase();
+    }
+    // The Copy Button
+    const buttonWrapper = createElement('div', { classes: ['gem-ig-copy-button-wrapper'] });
+    const button = createElement('button', { innerHTML: window.fhirApiDocLabels.Copy_Button_Label});
+    // Add click event listener to copy button
+    button.addEventListener('click', function () {
+        navigator.clipboard.writeText(data).then(() => {
+            button.innerText = window.fhirApiDocLabels.Copied_Button_Label;
+            setTimeout(() => button.innerText = window.fhirApiDocLabels.Copy_Button_Label, 2000);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    });
+    wrapper.appendChild(languageElement);
+    buttonWrapper.appendChild(button);
+    wrapper.appendChild(buttonWrapper);
+    return wrapper;
+};
+
 const renderApiExample = (parent, buttonParent, example, data, exampleList, buttonList) => {
     const exampleContainer = createElement('pre', { attributes: { style: 'display: none' } });
+    // The Copy Button
+    const copyButton = createCopyButton(data, example.type.toLowerCase());
+    exampleContainer.appendChild(copyButton);
+
     const code = createElement('code', {
         innerHTML: hljs.highlight(data, { language: example.type.toLowerCase() }).value
     });

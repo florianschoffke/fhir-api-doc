@@ -168,7 +168,8 @@
 }
 
 .fhir-api-doc pre {
-    background-color: #242424;
+    /* background-color: #242424; */
+    background-color: #171c19;
     color: #fff;
     overflow: auto;
     white-space: pre;
@@ -221,4 +222,63 @@
 
 .fhir-api-doc .operation-block-patch {
     --fhir-api-doc-color: var(--fhir-api-doc-patch-color);
+}
+
+/* .gem-ig-copy-container {
+
+}
+.gem-ig-copy-button-wrapper {
+    text-align: right;
+    padding-bottom: 2px;
+}
+
+.gem-ig-copy-button-wrapper button {
+    cursor: pointer;
+    border: #fff solid 1px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    padding: 5px;
+    text-align: right;
+    
+}
+
+.gem-id-code-lang {
+    text-align: left;
+} */
+
+.gem-ig-copy-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+/* Sprachangabe links */
+.gem-id-code-lang {
+    text-align: left;
+    font-size: 13px;
+    font-family: 'Courier New', Courier, monospace;
+    font-style: italic;
+    background-color: rgba(255, 255, 255, 0.187);
+}
+
+.operation-block .gem-id-code-lang {
+    margin-left: -10px;
+    margin-top: -15px;
+    border-bottom-right-radius: 30%;
+    padding: 10px;
+}
+
+/* Kopierbutton rechts */
+.gem-ig-copy-button-wrapper {
+    text-align: right;
+}
+
+.gem-ig-copy-button-wrapper button {
+    cursor: pointer;
+    border: #fff solid 1px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    padding: 5px;
+    font-size: 13px;
 }
