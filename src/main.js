@@ -7,7 +7,7 @@ hljs.registerLanguage('xml', xml);
 hljs.registerLanguage('json', json);
 
 // Global variables for labels
-window.fhirApiDocLabels = window.fhirApiDocLabels || {
+window.gemIGApiDocLabels = window.gemIGApiDocLabels || {
     ContentTypes_Label: "Content Types",
     HeaderParams_Header: "HTTP Header-Parameter",
     Parameter_Label: "Parameter",
@@ -163,8 +163,8 @@ const createElement = (tag, { classes = [], attributes = {}, innerHTML = '', chi
     return element;
 };
 
-const createTable = (headers, rows, includeHeader = true) => {
-    const table = createElement('table', { attributes: { style: 'width: 100%' } });
+const createTable = (headers, rows, includeHeader = true, classes = []) => {
+    const table = createElement('table', { attributes: { style: 'width: 100%' }, classes: classes });
     if (includeHeader) {
         const thead = createElement('thead');
         thead.appendChild(createElement('tr', {
@@ -201,12 +201,12 @@ const createCopyButton = (data, language = null) => {
     }
     // The Copy Button
     const buttonWrapper = createElement('div', { classes: ['gem-ig-copy-button-wrapper'] });
-    const button = createElement('button', { innerHTML: window.fhirApiDocLabels.Copy_Button_Label});
+    const button = createElement('button', { innerHTML: window.gemIGApiDocLabels.Copy_Button_Label});
     // Add click event listener to copy button
     button.addEventListener('click', function () {
         navigator.clipboard.writeText(data).then(() => {
-            button.innerText = window.fhirApiDocLabels.Copied_Button_Label;
-            setTimeout(() => button.innerText = window.fhirApiDocLabels.Copy_Button_Label, 2000);
+            button.innerText = window.gemIGApiDocLabels.Copied_Button_Label;
+            setTimeout(() => button.innerText = window.gemIGApiDocLabels.Copy_Button_Label, 2000);
         }).catch(err => {
             console.error('Failed to copy text: ', err);
         });
@@ -263,7 +263,7 @@ const appendExampleElements = (exampleData, container) => {
 
 const appendFhirDetails = (fhirData, parent) => {
     if (fhirData.searchParams?.length) {
-        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.SearchParams_Header }));
+        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.SearchParams_Header }));
         const searchParametersRows = fhirData.searchParams.map(({ name, definition, type, documentation, expectation }) => [
             `<a href="${definition}" target="_blank">${name}</a>`,
             `<code>${type}</code>`,
@@ -271,15 +271,15 @@ const appendFhirDetails = (fhirData, parent) => {
             expectation
         ]);
         parent.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
-            window.fhirApiDocLabels.Parameter_Label,
-            window.fhirApiDocLabels.Type_Label,
-            window.fhirApiDocLabels.Documentation_Label,
-            window.fhirApiDocLabels.Expectation_Label
-        ], searchParametersRows)] }));
+            window.gemIGApiDocLabels.Parameter_Label,
+            window.gemIGApiDocLabels.Type_Label,
+            window.gemIGApiDocLabels.Documentation_Label,
+            window.gemIGApiDocLabels.Expectation_Label
+        ], searchParametersRows, true, ['params-table'])] }));
     }
 
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
-        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.SearchInclude_And_RevInclude_Header }));
+        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.SearchInclude_And_RevInclude_Header }));
         const rows = Array.from({ length: Math.max(fhirData.searchInclude?.length || 0, fhirData.searchRevInclude?.length || 0) }, (_, i) => [
             fhirData.searchInclude?.[i] || '',
             fhirData.searchRevInclude?.[i] || ''
@@ -313,7 +313,7 @@ const renderApiDocumentation = (container, apiData) => {
                 ] });
                 let withLowPadding = false;
                 if (methodData.operationId) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], innerHTML: `${window.fhirApiDocLabels.OperationId_Label}: <b>${methodData.operationId}</b>` }));
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], innerHTML: `${window.gemIGApiDocLabels.OperationId_Label}: <b>${methodData.operationId}</b>` }));
                     withLowPadding = true;
                 }
 
@@ -323,7 +323,7 @@ const renderApiDocumentation = (container, apiData) => {
                     if (withLowPadding) {
                         classesContentType.push('low-padding');
                     }
-                    operationMainBlock.appendChild(createElement('div', { classes: classesContentType, innerHTML: `${window.fhirApiDocLabels.ContentTypes_Label}: <b>${contentTypeHtml.join(", ")}</b>` }));
+                    operationMainBlock.appendChild(createElement('div', { classes: classesContentType, innerHTML: `${window.gemIGApiDocLabels.ContentTypes_Label}: <b>${contentTypeHtml.join(", ")}</b>` }));
 
                 }
 
@@ -332,7 +332,7 @@ const renderApiDocumentation = (container, apiData) => {
                 }
                 
                 if (methodData.headerParams?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.HeaderParams_Header }));
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.HeaderParams_Header }));
                     const headerParamsRows = methodData.headerParams.map(({ name, type, description, expectation }) => [
                         name,
                         `<code>${type}</code>`, 
@@ -340,11 +340,11 @@ const renderApiDocumentation = (container, apiData) => {
                         expectation
                     ]);
                     operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
-                        window.fhirApiDocLabels.Parameter_Label,
-                        window.fhirApiDocLabels.Type_Label,
-                        window.fhirApiDocLabels.Expectation_Label,
-                        window.fhirApiDocLabels.Description_Label
-                    ], headerParamsRows)] }));
+                        window.gemIGApiDocLabels.Parameter_Label,
+                        window.gemIGApiDocLabels.Type_Label,
+                        window.gemIGApiDocLabels.Description_Label,
+                        window.gemIGApiDocLabels.Expectation_Label
+                    ], headerParamsRows, true, ['params-table'])] }));
                 }
 
                 if (methodData.fhir) {
@@ -360,17 +360,17 @@ const renderApiDocumentation = (container, apiData) => {
                 }
 
                 if (methodData.requestExamples?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.RequestExample_Header }));
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.RequestExample_Header }));
                     appendExampleElements(methodData.requestExamples, operationMainBlock);
                 }
 
                 if (methodData.responseExamples?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.ResponseExample_Header }));
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.ResponseExample_Header }));
                     appendExampleElements(methodData.responseExamples, operationMainBlock);
                 }
 
                 if (methodData.responses) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.fhirApiDocLabels.Response_Header }));
+                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.Response_Header }));
                     const responseRows = methodData.responses.map(({ statusCode, description, errorCode, note }) => [
                         `<code>${statusCode}</code>`, 
                         description, 
@@ -378,10 +378,10 @@ const renderApiDocumentation = (container, apiData) => {
                         note
                     ]);
                     operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
-                        window.fhirApiDocLabels.StatusCode_Label,
-                        window.fhirApiDocLabels.Description_Label,
-                        window.fhirApiDocLabels.ErrorCode_Label,
-                        window.fhirApiDocLabels.Note_Label
+                        window.gemIGApiDocLabels.StatusCode_Label,
+                        window.gemIGApiDocLabels.Description_Label,
+                        window.gemIGApiDocLabels.ErrorCode_Label,
+                        window.gemIGApiDocLabels.Note_Label
                     ], responseRows)] }));
                 }
 
@@ -402,10 +402,10 @@ const parseFhirCapabilityStatement = (data, resourceType) => {
         return {};
     }
     const translateExpectation = (expectation) => ({
-        "SHALL": window.fhirApiDocLabels.Expectation_SHALL,
-        'SHOULD': window.fhirApiDocLabels.Expectation_SHOULD,
-        'SHOULD-NOT': window.fhirApiDocLabels.Expectation_SHOULD_NOT,
-        'MAY': window.fhirApiDocLabels.Expectation_MAY
+        "SHALL": window.gemIGApiDocLabels.Expectation_SHALL,
+        'SHOULD': window.gemIGApiDocLabels.Expectation_SHOULD,
+        'SHOULD-NOT': window.gemIGApiDocLabels.Expectation_SHOULD_NOT,
+        'MAY': window.gemIGApiDocLabels.Expectation_MAY
     }[expectation] || expectation);
 
     return {
