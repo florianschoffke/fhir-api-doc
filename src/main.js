@@ -56,7 +56,7 @@ function renderCodeBlocks() {
 }
 
 function renderAllApiDocumentations() {
-    document.querySelectorAll('fhir-api-doc').forEach(apiDoc => {
+    document.querySelectorAll('gem-ig-api-doc').forEach(apiDoc => {
         // Process YAML data from the <fhir-api-doc>
         const yamlList = parseYAMLFromFHIRApiDoc(apiDoc);
         const finalConfig = loadYAMLWithIncludes(yamlList);
@@ -72,7 +72,7 @@ function renderAllApiDocumentations() {
 // Extract YAML from the fhir-api-doc tag
 function parseYAMLFromFHIRApiDoc(apiDocElement) {
     if (!apiDocElement) {
-        console.error("fhir-api-doc tag not found");
+        console.error("gem-ig-api-doc tag not found");
         return [];
     }
 
@@ -297,7 +297,7 @@ const renderApiDocumentation = (container, apiData) => {
                     console.log(`${method.toUpperCase()} is not a valid HTTP method. Skipping to next.`);
                     return;
                 }
-                const section = createElement('div', { classes: ['fhir-api-doc'] });
+                const section = createElement('div', { classes: ['gem-ig-api-doc'] });
                 const operationMainBlock = createElement('div', { classes: ['operation-block'], children: [
                     createElement('div', { classes: ['operation-block-summary'], children: [
                         createElement('div', {

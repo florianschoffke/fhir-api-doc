@@ -5,7 +5,7 @@ hljs.registerLanguage('json', require('highlight.js/lib/languages/json'));
 
 
 // Globale Variablen für Beschriftungen
-window.fhirApiDocLabels = window.fhirApiDocLabels || {
+window.gemIGApiDocLabels = window.gemIGApiDocLabels || {
     searchParams_Header: "Suchparameter",
     searchParams_Parameter_Label: "Parameter",
     searchParams_Type_Label: "Type",
@@ -175,7 +175,7 @@ function addExampleElements(exampleData, container) {
 function appendFhirDetails(fhirData, parent) {
     // Search Parameters
     if (fhirData.searchParams && fhirData.searchParams.length >0) {
-        const searchParametersHeader = createElement('div', ['operation-block-section-header'], {}, window.fhirApiDocLabels.searchParams_Header);
+        const searchParametersHeader = createElement('div', ['operation-block-section-header'], {}, window.gemIGApiDocLabels.searchParams_Header);
         parent.appendChild(searchParametersHeader);
 
         const searchParametersRows = fhirData.searchParams.map(item => [
@@ -185,10 +185,10 @@ function appendFhirDetails(fhirData, parent) {
             item.expectation
         ]);
         const cellTitles = [
-            window.fhirApiDocLabels.searchParams_Parameter_Label,
-            window.fhirApiDocLabels.searchParams_Type_Label,
-            window.fhirApiDocLabels.searchParams_Documentation_Label,
-            window.fhirApiDocLabels.searchParams_Expectation_Label
+            window.gemIGApiDocLabels.searchParams_Parameter_Label,
+            window.gemIGApiDocLabels.searchParams_Type_Label,
+            window.gemIGApiDocLabels.searchParams_Documentation_Label,
+            window.gemIGApiDocLabels.searchParams_Expectation_Label
         ];
         const searchParametersTable = createTable(cellTitles, searchParametersRows);
         const searchParametersContainer = createElement('div', ['operation-block-description']);
@@ -198,7 +198,7 @@ function appendFhirDetails(fhirData, parent) {
 
     // Search Include and RevInclude Combined
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
-        const includeRevIncludeHeader = createElement('div', ['operation-block-section-header'], {}, window.fhirApiDocLabels.searchInclude_And_RevInclude_Header);
+        const includeRevIncludeHeader = createElement('div', ['operation-block-section-header'], {}, window.gemIGApiDocLabels.searchInclude_And_RevInclude_Header);
         parent.appendChild(includeRevIncludeHeader);
 
         const includeRevIncludeRows = [];
@@ -251,7 +251,7 @@ function renderApiDocumentation(container, apiData) {
                 // Operation Description
                 const operationDescription = createElement('div', ['operation-block-description']);
                 if (methodData.operationId) {
-                    const operationId = createElement('div', [], {}, `<p>${window.fhirApiDocLabels.operationId_Label}: <b>${methodData.operationId}</b></p>`);
+                    const operationId = createElement('div', [], {}, `<p>${window.gemIGApiDocLabels.operationId_Label}: <b>${methodData.operationId}</b></p>`);
                     operationDescription.appendChild(operationId);
                 }
                 if (methodData.description) {
@@ -279,13 +279,13 @@ function renderApiDocumentation(container, apiData) {
                     }
                 }
                 if(methodData.requestExamples && methodData.requestExamples.length >0) {
-                    const examplesRequestHeader = createElement('div', ['operation-block-section-header'], {}, window.fhirApiDocLabels.requestExample_Header);
+                    const examplesRequestHeader = createElement('div', ['operation-block-section-header'], {}, window.gemIGApiDocLabels.requestExample_Header);
                     operationMainBlock.appendChild(examplesRequestHeader);
                     addExampleElements(methodData.requestExamples, operationMainBlock);
                 }
                 // Responses
                 if (methodData.responses) {
-                    const responsesHeader = createElement('div', ['operation-block-section-header'], {}, window.fhirApiDocLabels.response_Header);
+                    const responsesHeader = createElement('div', ['operation-block-section-header'], {}, window.gemIGApiDocLabels.response_Header);
                     operationMainBlock.appendChild(responsesHeader);
 
                     let isFirstResponse = true;
@@ -294,10 +294,10 @@ function renderApiDocumentation(container, apiData) {
                     const responseThead = createElement('thead');
                     const responseHeaderRow = createElement('tr');
                     const responseHeaders = [
-                        window.fhirApiDocLabels.response_StatusCode_Label, 
-                        window.fhirApiDocLabels.response_Description_Label, 
-                        window.fhirApiDocLabels.response_ErrorCode_Label, 
-                        window.fhirApiDocLabels.response_Note_Label
+                        window.gemIGApiDocLabels.response_StatusCode_Label, 
+                        window.gemIGApiDocLabels.response_Description_Label, 
+                        window.gemIGApiDocLabels.response_ErrorCode_Label, 
+                        window.gemIGApiDocLabels.response_Note_Label
                     ];
                     responseHeaders.forEach(headerText => {
                         const th = createElement('th', [], {}, headerText);
@@ -325,7 +325,7 @@ function renderApiDocumentation(container, apiData) {
                     operationMainBlock.appendChild(responseContainer);
                 }
                 if(methodData.responseExamples && methodData.responseExamples.length >0) {
-                    const examplesHeader = createElement('div', ['operation-block-section-header'], {}, window.fhirApiDocLabels.responseExample_Header);
+                    const examplesHeader = createElement('div', ['operation-block-section-header'], {}, window.gemIGApiDocLabels.responseExample_Header);
                     operationMainBlock.appendChild(examplesHeader);
                     addExampleElements(methodData.responseExamples, operationMainBlock);
                 }
