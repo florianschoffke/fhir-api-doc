@@ -224,28 +224,6 @@
     --fhir-api-doc-color: var(--fhir-api-doc-patch-color);
 }
 
-/* .gem-ig-copy-container {
-
-}
-.gem-ig-copy-button-wrapper {
-    text-align: right;
-    padding-bottom: 2px;
-}
-
-.gem-ig-copy-button-wrapper button {
-    cursor: pointer;
-    border: #fff solid 1px;
-    background-color: rgba(0, 0, 0, 0.3);
-    color: #fff;
-    padding: 5px;
-    text-align: right;
-    
-}
-
-.gem-id-code-lang {
-    text-align: left;
-} */
-
 .gem-ig-copy-container {
     display: flex;
     justify-content: space-between;
@@ -258,15 +236,14 @@
     text-align: left;
     font-size: 13px;
     font-family: 'Courier New', Courier, monospace;
-    font-style: italic;
     background-color: rgba(255, 255, 255, 0.187);
 }
 
 .operation-block .gem-id-code-lang {
     margin-left: -10px;
-    margin-top: -15px;
+    margin-top: -20px;
     border-bottom-right-radius: 30%;
-    padding: 10px;
+    padding: 6px;
 }
 
 /* Kopierbutton rechts */
@@ -280,5 +257,5 @@
     background-color: rgba(0, 0, 0, 0.3);
     color: #fff;
     padding: 5px;
-    font-size: 13px;
+    font-size: 12px;
 }
