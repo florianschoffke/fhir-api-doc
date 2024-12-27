@@ -1,8 +1,6 @@
 :root {
-    --gem-req-bg-color: #fffbe9;
+    --gem-req-bg-color: #fafab647;
     --gem-reg-title-color: #000000;
-    --gem-reg-title-size: 14px;
-    --gem-reg-desc-size: 14px;
     --gem-reg-desc-color: #000000;
     --gem-reg-padding: 2px;
     --gem-reg-margin-bottom: 10px;
@@ -14,13 +12,11 @@
     margin-bottom: var(--gem-reg-margin-bottom);
 }
 
-.requirement h2 {
+.requirement .heading {
     color: var(--gem-reg-title-color);
-    font-size: var(--gem-reg-title-size);
     font-weight: bold;
 }
 
 .requirement p {
     color: var(--gem-reg-desc-color);
-    font-size: var(--gem-reg-desc-size);
 }

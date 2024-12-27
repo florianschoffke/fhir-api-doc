@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderRequirements() {
     const requirements = document.querySelectorAll('requirement');
     requirements.forEach(req => {
+        const parentElement = req.parentElement;
+
         const reqID = req.getAttribute('id');
         const title = req.querySelector('title')?.textContent ?? '';
         const target = req.querySelector('target')?.textContent ?? '';
@@ -20,17 +22,19 @@ function renderRequirements() {
         if (title)  headingParts.push(title);
 
         if (headingParts.length > 0) {
-            const heading = document.createElement('h2');
+            const heading = document.createElement('div');
+            heading.classList.add('heading');
             heading.textContent = headingParts.join(' - ');
             requirementDiv.appendChild(heading);
         }
   
         if (description) {
             const descP = document.createElement('p');
-            descP.textContent = description;
+            descP.textContent = `${description} [<=]`;
             requirementDiv.appendChild(descP);
         }
-        document.body.appendChild(requirementDiv);
+        
+        parentElement.appendChild(requirementDiv);
         req.remove();
     });
 }
