@@ -1,5 +1,5 @@
 :root {
-    --gem-req-bg-color: #fafab647;
+    --gem-req-bg-color: #ffffff50;
     --gem-reg-title-color: #000000;
     --gem-reg-desc-color: #000000;
     --gem-reg-padding: 2px;
@@ -15,6 +15,7 @@
 .requirement .heading {
     color: var(--gem-reg-title-color);
     font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .requirement p {
