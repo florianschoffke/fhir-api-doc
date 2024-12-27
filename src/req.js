@@ -11,7 +11,7 @@ function renderRequirements() {
         const reqID = req.getAttribute('id');
         const title = req.querySelector('title')?.textContent ?? '';
         const target = req.querySelector('target')?.textContent ?? '';
-        const description = req.querySelector('description')?.textContent ?? '';
+        const description = req.querySelector('description')?.getHTML() ?? '';
 
         const requirementDiv = document.createElement('div');
         requirementDiv.classList.add('requirement');
@@ -30,10 +30,10 @@ function renderRequirements() {
   
         if (description) {
             const descP = document.createElement('p');
-            descP.textContent = `${description} [<=]`;
+            descP.innerHTML = `${description} [<=]`;
             requirementDiv.appendChild(descP);
         }
-        
+
         parentElement.appendChild(requirementDiv);
         req.remove();
     });
