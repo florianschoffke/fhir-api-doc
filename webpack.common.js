@@ -3,11 +3,15 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-    entry: './src/main.js',
+    entry: {
+        'ig': './src/main.js',
+        'ig.apidoc': './src/apidoc.js',
+        'ig.req': './src/req.js'
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'ig.apidoc.gematik.min.js',
-        library: 'FHIRAPIDOC',
+        filename: '[name].gematik.min.js',
+        library: 'FHIRIGDOC',
         libraryTarget: 'umd',
         umdNamedDefine: true,
     },

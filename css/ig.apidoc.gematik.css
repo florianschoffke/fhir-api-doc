@@ -1,15 +1,9 @@
 :root {
-    /* --fhir-api-doc-get-color: 97, 175, 254; */
     --fhir-api-doc-get-color: 124, 188, 207;
-    /* --fhir-api-doc-post-color: 73, 204, 144; */
     --fhir-api-doc-post-color: 63, 171, 153;
-    /* --fhir-api-doc-put-color: 252, 161, 48; */
     --fhir-api-doc-put-color: 231, 181, 119;
-    /* --fhir-api-doc-delete-color: 249, 62, 62; */
     --fhir-api-doc-delete-color: 231, 158, 158;
-    /* --fhir-api-doc-head-color: 142, 18, 254; */
     --fhir-api-doc-head-color: 182, 163, 198; 
-    /* --fhir-api-doc-patch-color: 80, 227, 194; */
     --fhir-api-doc-patch-color: 145, 166, 188;
 }
 
