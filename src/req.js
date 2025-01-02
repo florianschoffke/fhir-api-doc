@@ -7,44 +7,38 @@ function renderRequirements() {
     const requirements = document.querySelectorAll('requirement');
   
     requirements.forEach(req => {
-      const getTextAndRemove = (selector) => {
-        const el = req.querySelector(selector);
-        if (!el) return '';
-        const text = el.textContent.trim();
-        el.remove();
-        return text;
-      };
-      const getHTMLAndRemove = (selector) => {
-        const el = req.querySelector(selector);
-        if (!el) return '';
-        const html = el.innerHTML.trim();
-        el.remove();
-        return html;
-      };
+
+      const reqID = req.getAttribute('id') || '';
+      const reqVersion = req.getAttribute('version') || '';
+      const combinedReqID = reqID ? `${reqID}${reqVersion ? `-${reqVersion}` : ''}` : '';
+      const targetText = req.getAttribute('target') || '';
+      const titleText = req.getAttribute('title') || '';
+      const descriptionHTML = req.innerHTML.trim();
   
-      const reqID         = req.getAttribute('id') || '';
-      const targetText    = getTextAndRemove('target');
-      const titleText     = getTextAndRemove('title');
-      const descriptionHTML = getHTMLAndRemove('description');
-  
-      const requirementDiv = document.createElement('div');
-      requirementDiv.classList.add('requirement');
-  
-      const headingParts = [reqID, targetText, titleText].filter(Boolean);
+      const reqDiv = document.createElement('div');
+      reqDiv.classList.add('requirement');
+
+      const headingParts = [
+        combinedReqID, 
+        targetText, 
+        titleText
+      ].filter(Boolean);
+
       if (headingParts.length > 0) {
         const heading = document.createElement('div');
         heading.classList.add('heading');
         heading.textContent = headingParts.join(' - ');
-        requirementDiv.appendChild(heading);
+        reqDiv.appendChild(heading);
       }
   
       if (descriptionHTML) {
         const descP = document.createElement('p');
         descP.innerHTML = `${descriptionHTML} [<=]`;
-        requirementDiv.appendChild(descP);
+        reqDiv.appendChild(descP);
       }
   
-      req.appendChild(requirementDiv);
+      req.parentElement.replaceChild(reqDiv, req);
     });
   }
+
   

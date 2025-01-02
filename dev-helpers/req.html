@@ -37,29 +37,27 @@
             lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
         </p>
 
-        <requirement>
-            <target>MHD Service</target>
-            <title>Test Anforderung</title>
-            <description>
+        <requirement id="REQ-00001" version="3" target="Service" title="Test Anforderung Test">
+            Der Anbieter des ePA-Aktensystems MUSS den in diesem Leitfaden definierten MHD Service implementieren und dabei 
+            die Vorgaben der FHIR-Spezifikation berücksichtigen. Der MHD Service MUSS den logischen IHE ITI Akteur Document 
+            Responder mit seinen Schnittstellen Find Document References [ITI-67] und Retrieve Document [ITI-68] implementieren. 
+            Der Anbieter des ePA-Aktensystems MUSS die Konformität der MHD-Service-Implementierung in einem Zulassungsverfahren nachweisen.
+            <a href="http://hl7.org/fhir/R4/index.html">FHIR-Spezifikation</a>
+        </requirement>
+
+        <div style="width: 800px; min-height: 20px;">
+            <requirement version="3" target="Primärsystem" title="Test Anforderung 2">
                 Der Anbieter des ePA-Aktensystems MUSS den in diesem Leitfaden definierten MHD Service implementieren und dabei 
                 die Vorgaben der FHIR-Spezifikation berücksichtigen. Der MHD Service MUSS den logischen IHE ITI Akteur Document 
                 Responder mit seinen Schnittstellen Find Document References [ITI-67] und Retrieve Document [ITI-68] implementieren. 
                 Der Anbieter des ePA-Aktensystems MUSS die Konformität der MHD-Service-Implementierung in einem Zulassungsverfahren nachweisen.
-                <a href="http://hl7.org/fhir/R4/index.html">FHIR-Spezifikation</a>
-            </description>
-        </requirement>
-
-        <div style="width: 800px; min-height: 20px;">
-            <requirement>
-                <target>Primärsystem</target>
-                <title>Test Anforderung 2</title>
-                <description>
-                    Der Anbieter des ePA-Aktensystems MUSS den in diesem Leitfaden definierten MHD Service implementieren und dabei 
-                    die Vorgaben der FHIR-Spezifikation berücksichtigen. Der MHD Service MUSS den logischen IHE ITI Akteur Document 
-                    Responder mit seinen Schnittstellen Find Document References [ITI-67] und Retrieve Document [ITI-68] implementieren. 
-                    Der Anbieter des ePA-Aktensystems MUSS die Konformität der MHD-Service-Implementierung in einem Zulassungsverfahren nachweisen.
-                </description>
             </requirement>
         </div>
+
+        <requirement
+            target="MHD Service"
+            title="Unterstützung von GET und POST für Suchanfragen">
+            Der Document Responder MUSS sowohl GET- als auch POST-basierte Suchanfragen unterstützen, wie in der <a href="http://hl7.org/fhir/R4/http.html#search">FHIR HTTP Spezifikation</a> festgelegt.
+        </requirement>
     </body>
 </html>
