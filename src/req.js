@@ -5,36 +5,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function renderRequirements() {
     const requirements = document.querySelectorAll('requirement');
-    requirements.forEach(req => {
-        const parentElement = req.parentElement;
-
-        const reqID = req.getAttribute('id');
-        const title = req.querySelector('title')?.textContent ?? '';
-        const target = req.querySelector('target')?.textContent ?? '';
-        const description = req.querySelector('description')?.getHTML() ?? '';
-
-        const requirementDiv = document.createElement('div');
-        requirementDiv.classList.add('requirement');
-
-        let headingParts = [];
-        if (reqID)  headingParts.push(reqID);
-        if (target) headingParts.push(target);
-        if (title)  headingParts.push(title);
-
-        if (headingParts.length > 0) {
-            const heading = document.createElement('div');
-            heading.classList.add('heading');
-            heading.textContent = headingParts.join(' - ');
-            requirementDiv.appendChild(heading);
-        }
   
-        if (description) {
-            const descP = document.createElement('p');
-            descP.innerHTML = `${description} [<=]`;
-            requirementDiv.appendChild(descP);
-        }
-
-        parentElement.appendChild(requirementDiv);
-        req.remove();
+    requirements.forEach(req => {
+      const getTextAndRemove = (selector) => {
+        const el = req.querySelector(selector);
+        if (!el) return '';
+        const text = el.textContent.trim();
+        el.remove();
+        return text;
+      };
+      const getHTMLAndRemove = (selector) => {
+        const el = req.querySelector(selector);
+        if (!el) return '';
+        const html = el.innerHTML.trim();
+        el.remove();
+        return html;
+      };
+  
+      const reqID         = req.getAttribute('id') || '';
+      const targetText    = getTextAndRemove('target');
+      const titleText     = getTextAndRemove('title');
+      const descriptionHTML = getHTMLAndRemove('description');
+  
+      const requirementDiv = document.createElement('div');
+      requirementDiv.classList.add('requirement');
+  
+      const headingParts = [reqID, targetText, titleText].filter(Boolean);
+      if (headingParts.length > 0) {
+        const heading = document.createElement('div');
+        heading.classList.add('heading');
+        heading.textContent = headingParts.join(' - ');
+        requirementDiv.appendChild(heading);
+      }
+  
+      if (descriptionHTML) {
+        const descP = document.createElement('p');
+        descP.innerHTML = `${descriptionHTML} [<=]`;
+        requirementDiv.appendChild(descP);
+      }
+  
+      req.appendChild(requirementDiv);
     });
-}
+  }
+  
