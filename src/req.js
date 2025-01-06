@@ -10,15 +10,18 @@ function renderRequirements() {
     requirements.forEach(req => {
 
         const reqID = req.getAttribute('id') || '';
-        const reqVersion = req.getAttribute('version') || '';
-        const combinedReqID = reqID ? `${reqID}${reqVersion ? `-${reqVersion}` : ''}` : '';
+        const reqVersion = parseFloat(req.getAttribute('version')) || 0; // Konvertiere zu einer Zahl
+        const combinedReqID = reqID && reqVersion > 1 
+            ? `${reqID}-${reqVersion}` 
+            : reqID;
+        
         const targetText = req.getAttribute('target') || '';
         const titleText = req.getAttribute('title') || '';
         const descriptionHTML = req.innerHTML.trim();
 
         const reqDiv = document.createElement('div');
         reqDiv.classList.add('requirement');
-        if(reqID) reqDiv.id = reqID;
+        if(combinedReqID) reqDiv.id = combinedReqID;
 
         const headingParts = [
             combinedReqID, 
