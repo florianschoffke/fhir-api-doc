@@ -1,23 +1,33 @@
 :root {
     --gem-req-bg-color: #ffffff50;
-    --gem-reg-title-color: #000000;
-    --gem-reg-desc-color: #000000;
-    --gem-reg-padding: 2px;
-    --gem-reg-margin-bottom: 10px;
+    --gem-req-title-color: #000000;
+    --gem-req-desc-color: #000000;
+    --gem-req-padding: 2px;
+    --gem-req-margin-bottom: 10px;
 }
 
 .requirement {
     background-color: var(--gem-req-bg-color);
-    padding: var(--gem-reg-padding);
-    margin-bottom: var(--gem-reg-margin-bottom);
+    padding: var(--gem-req-padding);
+    margin-bottom: var(--gem-req-margin-bottom);
 }
 
 .requirement .heading {
-    color: var(--gem-reg-title-color);
+    color: var(--gem-req-title-color);
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .requirement p {
-    color: var(--gem-reg-desc-color);
+    color: var(--gem-req-desc-color);
+}
+
+.requirement .gem-req-workitem-fields-end-inner {
+    float: right;
+    padding-left: 30px;
+    font-weight: 500;
+}
+
+.requirement-highlight {
+    background-color: rgba(192, 218, 255, 0.5);
 }
