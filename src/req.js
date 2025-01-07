@@ -21,7 +21,9 @@ function renderRequirements() {
 
         const reqDiv = document.createElement('div');
         reqDiv.classList.add('requirement');
-        if(combinedReqID) reqDiv.id = combinedReqID;
+        if(combinedReqID) {
+            reqDiv.id = combinedReqID;
+        }
 
         const headingParts = [
             combinedReqID, 
@@ -34,6 +36,16 @@ function renderRequirements() {
             heading.classList.add('heading');
             heading.textContent = headingParts.join(' - ');
             reqDiv.appendChild(heading);
+            if(combinedReqID) {
+                const anchor = document.createElement('a');
+                anchor.href = `#${combinedReqID}`;
+                anchor.className = 'anchorjs-link';
+                anchor.setAttribute('aria-label', 'Anchor');
+                anchor.setAttribute('data-anchorjs-icon', '');
+                anchor.style.font = '1em / 1 anchorjs-icons';
+                anchor.style.paddingLeft = '0.375em';
+                heading.appendChild(anchor);
+            }
         }
 
         if (descriptionHTML) {
@@ -45,7 +57,6 @@ function renderRequirements() {
         req.parentElement.replaceChild(reqDiv, req);
     });
 }
-
 
 function hashLinkHighlightTarget(targetId) {
     const targetElement = document.getElementById(targetId);
