@@ -45,6 +45,18 @@
     text-align: right;
 }
 
+table th {
+    background: #d6ecff;
+}
+
+table tr:nth-child(even) {
+    background: #EEE;
+}
+
+table tr:nth-child(odd) {
+    background: #FFF;
+}
+
 pre {
     overflow: auto;
 }
