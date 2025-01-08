@@ -184,6 +184,24 @@ function fhirData() {
     });
 }
 
+
+function renderCodeBlocks() {
+    document.querySelectorAll('code').forEach(codeElement => {
+        // Überprüfen, ob das übergeordnete Element ein <pre>-Tag ist
+        const parentElement = codeElement.parentElement;
+        if (parentElement && parentElement.tagName.toLowerCase() === 'pre') {
+            const classes = Array.from(codeElement.classList);
+            const languageClass = classes.find((cls) => cls.includes("language-"));
+            
+            if (languageClass && !languageClass.includes('plaintext')) {
+                const button = createCopyButton(codeElement.textContent);
+                parentElement.insertBefore(button, codeElement);
+            }
+        }
+    });
+}
+
+
 // Set up event listeners to initialize functions when the page has fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     try {
@@ -191,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadSVG();
         downloadImages();
         enableExamples();
+        renderCodeBlocks();
         fhirData();
     } catch (error) {
         console.error('Error initializing functions:', error);

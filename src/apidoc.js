@@ -37,26 +37,9 @@ window.gemIGApiDocLabels = window.gemIGApiDocLabels || {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    renderCodeBlocks();
     renderAllApiDocumentations();
 });
 
-
-function renderCodeBlocks() {
-    document.querySelectorAll('code').forEach(codeElement => {
-        // Überprüfen, ob das übergeordnete Element ein <pre>-Tag ist
-        const parentElement = codeElement.parentElement;
-        if (parentElement && parentElement.tagName.toLowerCase() === 'pre') {
-            const classes = Array.from(codeElement.classList);
-            const languageClass = classes.find((cls) => cls.includes("language-"));
-            
-            if (languageClass && !languageClass.includes('plaintext')) {
-                const button = createCopyButton(codeElement.textContent);
-                parentElement.insertBefore(button, codeElement);
-            }
-        }
-    });
-}
 
 function renderAllApiDocumentations() {
     document.querySelectorAll('gem-ig-api-doc').forEach(apiDoc => {
@@ -80,7 +63,8 @@ function parseYAMLFromFHIRApiDoc(apiDocElement) {
     }
 
     // Get all <script type="text/yaml"> within the document by id if it is included
-    const scriptTags = Array.from(apiDocElement.querySelectorAll('script[type="text/yaml"]'));
+    // const scriptTags = Array.from(apiDocElement.querySelectorAll('script[type="text/yaml"]'));
+    const scriptTags = Array.from(apiDocElement.querySelectorAll('textarea[data-apidoc-data="yaml"]'));
     return scriptTags.map(script => {
         try {
             return {

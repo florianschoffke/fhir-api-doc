@@ -28,7 +28,7 @@
 
     <gem-ig-api-doc>
 
-      <script type="text/yaml" id="GET">
+      <textarea data-apidoc-data="yaml" id="GET">
         get:
           headerParams:
             - name: "x-test"
@@ -43,8 +43,8 @@
                 EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE
               type: JSON
               data: '{"resourceType": "Include"}'
-      </script> 
-        <script type="text/yaml">
+      </textarea> 
+      <textarea data-apidoc-data="yaml">
           base: "[BASE]"
           paths:
             /epa/medication/api/v1/fhir/Medication:
@@ -213,12 +213,11 @@
                 operationId: "HEAD"
               patch:
                 operationId: "PATCH"
-            </script>
-        </script>
+        </textarea>
       </gem-ig-api-doc>
 
       <gem-ig-api-doc>
-        <script type="text/yaml" id="GET">
+        <textarea data-apidoc-data="yaml" id="GET">
               headerParams:
                 - name: "x-include"
                   expectation: "KANN"
@@ -229,8 +228,8 @@
                   type: JSON
                   data: '{"resourceType": "Include"}'
 
-        </script>
-        <script type="text/yaml" id="POST">
+        </textarea>
+        <textarea data-apidoc-data="yaml" id="POST">
             headerParams:
               - name: "x-include"
                 expectation: "KANN"
@@ -240,8 +239,8 @@
               - name: "EIN INCLUDE EXAMPLE"
                 type: JSON
                 data: '{"resourceType": "Include"}'
-      </script>
-        <script type="text/yaml">
+        </textarea>
+        <textarea data-apidoc-data="yaml">
           base: "[base]"
           paths:
             /epa/medication/api/v1/fhir/MedicationReeuest:
@@ -259,7 +258,7 @@
                     expectation: "KANN"
                     type: "string"
                     description: "RequestId"
-        </script>
+        </textarea>
       </gem-ig-api-doc>
 
       <pre>

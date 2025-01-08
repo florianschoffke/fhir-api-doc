@@ -7,6 +7,10 @@
     --fhir-api-doc-patch-color: 145, 166, 188;
 }
 
+textarea[data-apidoc-data="yaml"] {
+    display: none;
+}
+
 .gem-ig-api-doc {
     font-family: sans-serif;
     font-size: 14px;
