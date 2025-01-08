@@ -1,7 +1,18 @@
+import fhir from './fhir.js';
+import utils from './utils.js';
+
 // Global variables for labels
 window.gemIGLabels = window.gemIGLabels || {
     GEM_Download_Button_Image: "Bild herunterladen",
-    GEM_Download_Button_SVG: "SVG herunterladen"
+    GEM_Download_Button_SVG: "SVG herunterladen",
+    GEM_FHIR_Expectation_SHALL: "MUSS",
+    GEM_FHIR_Expectation_SHOULD: "KANN",
+    GEM_FHIR_Expectation_SHOULD_NOT: "DARF NICHT",
+    GEM_FHIR_Expectation_MAY: "OPTIONAL",
+    GEM_FHIR_Parameter_Label: "Parameter",
+    GEM_FHIR_Type_Label: "Type",
+    GEM_FHIR_Expectation_Label: "Anforderung",
+    GEM_FHIR_Documentation_Label: "Beschreibung"
 };
 
 
@@ -130,6 +141,49 @@ function enableExamples() {
     });
 }
 
+
+function renderCapabilityStatementData(data, resourceType, what, parent) {
+    const fhirData = fhir.parseFhirCapabilityStatement(data, resourceType);
+    if(what == 'search') {
+        if (fhirData.searchParams?.length) {
+            const searchParametersRows = fhirData.searchParams.map(({ name, definition, type, documentation, expectation }) => [
+                definition ? `<a href="${definition}" target="_blank">${name}</a>` : name,
+                `<code>${type}</code>`,
+                documentation,
+                expectation
+            ]);
+            parent.appendChild(utils.createElement('div', { children: [utils.createTable([
+                window.gemIGLabels.GEM_FHIR_Parameter_Label,
+                window.gemIGLabels.GEM_FHIR_Type_Label,
+                window.gemIGLabels.GEM_FHIR_Documentation_Label,
+                window.gemIGLabels.GEM_FHIR_Expectation_Label
+            ], searchParametersRows, true)] }));
+        }
+    }
+    else if(what == 'include') {
+        if (fhirData.searchInclude || fhirData.searchRevInclude) {
+            const rows = Array.from({ length: Math.max(fhirData.searchInclude?.length || 0, fhirData.searchRevInclude?.length || 0) }, (_, i) => [
+                fhirData.searchInclude?.[i] || '',
+                fhirData.searchRevInclude?.[i] || ''
+            ]);
+            parent.appendChild(utils.createElement('div', { classes: [], children: [utils.createTable(['Include', 'RevInclude'], rows)] }));
+        }
+    }
+}
+
+
+function fhirData() {
+    const capDivs = document.querySelectorAll('div[data-fhir-capabilitystatement-url]');
+    capDivs.forEach(div => {
+        const capUrl = div.getAttribute('data-fhir-capabilitystatement-url');
+        const resourceType = div.getAttribute('data-fhir-resource-type');
+        const what = div.getAttribute('data-fhir-capabilitystatement-render');
+        if(capUrl && resourceType) {
+            utils.loadData(capUrl).then(data => renderCapabilityStatementData(data, resourceType, what, div));
+        }
+    });
+}
+
 // Set up event listeners to initialize functions when the page has fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     try {
@@ -137,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadSVG();
         downloadImages();
         enableExamples();
+        fhirData();
     } catch (error) {
         console.error('Error initializing functions:', error);
     }

@@ -3,6 +3,9 @@ import hljs from 'highlight.js/lib/core';
 import xml from 'highlight.js/lib/languages/xml';
 import json from 'highlight.js/lib/languages/json';
 
+import fhir from './fhir.js';
+import utils from './utils.js';
+
 hljs.registerLanguage('xml', xml);
 hljs.registerLanguage('json', json);
 
@@ -155,53 +158,16 @@ function loadYAMLWithIncludes(yamlList) {
     return yamlList.reduce((acc, item) => mergeObjects(acc, item.content), {});
 }
 
-const createElement = (tag, { classes = [], attributes = {}, innerHTML = '', children = [] } = {}) => {
-    const element = Object.assign(document.createElement(tag), { innerHTML });
-    classes.forEach(cls => element.classList.add(cls));
-    Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
-    children.forEach(child => element.appendChild(child));
-    return element;
-};
-
-const createTable = (headers, rows, includeHeader = true, classes = []) => {
-    const table = createElement('table', { attributes: { style: 'width: 100%' }, classes: classes });
-    if (includeHeader) {
-        const thead = createElement('thead');
-        thead.appendChild(createElement('tr', {
-            children: headers.map(headerText => createElement('th', { innerHTML: headerText }))
-        }));
-        table.appendChild(thead);
-    }
-    const tbody = createElement('tbody');
-    rows.forEach(rowData => {
-        tbody.appendChild(createElement('tr', {
-            children: rowData.map(cellData => createElement('td', { innerHTML: cellData }))
-        }));
-    });
-    table.appendChild(tbody);
-    return table;
-};
-
-const loadData = async (url) => {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Response status: ${response.status}`);
-        return await response.text();
-    } catch (error) {
-        console.error(error.message);
-        return "";
-    }
-};
 
 const createCopyButton = (data, language = null) => {
-    const wrapper = createElement('div', { classes: ['gem-ig-copy-container'] });
-    const languageElement = createElement('span', { classes: ['gem-id-code-lang'] })
+    const wrapper = utils.createElement('div', { classes: ['gem-ig-copy-container'] });
+    const languageElement = utils.createElement('span', { classes: ['gem-id-code-lang'] })
     if (language) {
         languageElement.innerText = language.toLowerCase();
     }
     // The Copy Button
-    const buttonWrapper = createElement('div', { classes: ['gem-ig-copy-button-wrapper'] });
-    const button = createElement('button', { innerHTML: window.gemIGApiDocLabels.Copy_Button_Label});
+    const buttonWrapper = utils.createElement('div', { classes: ['gem-ig-copy-button-wrapper'] });
+    const button = utils.createElement('button', { innerHTML: window.gemIGApiDocLabels.Copy_Button_Label});
     // Add click event listener to copy button
     button.addEventListener('click', function () {
         navigator.clipboard.writeText(data).then(() => {
@@ -218,22 +184,22 @@ const createCopyButton = (data, language = null) => {
 };
 
 const renderApiExample = (parent, buttonParent, example, data, exampleList, buttonList) => {
-    const exampleContainer = createElement('pre', { attributes: { style: 'display: none' } });
+    const exampleContainer = utils.createElement('pre', { attributes: { style: 'display: none' } });
     // The Copy Button
     const copyButton = createCopyButton(data, example.type.toLowerCase());
     exampleContainer.appendChild(copyButton);
 
-    const code = createElement('code', {
+    const code = utils.createElement('code', {
         innerHTML: hljs.highlight(data, { language: example.type.toLowerCase() }).value
     });
     exampleContainer.appendChild(code);
     exampleList.push(exampleContainer);
 
-    const toggleButton = createElement('button', {
+    const toggleButton = utils.createElement('button', {
         classes: ['example', 'inline-button'],
         children: [
-            createElement('span', { classes: ['label'], innerHTML: example.type.toUpperCase() }),
-            createElement('span', { innerHTML: example.name })
+            utils.createElement('span', { classes: ['label'], innerHTML: example.type.toUpperCase() }),
+            utils.createElement('span', { innerHTML: example.name })
         ]
     });
     toggleButton.addEventListener('click', () => {
@@ -246,8 +212,8 @@ const renderApiExample = (parent, buttonParent, example, data, exampleList, butt
 };
 
 const appendExampleElements = (exampleData, container) => {
-    const examplesButtonContainer = createElement('div', { classes: ['operation-block-description'] });
-    const examplesContainer = createElement('div', { classes: ['operation-block-description', 'operation-example'] });
+    const examplesButtonContainer = utils.createElement('div', { classes: ['operation-block-description'] });
+    const examplesContainer = utils.createElement('div', { classes: ['operation-block-description', 'operation-example'] });
     container.appendChild(examplesButtonContainer);
     container.appendChild(examplesContainer);
 
@@ -256,21 +222,21 @@ const appendExampleElements = (exampleData, container) => {
         if (example.data) {
             renderApiExample(examplesContainer, examplesButtonContainer, example, example.data, exampleList, buttonList);
         } else if (example.url) {
-            loadData(example.url).then(data => renderApiExample(examplesContainer, examplesButtonContainer, example, data, exampleList, buttonList));
+            utils.loadData(example.url).then(data => renderApiExample(examplesContainer, examplesButtonContainer, example, data, exampleList, buttonList));
         }
     });
 };
 
 const appendFhirDetails = (fhirData, parent) => {
     if (fhirData.searchParams?.length) {
-        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.SearchParams_Header }));
+        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.SearchParams_Header }));
         const searchParametersRows = fhirData.searchParams.map(({ name, definition, type, documentation, expectation }) => [
-            `<a href="${definition}" target="_blank">${name}</a>`,
+            definition ? `<a href="${definition}" target="_blank">${name}</a>` : name,
             `<code>${type}</code>`,
             documentation,
             expectation
         ]);
-        parent.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
+        parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
             window.gemIGApiDocLabels.Parameter_Label,
             window.gemIGApiDocLabels.Type_Label,
             window.gemIGApiDocLabels.Documentation_Label,
@@ -279,12 +245,12 @@ const appendFhirDetails = (fhirData, parent) => {
     }
 
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
-        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.SearchInclude_And_RevInclude_Header }));
+        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.SearchInclude_And_RevInclude_Header }));
         const rows = Array.from({ length: Math.max(fhirData.searchInclude?.length || 0, fhirData.searchRevInclude?.length || 0) }, (_, i) => [
             fhirData.searchInclude?.[i] || '',
             fhirData.searchRevInclude?.[i] || ''
         ]);
-        parent.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable(['Include', 'RevInclude'], rows)] }));
+        parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable(['Include', 'RevInclude'], rows)] }));
     }
 };
 
@@ -297,15 +263,15 @@ const renderApiDocumentation = (container, apiData) => {
                     console.log(`${method.toUpperCase()} is not a valid HTTP method. Skipping to next.`);
                     return;
                 }
-                const section = createElement('div', { classes: ['gem-ig-api-doc'] });
-                const operationMainBlock = createElement('div', { classes: ['operation-block'], children: [
-                    createElement('div', { classes: ['operation-block-summary'], children: [
-                        createElement('div', {
+                const section = utils.createElement('div', { classes: ['gem-ig-api-doc'] });
+                const operationMainBlock = utils.createElement('div', { classes: ['operation-block'], children: [
+                    utils.createElement('div', { classes: ['operation-block-summary'], children: [
+                        utils.createElement('div', {
                             classes: ['operation-block-summary-control'],
                             attributes: { 'aria-expanded': false },
                             children: [
-                                createElement('span', { classes: ['operation-block-summary-method'], innerHTML: method.toUpperCase() }),
-                                createElement('div', { classes: ['operation-block-summary-path'], innerHTML: apiData.base ? `${apiData.base}${path}` : path })
+                                utils.createElement('span', { classes: ['operation-block-summary-method'], innerHTML: method.toUpperCase() }),
+                                utils.createElement('div', { classes: ['operation-block-summary-path'], innerHTML: apiData.base ? `${apiData.base}${path}` : path })
                             ]
                         })
                     ]
@@ -313,7 +279,7 @@ const renderApiDocumentation = (container, apiData) => {
                 ] });
                 let withLowPadding = false;
                 if (methodData.operationId) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], innerHTML: `${window.gemIGApiDocLabels.OperationId_Label}: <b>${methodData.operationId}</b>` }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-description'], innerHTML: `${window.gemIGApiDocLabels.OperationId_Label}: <b>${methodData.operationId}</b>` }));
                     withLowPadding = true;
                 }
 
@@ -323,23 +289,23 @@ const renderApiDocumentation = (container, apiData) => {
                     if (withLowPadding) {
                         classesContentType.push('low-padding');
                     }
-                    operationMainBlock.appendChild(createElement('div', { classes: classesContentType, innerHTML: `${window.gemIGApiDocLabels.ContentTypes_Label}: <b>${contentTypeHtml.join(", ")}</b>` }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: classesContentType, innerHTML: `${window.gemIGApiDocLabels.ContentTypes_Label}: <b>${contentTypeHtml.join(", ")}</b>` }));
 
                 }
 
                 if (methodData.description) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], innerHTML: `${methodData.description}` }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-description'], innerHTML: `${methodData.description}` }));
                 }
                 
                 if (methodData.headerParams?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.HeaderParams_Header }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.HeaderParams_Header }));
                     const headerParamsRows = methodData.headerParams.map(({ name, type, description, expectation }) => [
                         name,
                         `<code>${type}</code>`, 
                         description, 
                         expectation
                     ]);
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
                         window.gemIGApiDocLabels.Parameter_Label,
                         window.gemIGApiDocLabels.Type_Label,
                         window.gemIGApiDocLabels.Description_Label,
@@ -348,36 +314,36 @@ const renderApiDocumentation = (container, apiData) => {
                 }
 
                 if (methodData.fhir) {
-                    const fhirDetailsContainer = createElement('div');
+                    const fhirDetailsContainer = utils.createElement('div');
                     operationMainBlock.appendChild(fhirDetailsContainer);
                     if (methodData.fhir.capabilityStatement) {
                         const capStmt = methodData.fhir.capabilityStatement;
-                        const promise = capStmt.data ? Promise.resolve(capStmt.data) : loadData(capStmt.url);
-                        promise.then(data => appendFhirDetails(parseFhirCapabilityStatement(data, capStmt.forResourceType), fhirDetailsContainer));
+                        const promise = capStmt.data ? Promise.resolve(capStmt.data) : utils.loadData(capStmt.url);
+                        promise.then(data => appendFhirDetails(fhir.parseFhirCapabilityStatement(data, capStmt.forResourceType), fhirDetailsContainer));
                     } else {
                         appendFhirDetails(methodData.fhir, fhirDetailsContainer);
                     }
                 }
 
                 if (methodData.requestExamples?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.RequestExample_Header }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.RequestExample_Header }));
                     appendExampleElements(methodData.requestExamples, operationMainBlock);
                 }
 
                 if (methodData.responseExamples?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.ResponseExample_Header }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.ResponseExample_Header }));
                     appendExampleElements(methodData.responseExamples, operationMainBlock);
                 }
 
                 if (methodData.responses) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.Response_Header }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.Response_Header }));
                     const responseRows = methodData.responses.map(({ statusCode, description, errorCode, note }) => [
                         `<code>${statusCode}</code>`, 
                         description, 
                         errorCode, 
                         note
                     ]);
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
                         window.gemIGApiDocLabels.StatusCode_Label,
                         window.gemIGApiDocLabels.Description_Label,
                         window.gemIGApiDocLabels.ErrorCode_Label,
@@ -392,31 +358,4 @@ const renderApiDocumentation = (container, apiData) => {
             });
         });
     }
-};
-
-const parseFhirCapabilityStatement = (data, resourceType) => {
-    const { rest: [{ resource = [] } = {}] = [] } = JSON.parse(data);
-    const resourceDetails = resource.find(res => res.type === resourceType);
-    if (!resourceDetails) {
-        console.error(`${resourceType} not found!`);
-        return {};
-    }
-    const translateExpectation = (expectation) => ({
-        "SHALL": window.gemIGApiDocLabels.Expectation_SHALL,
-        'SHOULD': window.gemIGApiDocLabels.Expectation_SHOULD,
-        'SHOULD-NOT': window.gemIGApiDocLabels.Expectation_SHOULD_NOT,
-        'MAY': window.gemIGApiDocLabels.Expectation_MAY
-    }[expectation] || expectation);
-
-    return {
-        searchParams: resourceDetails.searchParam?.map(({ name, definition, type, documentation = 'No description', extension }) => ({
-            name,
-            definition,
-            type,
-            documentation,
-            expectation: translateExpectation(extension?.find(ext => ext.url === "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation")?.valueCode)
-        })),
-        searchInclude: resourceDetails.searchInclude,
-        searchRevInclude: resourceDetails.searchRevInclude
-    };
 };
