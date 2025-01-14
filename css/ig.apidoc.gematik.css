@@ -13,7 +13,7 @@ textarea[data-apidoc-data="yaml"] {
 
 .gem-ig-api-doc {
     font-family: sans-serif;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 
@@ -90,7 +90,7 @@ textarea[data-apidoc-data="yaml"] {
 }
 
 .gem-ig-api-doc .operation-block-description {
-    padding: 20px;
+    padding: 10px 20px 10px 20px;
 }
 
 .gem-ig-api-doc .operation-block-description.low-padding {

@@ -32,7 +32,7 @@ function renderRequirements() {
         ].filter(Boolean);
 
         if (headingParts.length > 0) {
-            const heading = document.createElement('div');
+            const heading = document.createElement('p');
             heading.classList.add('heading');
             heading.textContent = headingParts.join(' - ');
             reqDiv.appendChild(heading);
@@ -49,7 +49,7 @@ function renderRequirements() {
         }
 
         if (descriptionHTML) {
-            const descP = document.createElement('div');
+            const descP = document.createElement('p');
             descP.innerHTML = `${descriptionHTML} <span class="gem-req-workitem-fields-end-inner">[<=]</span>`;
             reqDiv.appendChild(descP);
         }

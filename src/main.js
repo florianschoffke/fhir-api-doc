@@ -37,23 +37,49 @@ function resizeSVGs() {
 // Function to create a download link for each SVG, allowing users to download them as files
 function downloadSVG() {
     const serializer = new XMLSerializer();
+
+    function createDownloadButton(svgContent, container, fileName) {
+        const svgWithProlog = '<?xml version="1.0" encoding="UTF-8"?>\n' + svgContent;
+        const blob = new Blob([svgWithProlog], { type: 'image/svg+xml' });
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = fileName;
+        downloadLink.classList.add('gem-ig-download-btn');
+        downloadLink.innerText = window.gemIGLabels?.GEM_Download_Button_SVG || 'Download SVG';
+
+        const downloadLinkWrapper = document.createElement('div');
+        downloadLinkWrapper.classList.add('gem-ig-svg-downloadlink-wrapper');
+        downloadLinkWrapper.appendChild(downloadLink);
+        container.append(downloadLinkWrapper);
+    }
+
     document.querySelectorAll('.gem-ig-svg-container svg').forEach(svg => {
         try {
             const svgString = serializer.serializeToString(svg);
-            const svgWithProlog = '<?xml version="1.0" encoding="UTF-8"?>\n' + svgString;
-            const blob = new Blob([svgWithProlog], { type: 'image/svg+xml' });
-            const downloadLink = document.createElement('a');
-            downloadLink.href = URL.createObjectURL(blob);
-            downloadLink.download = 'downloaded.svg';
-            downloadLink.classList.add('gem-ig-download-btn');
-            downloadLink.innerText = window.gemIGLabels.GEM_Download_Button_SVG;
-
-            const downloadLinkWrapper = document.createElement('div');
-            downloadLinkWrapper.classList.add('gem-ig-svg-downloadlink-wrapper');
-            downloadLinkWrapper.appendChild(downloadLink);
-            svg.parentElement.append(downloadLinkWrapper);
+            createDownloadButton(svgString, svg.parentElement, 'downloaded.svg');
         } catch (error) {
-            console.error('Error downloading SVG:', error);
+            console.error('Error processing embedded SVG:', error);
+        }
+    });
+
+    document.querySelectorAll('.gem-ig-svg-container img[src$=".svg"]').forEach(img => {
+        try {
+            const imgUrl = img.src;
+            fetch(imgUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch SVG: ${response.statusText}`);
+                    }
+                    return response.text();
+                })
+                .then(svgContent => {
+                    createDownloadButton(svgContent, img.parentElement, 'downloaded.svg');
+                })
+                .catch(error => {
+                    console.error('Error fetching SVG from <img>:', error);
+                });
+        } catch (error) {
+            console.error('Error processing <img> tag:', error);
         }
     });
 }
