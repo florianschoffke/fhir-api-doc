@@ -42,7 +42,8 @@
 }
 
 #ig-status {
-    text-align: right;
+    text-align: left;
+    margin-top: 5px;
 }
 
 table th {
