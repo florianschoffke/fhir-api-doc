@@ -46,6 +46,10 @@
     margin-top: 5px;
 }
 
+.breadcrumb {
+    margin-top: -5px;
+}
+
 table th {
     background: #d6ecff;
     padding: 4px;
