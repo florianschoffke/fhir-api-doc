@@ -1,34 +1,54 @@
 
+window.gematikRequirement = window.gematikRequirement || {
+    SHALL: "MUSS",
+    SHOULD: "KANN",
+    SHOULD_NOT: "DARF NICHT",
+    MAY: "OPTIONAL"
+};
+
+
 document.addEventListener("DOMContentLoaded", () => {
     renderRequirements();
     hashLinkHighlight();
 });
+
+function getConformanceText(conformance){
+    const translateConformance = (conformance) => ({
+        "SHALL": window.gematikRequirement.SHALL,
+        'SHOULD': window.gematikRequirement.SHOULD,
+        'SHOULD-NOT': window.gematikRequirement.SHOULD_NOT,
+        'MAY': window.gematikRequirement.MAY
+    }[conformance] || conformance);
+    return translateConformance(conformance)
+}
 
 function renderRequirements() {
     const requirements = document.querySelectorAll('requirement');
   
     requirements.forEach(req => {
 
-        const reqID = req.getAttribute('id') || '';
+        const reqKey = req.getAttribute('key') || '';
         const reqVersion = parseFloat(req.getAttribute('version')) || 0; // Konvertiere zu einer Zahl
-        const combinedReqID = reqID && reqVersion > 1 
-            ? `${reqID}-${reqVersion}` 
-            : reqID;
+        const combinedReqKey = reqKey && reqVersion > 1 
+            ? `${reqKey}-${reqVersion}` 
+            : reqKey;
         
-        const targetText = req.getAttribute('target') || '';
+        const actorText = req.getAttribute('actor') || '';
         const titleText = req.getAttribute('title') || '';
+        const conformanceText = getConformanceText(req.getAttribute('conformance') || '');
         const descriptionHTML = req.innerHTML.trim();
 
         const reqDiv = document.createElement('div');
         reqDiv.classList.add('requirement');
-        if(combinedReqID) {
-            reqDiv.id = combinedReqID;
+        if(combinedReqKey) {
+            reqDiv.id = combinedReqKey;
         }
-
+        conformance="SHALL"
         const headingParts = [
-            combinedReqID, 
-            targetText, 
-            titleText
+            combinedReqKey, 
+            actorText, 
+            titleText,
+            conformanceText
         ].filter(Boolean);
 
         if (headingParts.length > 0) {
@@ -36,9 +56,9 @@ function renderRequirements() {
             heading.classList.add('heading');
             heading.textContent = headingParts.join(' - ');
             reqDiv.appendChild(heading);
-            if(combinedReqID) {
+            if(combinedReqKey) {
                 const anchor = document.createElement('a');
-                anchor.href = `#${combinedReqID}`;
+                anchor.href = `#${combinedReqKey}`;
                 anchor.className = 'anchorjs-link';
                 anchor.setAttribute('aria-label', 'Anchor');
                 anchor.setAttribute('data-anchorjs-icon', '');
