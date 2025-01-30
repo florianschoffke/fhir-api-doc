@@ -46,7 +46,6 @@ function renderRequirements() {
         conformance="SHALL"
         const headingParts = [
             combinedReqKey, 
-            actorText, 
             titleText,
             conformanceText
         ].filter(Boolean);
@@ -70,7 +69,7 @@ function renderRequirements() {
 
         if (descriptionHTML) {
             const descP = document.createElement('p');
-            descP.innerHTML = `${descriptionHTML} <span class="gem-req-workitem-fields-end-inner">[<=]</span>`;
+            descP.innerHTML = `${descriptionHTML} <span class="gem-req-workitem-fields-end-inner"><span class="gem-req-actor">${actorText}</span> [<=]</span>`;
             reqDiv.appendChild(descP);
         }
 

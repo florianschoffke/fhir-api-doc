@@ -26,8 +26,13 @@
     float: right;
     padding-left: 30px;
     font-weight: 500;
+    padding-top: 6px;
 }
 
 .requirement-highlight {
     background-color: rgba(192, 218, 255, 0.5);
+}
+
+.requirement .gem-req-actor{
+    font-style: italic;
 }
