@@ -10,7 +10,17 @@ window.gematikRequirement = window.gematikRequirement || {
 document.addEventListener("DOMContentLoaded", () => {
     renderRequirements();
     hashLinkHighlight();
+    addDataAnchorToRequirementLink();
 });
+
+function addDataAnchorToRequirementLink() {
+    document.querySelectorAll(".requirement-link").forEach(function (link) {
+        let anchor = link.getAttribute("data-anchor");
+        if (anchor) {
+            link.href = link.href + "#" + anchor;
+        }
+    });
+}
 
 function getConformanceText(conformance){
     const translateConformance = (conformance) => ({
