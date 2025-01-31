@@ -50,6 +50,10 @@
     margin-top: -5px;
 }
 
+table {
+    width: 100%;
+}
+
 table th {
     background: #d6ecff;
     padding: 4px;
