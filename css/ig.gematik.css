@@ -67,6 +67,11 @@ table td {
     padding: 4px;
 }
 
+.no-stripe tr:nth-child(even),
+.no-stripe tr:nth-child(odd) {
+    background: inherit !important;
+}
+
 pre {
     overflow: auto;
 }
