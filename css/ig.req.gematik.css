@@ -30,7 +30,8 @@
 }
 
 .requirement-highlight {
-    background-color: rgba(192, 218, 255, 0.5);
+    /* background-color: rgba(192, 218, 255, 0.5); */
+    background-color: rgba(255, 238, 0, 0.445);
 }
 
 .requirement .gem-req-actor{
