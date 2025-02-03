@@ -153,7 +153,7 @@ pre {
     width: 100%; /* Passt die Breite des Containers an */
     height: auto; /* Proportional zur Breite */
     padding: 10px;
-    border: 1px solid rgba(66, 139, 202, 0.3);
+    /* border: 1px solid rgba(66, 139, 202, 0.3); */
 }
 
 .gem-ig-img-downloadlink-wrapper {
