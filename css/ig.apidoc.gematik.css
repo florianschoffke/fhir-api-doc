@@ -183,6 +183,18 @@ textarea[data-apidoc-data="yaml"] {
     border-bottom: none;
 }
 
+.gem-ig-api-doc table tr:nth-child(even) {
+    background: #eeeeee89;
+}
+
+.gem-ig-api-doc table tr:nth-child(odd) {
+    background: #ffffff89;
+}
+
+.gem-ig-api-doc table th {
+    background: rgba(var(--fhir-api-doc-color), 0.2);
+}
+
 .gem-ig-api-doc pre {
     background-color: #171c19;
     color: #fff;
