@@ -137,9 +137,15 @@ pre {
 
 
 .gem-ig-svg-container {
-    width: 100%; /* Passt die Breite des Containers an */
+    width: var(--box-width, 100%); /* Passt die Breite des Containers an */
     height: auto; /* Proportional zur Breite */
     border: 1px solid rgba(66, 139, 202, 0.3);
+}
+
+@media (max-width: 768px) {
+    .gem-ig-svg-container  {
+        width: var(--box-width-mobile, 100%);
+    }
 }
 
 .gem-ig-svg-downloadlink-wrapper {
@@ -150,10 +156,16 @@ pre {
 }
 
 .gem-ig-img-container {
-    width: 100%; /* Passt die Breite des Containers an */
+    width: var(--box-width, 100%); /* Passt die Breite des Containers an */
     height: auto; /* Proportional zur Breite */
     padding: 10px;
     /* border: 1px solid rgba(66, 139, 202, 0.3); */
+}
+
+@media (max-width: 768px) {
+    .gem-ig-img-container  {
+        width: var(--box-width-mobile, 100%);
+    }
 }
 
 .gem-ig-img-downloadlink-wrapper {
