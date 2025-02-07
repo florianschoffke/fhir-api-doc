@@ -46,6 +46,11 @@
     margin-top: 5px;
 }
 
+.legend {
+    font-size: inherit;
+}
+
+
 .breadcrumb {
     margin-top: -5px;
 }
