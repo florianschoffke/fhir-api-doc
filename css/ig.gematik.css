@@ -76,6 +76,10 @@ table td {
 }
 
 @media (max-width: 768px) {
+    table td {
+        max-width: 120px;
+    }
+    
     table.colsd td {
         max-width: 180px;
     }
@@ -121,10 +125,28 @@ pre {
 }
 
 .gem-ig-headline-container {
-    background: #fff;
+    background: #ffffff;
     height: 280px;
 }
 
+@media (max-width: 995px) {
+    .gem-ig-headline-container {
+        height: 180px;
+    }
+    #gem-ig-logo {
+        margin-left: 6px;
+        width: 100%;
+        padding: 10px;
+    }
+
+    #gem-ig-headline {
+        width: 50%;
+        padding: 20px;
+        margin: 10px;
+        min-height: 120px;
+        max-height: 160px;
+    }
+}
 
 @media (max-width: 768px) {
     #gem-ig-logo {
@@ -142,10 +164,10 @@ pre {
     }
 
     .gem-ig-headline-container {
-        background: #ffffff;
         height: 150px;
     }
 }
+
 
 #gem-ig-headline .gem-ig-headline-title {
     font-family: euclid-bold, sans-serif;
