@@ -75,6 +75,12 @@ table td {
     padding: 4px;
 }
 
+@media (max-width: 768px) {
+    table.colsd td {
+        max-width: 180px;
+    }
+}
+
 .no-stripe tr:nth-child(even),
 .no-stripe tr:nth-child(odd) {
     background: inherit !important;
@@ -114,13 +120,32 @@ pre {
     margin: 40px;
 }
 
+.gem-ig-headline-container {
+    background: #fff;
+    height: 280px;
+}
+
+
 @media (max-width: 768px) {
-    #gem-ig-headline {
-      width: 95%;
-      padding: 20px;
-      margin: 20px;
+    #gem-ig-logo {
+        margin-left: 6px;
+        width: 100%;
+        padding: 10px;
     }
-  }
+
+    #gem-ig-headline {
+        width: 100%;
+        padding: 20px;
+        margin: 0px;
+        min-height: 100px;
+        max-height: 140px;
+    }
+
+    .gem-ig-headline-container {
+        background: #ffffff;
+        height: 150px;
+    }
+}
 
 #gem-ig-headline .gem-ig-headline-title {
     font-family: euclid-bold, sans-serif;
