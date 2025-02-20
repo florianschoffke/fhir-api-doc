@@ -73,7 +73,6 @@ table tr:nth-child(odd) {
 
 table td {
     padding: 4px;
-    min-width: 250px;
 }
 
 @media (max-width: 768px) {
