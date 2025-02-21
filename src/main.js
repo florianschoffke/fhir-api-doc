@@ -11,7 +11,7 @@ window.gemIGLabels = window.gemIGLabels || {
     GEM_FHIR_Expectation_MAY: "OPTIONAL",
     GEM_FHIR_Parameter_Label: "Parameter",
     GEM_FHIR_Type_Label: "Type",
-    GEM_FHIR_Expectation_Label: "Anforderung",
+    GEM_FHIR_Expectation_Label: "Service Anforderung",
     GEM_FHIR_Documentation_Label: "Beschreibung"
 };
 

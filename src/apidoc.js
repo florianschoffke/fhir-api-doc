@@ -15,7 +15,7 @@ window.gemIGApiDocLabels = window.gemIGApiDocLabels || {
     HeaderParams_Header: "HTTP Header-Parameter",
     Parameter_Label: "Parameter",
     Type_Label: "Type",
-    Expectation_Label: "Anforderung",
+    Expectation_Label: "Service Anforderung",
     Description_Label: "Beschreibung",
     SearchParams_Header: "Suchparameter",
     Documentation_Label: "Beschreibung",
