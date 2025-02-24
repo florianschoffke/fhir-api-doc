@@ -40,6 +40,7 @@ const createTable = (headers, rows, includeHeader = true, classes = []) => {
 };
 
 
+
 export default {
     loadData,
     createElement,

@@ -228,6 +228,39 @@ function renderCodeBlocks() {
 }
 
 
+function convertBibliographyToLink(literatureData) {
+
+    function replaceMatches(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            let text = node.nodeValue;
+            let parent = node.parentNode;
+            let changed = false;
+            let newHTML = text;
+
+            literatureData.forEach(entry => {
+                let regex = new RegExp(`\\[${entry.key}\\]`, "g");
+                if (regex.test(text)) {
+                    changed = true;
+                    newHTML = newHTML.replace(regex, `<a href="${entry.link}" class="literature-link" title="${entry.author}: ${entry.title}" data-author="${entry.author}" data-title="${entry.title}" target="_blank">[${entry.key}]</a>`);
+                }
+            });
+            if (changed) {
+                let tempSpan = document.createElement("span");
+                tempSpan.innerHTML = newHTML;
+                parent.replaceChild(tempSpan, node);
+            }
+
+        } else {
+            Array.from(node.childNodes).forEach(replaceMatches);
+        }
+    }
+
+    replaceMatches(document.body);
+
+}
+// Make public
+window.convertBibliographyToLink = convertBibliographyToLink;
+
 // Set up event listeners to initialize functions when the page has fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     try {
@@ -250,3 +283,7 @@ window.addEventListener('resize', () => {
         console.error('Error adjusting SVG size on window resize:', error);
     }
 });
+
+export default {
+    convertBibliographyToLink
+};
