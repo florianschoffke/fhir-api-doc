@@ -15,6 +15,8 @@ window.gemIGLabels = window.gemIGLabels || {
     GEM_FHIR_Documentation_Label: "Beschreibung"
 };
 
+window.igtools = window.igtools || {};
+
 
 // Function to resize all SVGs to match the width of their parent container while maintaining aspect ratio
 function resizeSVGs() {
@@ -259,7 +261,7 @@ function convertBibliographyToLink(literatureData) {
 
 }
 // Make public
-window.convertBibliographyToLink = convertBibliographyToLink;
+igtools.convertBibliographyToLink = convertBibliographyToLink;
 
 // Set up event listeners to initialize functions when the page has fully loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -283,7 +285,3 @@ window.addEventListener('resize', () => {
         console.error('Error adjusting SVG size on window resize:', error);
     }
 });
-
-export default {
-    convertBibliographyToLink
-};
