@@ -175,7 +175,8 @@ function renderCapabilityStatementData(data, resourceType, what, parent) {
     if(what == 'search') {
         if (fhirData.searchParams?.length) {
             const searchParametersRows = fhirData.searchParams.map(({ name, definition, type, documentation, expectation }) => [
-                definition ? `<a href="${definition}" target="_blank">${name}</a>` : name,
+                // definition ? `<a href="${definition}" target="_blank">${name}</a>` : name,
+                name,
                 `<code>${type}</code>`,
                 documentation,
                 expectation
