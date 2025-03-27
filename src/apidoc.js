@@ -28,9 +28,9 @@ window.gemIGApiDocLabels = window.gemIGApiDocLabels || {
     ResponseExample_Header: "Beispielantworten",
     OperationId_Label: "OperationId",
     Expectation_SHALL: "MUSS",
-    Expectation_SHOULD: "KANN",
+    Expectation_SHOULD: "SOLL",
     Expectation_SHOULD_NOT: "DARF NICHT",
-    Expectation_MAY: "OPTIONAL",
+    Expectation_MAY: "KANN",
     Copy_Button_Label: "Code kopieren",
     Copied_Button_Label: "Code wird kopiert"
 };

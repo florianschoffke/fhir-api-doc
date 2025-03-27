@@ -1,9 +1,9 @@
 
 window.gematikRequirement = window.gematikRequirement || {
     SHALL: "MUSS",
-    SHOULD: "KANN",
+    SHOULD: "SOLL",
     SHOULD_NOT: "DARF NICHT",
-    MAY: "OPTIONAL"
+    MAY: "KANN"
 };
 
 
