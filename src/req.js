@@ -1,8 +1,9 @@
 
 window.gematikRequirement = window.gematikRequirement || {
     SHALL: "MUSS",
+    SHALL_NOT: "DARF NICHT",
     SHOULD: "SOLL",
-    SHOULD_NOT: "DARF NICHT",
+    SHOULD_NOT: "SOLL NICHT",
     MAY: "KANN"
 };
 
@@ -25,9 +26,12 @@ function addDataAnchorToRequirementLink() {
 function getConformanceText(conformance){
     const translateConformance = (conformance) => ({
         "SHALL": window.gematikRequirement.SHALL,
-        'SHOULD': window.gematikRequirement.SHOULD,
-        'SHOULD-NOT': window.gematikRequirement.SHOULD_NOT,
-        'MAY': window.gematikRequirement.MAY
+        "SHALL NOT": window.gematikRequirement.SHALL_NOT,
+        "SHALL-NOT": window.gematikRequirement.SHALL_NOT,
+        "SHOULD": window.gematikRequirement.SHOULD,
+        "SHOULD NOT": window.gematikRequirement.SHOULD_NOT,
+        "SHOULD-NOT": window.gematikRequirement.SHOULD_NOT,
+        "MAY": window.gematikRequirement.MAY
     }[conformance] || conformance);
     return translateConformance(conformance)
 }

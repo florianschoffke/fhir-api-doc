@@ -28,8 +28,9 @@ window.gemIGApiDocLabels = window.gemIGApiDocLabels || {
     ResponseExample_Header: "Beispielantworten",
     OperationId_Label: "OperationId",
     Expectation_SHALL: "MUSS",
+    Expectation_SHALL_NOT: "DARF NICHT",
     Expectation_SHOULD: "SOLL",
-    Expectation_SHOULD_NOT: "DARF NICHT",
+    Expectation_SHOULD_NOT: "SOLL NICHT",
     Expectation_MAY: "KANN",
     Copy_Button_Label: "Code kopieren",
     Copied_Button_Label: "Code wird kopiert"

@@ -8,6 +8,7 @@ function parseFhirCapabilityStatement(data, resourceType) {
     }
     const translateExpectation = (expectation) => ({
         "SHALL": window.gemIGApiDocLabels.Expectation_SHALL,
+        'SHALL-NOT': window.gemIGApiDocLabels.Expectation_SHOULD,
         'SHOULD': window.gemIGApiDocLabels.Expectation_SHOULD,
         'SHOULD-NOT': window.gemIGApiDocLabels.Expectation_SHOULD_NOT,
         'MAY': window.gemIGApiDocLabels.Expectation_MAY
