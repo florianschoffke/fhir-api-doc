@@ -10,17 +10,25 @@
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"> -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/edge-dark.min.css"> -->
      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/atelier-savanna.min.css"> -->
+    <link href="/ig.gematik.css" rel="stylesheet" />
+    <script src="/ig.gematik.min.js"></script>
+    <link href="/ig.req.gematik.css" rel="stylesheet" />
+    <script src="/ig.req.gematik.min.js"></script>
     <link href="/edge-dark.min.css" rel="stylesheet" />
     <link href="/ig.apidoc.gematik.css" rel="stylesheet" />
     <script src="/ig.apidoc.gematik.min.js"></script>
 </head>
 <body>
     <h1>FHIR API DOC</h1>
-
+    <p><a href="/">API DOC</a></p>
+    <p><a href="/req.html">Req</a></p>
+    <p><a href="/base.html">Base</a></p>
+    <p><a href="/parse.html">Parse</a></p>
+    <p><a href="/bibliography.html">Bibliography</a></p>
 
     <gem-ig-api-doc>
 
-      <script type="text/yaml" id="GET">
+      <textarea data-apidoc-data="yaml" id="GET">
         get:
           headerParams:
             - name: "x-test"
@@ -35,8 +43,8 @@
                 EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE
               type: JSON
               data: '{"resourceType": "Include"}'
-      </script> 
-        <script type="text/yaml">
+      </textarea> 
+      <textarea data-apidoc-data="yaml">
           base: "[BASE]"
           paths:
             /epa/medication/api/v1/fhir/Medication:
@@ -205,12 +213,11 @@
                 operationId: "HEAD"
               patch:
                 operationId: "PATCH"
-            </script>
-        </script>
+        </textarea>
       </gem-ig-api-doc>
 
       <gem-ig-api-doc>
-        <script type="text/yaml" id="GET">
+        <textarea data-apidoc-data="yaml" id="GET">
               headerParams:
                 - name: "x-include"
                   expectation: "KANN"
@@ -221,8 +228,8 @@
                   type: JSON
                   data: '{"resourceType": "Include"}'
 
-        </script>
-        <script type="text/yaml" id="POST">
+        </textarea>
+        <textarea data-apidoc-data="yaml" id="POST">
             headerParams:
               - name: "x-include"
                 expectation: "KANN"
@@ -232,8 +239,8 @@
               - name: "EIN INCLUDE EXAMPLE"
                 type: JSON
                 data: '{"resourceType": "Include"}'
-      </script>
-        <script type="text/yaml">
+        </textarea>
+        <textarea data-apidoc-data="yaml">
           base: "[base]"
           paths:
             /epa/medication/api/v1/fhir/MedicationReeuest:
@@ -251,7 +258,7 @@
                     expectation: "KANN"
                     type: "string"
                     description: "RequestId"
-        </script>
+        </textarea>
       </gem-ig-api-doc>
 
       <pre>

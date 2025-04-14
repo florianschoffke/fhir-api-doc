@@ -1,42 +1,218 @@
-import jsyaml from 'js-yaml';
-import hljs from 'highlight.js/lib/core';
-import xml from 'highlight.js/lib/languages/xml';
-import json from 'highlight.js/lib/languages/json';
-
-hljs.registerLanguage('xml', xml);
-hljs.registerLanguage('json', json);
+import fhir from './fhir.js';
+import utils from './utils.js';
 
 // Global variables for labels
-window.gemIGApiDocLabels = window.gemIGApiDocLabels || {
-    ContentTypes_Label: "Content Types",
-    HeaderParams_Header: "HTTP Header-Parameter",
-    Parameter_Label: "Parameter",
-    Type_Label: "Type",
-    Expectation_Label: "Anforderung",
-    Description_Label: "Beschreibung",
-    SearchParams_Header: "Suchparameter",
-    Documentation_Label: "Beschreibung",
-    Response_Header: "Antwort Status-Codes",
-    StatusCode_Label: "Code",
-    ErrorCode_Label: "Error Code",
-    Note_Label: "Beschreibung",
-    SearchInclude_And_RevInclude_Header: "Suche per Include oder RevInclude",
-    RequestExample_Header: "Beispielanfragen",
-    ResponseExample_Header: "Beispielantworten",
-    OperationId_Label: "OperationId",
-    Expectation_SHALL: "MUSS",
-    Expectation_SHOULD: "KANN",
-    Expectation_SHOULD_NOT: "DARF NICHT",
-    Expectation_MAY: "OPTIONAL",
-    Copy_Button_Label: "Code kopieren",
-    Copied_Button_Label: "Code wird kopiert"
+window.gemIGLabels = window.gemIGLabels || {
+    GEM_Download_Button_Image: "Bild herunterladen",
+    GEM_Download_Button_SVG: "SVG herunterladen",
+    GEM_FHIR_Expectation_SHALL: "MUSS",
+    GEM_FHIR_Expectation_SHALL_NOT: "DARF NICHT",
+    GEM_FHIR_Expectation_SHOULD: "SOLL",
+    GEM_FHIR_Expectation_SHOULD_NOT: "SOLL NICHT",
+    GEM_FHIR_Expectation_MAY: "KANN",
+    GEM_FHIR_Parameter_Label: "Parameter",
+    GEM_FHIR_Type_Label: "Type",
+    GEM_FHIR_Expectation_Label: "Service Anforderung",
+    GEM_FHIR_Documentation_Label: "Beschreibung"
 };
 
+window.igtools = window.igtools || {};
 
-document.addEventListener("DOMContentLoaded", () => {
-    renderCodeBlocks();
-    renderAllApiDocumentations();
-});
+
+// Function to resize all SVGs to match the width of their parent container while maintaining aspect ratio
+function resizeSVGs() {
+    document.querySelectorAll('.gem-ig-svg-container svg').forEach(svg => {
+        try {
+            const parent = svg.parentElement;
+            const parentWidth = parent.clientWidth;
+
+            if (parentWidth > 0) {
+                svg.style.width = parentWidth + 'px';
+                const aspectRatio = svg.viewBox.baseVal.width / svg.viewBox.baseVal.height;
+                svg.style.height = (parentWidth / aspectRatio) + 'px';
+            }
+        } catch (error) {
+            console.error('Error adjusting SVG size:', error);
+        }
+    });
+}
+
+// Function to create a download link for each SVG, allowing users to download them as files
+function downloadSVG() {
+    const serializer = new XMLSerializer();
+
+    function createDownloadButton(svgContent, container, fileName) {
+        const svgWithProlog = '<?xml version="1.0" encoding="UTF-8"?>\n' + svgContent;
+        const blob = new Blob([svgWithProlog], { type: 'image/svg+xml' });
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = fileName;
+        downloadLink.classList.add('gem-ig-download-btn');
+        downloadLink.innerText = window.gemIGLabels?.GEM_Download_Button_SVG || 'Download SVG';
+
+        const downloadLinkWrapper = document.createElement('div');
+        downloadLinkWrapper.classList.add('gem-ig-svg-downloadlink-wrapper');
+        downloadLinkWrapper.appendChild(downloadLink);
+        container.append(downloadLinkWrapper);
+    }
+
+    document.querySelectorAll('.gem-ig-svg-container svg').forEach(svg => {
+        try {
+            const svgString = serializer.serializeToString(svg);
+            createDownloadButton(svgString, svg.parentElement, 'downloaded.svg');
+        } catch (error) {
+            console.error('Error processing embedded SVG:', error);
+        }
+    });
+
+    document.querySelectorAll('.gem-ig-svg-container img[src$=".svg"]').forEach(img => {
+        try {
+            const imgUrl = img.src;
+            fetch(imgUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch SVG: ${response.statusText}`);
+                    }
+                    return response.text();
+                })
+                .then(svgContent => {
+                    createDownloadButton(svgContent, img.parentElement, 'downloaded.svg');
+                })
+                .catch(error => {
+                    console.error('Error fetching SVG from <img>:', error);
+                });
+        } catch (error) {
+            console.error('Error processing <img> tag:', error);
+        }
+    });
+}
+
+// Function to create a download link for each image, allowing users to download them as PNG files
+function downloadImages() {
+    document.querySelectorAll('.gem-ig-img-container img').forEach(img => {
+        try {
+            const imgClone = new Image();
+            imgClone.src = img.src;
+            imgClone.onload = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = imgClone.naturalWidth;
+                    canvas.height = imgClone.naturalHeight;
+                    const context = canvas.getContext('2d');
+                    context.drawImage(imgClone, 0, 0, imgClone.naturalWidth, imgClone.naturalHeight);
+                    canvas.toBlob(blob => {
+                        try {
+                            const downloadLink = document.createElement('a');
+                            downloadLink.href = URL.createObjectURL(blob);
+                            downloadLink.download = imgClone.src.split('/').pop();
+                            downloadLink.classList.add('gem-ig-download-btn');
+                            downloadLink.innerText = window.gemIGLabels.GEM_Download_Button_Image;
+
+                            const downloadLinkWrapper = document.createElement('div');
+                            downloadLinkWrapper.classList.add('gem-ig-img-downloadlink-wrapper');
+                            downloadLinkWrapper.appendChild(downloadLink);
+                            img.parentElement.append(downloadLinkWrapper);
+                        } catch (error) {
+                            console.error('Error creating download link for image:', error);
+                        }
+                    }, 'image/png');
+                } catch (error) {
+                    console.error('Error drawing image on canvas:', error);
+                }
+            };
+        } catch (error) {
+            console.error('Error loading image:', error);
+        }
+    });
+}
+
+function enableExamples() {
+    document.querySelectorAll('.gem-ig-example').forEach(exampleElement => {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('gem-ig-example-wrapper');
+
+        const header = document.createElement('div');
+        header.classList.add('gem-ig-example-header');
+        wrapper.appendChild(header);
+
+        const title = document.createElement('span');
+        title.textContent = exampleElement.getAttribute('data-title') || '';
+        title.classList.add('gem-ig-example-title');
+
+        const toggleButton = document.createElement('button');
+        toggleButton.classList.add('gem-ig-example-toggle');
+        
+        header.appendChild(toggleButton);
+        header.appendChild(title);
+
+        const contentWrapper = document.createElement('div');
+        contentWrapper.classList.add('gem-ig-example-content');
+        contentWrapper.innerHTML = exampleElement.innerHTML;
+        contentWrapper.style.display = 'none';
+        wrapper.appendChild(contentWrapper);
+
+        toggleButton.textContent = '▼';
+        // Add button click
+        const toggleContent = ()  => {
+            if (contentWrapper.style.display === 'none') {
+                contentWrapper.style.display = 'block';
+                toggleButton.textContent = '►';
+            } else {
+                contentWrapper.style.display = 'none';
+                toggleButton.textContent = '▼';
+            }
+        }
+        toggleButton.addEventListener('click', toggleContent);
+        title.addEventListener('click', toggleContent);
+
+        exampleElement.parentNode.insertBefore(wrapper, exampleElement);
+        exampleElement.remove(); // Remove original
+    });
+}
+
+
+function renderCapabilityStatementData(data, resourceType, what, parent) {
+    const fhirData = fhir.parseFhirCapabilityStatement(data, resourceType);
+    if(what == 'search') {
+        if (fhirData.searchParams?.length) {
+            const searchParametersRows = fhirData.searchParams.map(({ name, definition, type, documentation, expectation }) => [
+                // definition ? `<a href="${definition}" target="_blank">${name}</a>` : name,
+                name,
+                `<code>${type}</code>`,
+                documentation,
+                expectation
+            ]);
+            parent.appendChild(utils.createElement('div', { children: [utils.createTable([
+                window.gemIGLabels.GEM_FHIR_Parameter_Label,
+                window.gemIGLabels.GEM_FHIR_Type_Label,
+                window.gemIGLabels.GEM_FHIR_Documentation_Label,
+                window.gemIGLabels.GEM_FHIR_Expectation_Label
+            ], searchParametersRows, true)] }));
+        }
+    }
+    else if(what == 'include') {
+        if (fhirData.searchInclude || fhirData.searchRevInclude) {
+            const rows = Array.from({ length: Math.max(fhirData.searchInclude?.length || 0, fhirData.searchRevInclude?.length || 0) }, (_, i) => [
+                fhirData.searchInclude?.[i] || '',
+                fhirData.searchRevInclude?.[i] || ''
+            ]);
+            parent.appendChild(utils.createElement('div', { classes: [], children: [utils.createTable(['Include', 'RevInclude'], rows)] }));
+        }
+    }
+}
+
+
+function fhirData() {
+    const capDivs = document.querySelectorAll('div[data-fhir-capabilitystatement-url]');
+    capDivs.forEach(div => {
+        const capUrl = div.getAttribute('data-fhir-capabilitystatement-url');
+        const resourceType = div.getAttribute('data-fhir-resource-type');
+        const what = div.getAttribute('data-fhir-capabilitystatement-render');
+        if(capUrl && resourceType) {
+            utils.loadData(capUrl).then(data => renderCapabilityStatementData(data, resourceType, what, div));
+        }
+    });
+}
 
 
 function renderCodeBlocks() {
@@ -55,368 +231,59 @@ function renderCodeBlocks() {
     });
 }
 
-function renderAllApiDocumentations() {
-    document.querySelectorAll('gem-ig-api-doc').forEach(apiDoc => {
-        // Process YAML data from the <fhir-api-doc>
-        const yamlList = parseYAMLFromFHIRApiDoc(apiDoc);
-        const finalConfig = loadYAMLWithIncludes(yamlList);
 
-        if (finalConfig) {
-            renderApiDocumentation(apiDoc, finalConfig);
-        } else {
-            console.error('Error creating the configuration');
-        }
-    });
-}
+function convertBibliographyToLink(literatureData) {
 
-// Extract YAML from the fhir-api-doc tag
-function parseYAMLFromFHIRApiDoc(apiDocElement) {
-    if (!apiDocElement) {
-        console.error("gem-ig-api-doc tag not found");
-        return [];
-    }
+    function replaceMatches(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            let text = node.nodeValue;
+            let parent = node.parentNode;
+            let changed = false;
+            let newHTML = text;
 
-    // Get all <script type="text/yaml"> within the document by id if it is included
-    const scriptTags = Array.from(apiDocElement.querySelectorAll('script[type="text/yaml"]'));
-    return scriptTags.map(script => {
-        try {
-            return {
-                id: script.id ? `#${script.id}` : null,
-                content: jsyaml.load(script.textContent)
-            };
-        } catch (error) {
-            console.error(`Error parsing YAML in script tag ${script.id ? script.id : 'without ID'}:`, error);
-            return {
-                id: script.id ? `#${script.id}` : null,
-                content: null
-            };
-        }
-    });
-}
-
-// Function to merge YAML objects
-function mergeObjects(base, derived) {
-    if (!base) return derived;
-
-    const result = Array.isArray(base) ? [...base] : { ...base };
-
-    for (const key in derived) {
-        if (Array.isArray(base[key]) && Array.isArray(derived[key])) {
-            // Merge arrays while avoiding duplicates
-            result[key] = [...base[key], ...derived[key].filter(item => !base[key].some(baseItem => baseItem.name === item.name))];
-        } else if (typeof derived[key] === 'object' && !Array.isArray(derived[key]) && key in base) {
-            result[key] = mergeObjects(base[key], derived[key]);
-        } else {
-            result[key] = derived[key];
-        }
-    }
-    return result;
-}
-
-// Function to process YAML data, including generic include logic
-function loadYAMLWithIncludes(yamlList) {
-    const yamlMap = Object.fromEntries(yamlList.filter(item => item.id).map(item => [item.id, item.content]));
-
-    function processIncludes(obj) {
-        for (const key in obj) {
-            if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
-                if (obj[key].include && Array.isArray(obj[key].include)) {
-                    obj[key].include.forEach(baseKey => {
-                        const baseScript = document.querySelector(baseKey);
-                        if (!baseScript) {
-                            console.error(`Include key ${baseKey} not found`);
-                            return;
-                        }
-                        try {
-                            const baseData = jsyaml.load(baseScript.textContent) || {};
-                            // Only include the data specified by the include key
-                            obj[key] = mergeObjects(baseData, obj[key]);
-                        } catch (error) {
-                            console.error(`Error loading base YAML from include key ${baseKey}:`, error);
-                            return;
-                        }
-                    });
-                    delete obj[key].include; // Remove the include key after merging
+            literatureData.forEach(entry => {
+                let regex = new RegExp(`\\[${entry.key}\\]`, "g");
+                if (regex.test(text)) {
+                    changed = true;
+                    newHTML = newHTML.replace(regex, `<a href="${entry.link}" class="literature-link" title="${entry.author}: ${entry.title}" data-author="${entry.author}" data-title="${entry.title}" target="_blank">[${entry.key}]</a>`);
                 }
-                processIncludes(obj[key]); // Continue recursively
-            }
-        }
-    }
-
-    yamlList.forEach(dataItem => {
-        if (dataItem.content) {
-            processIncludes(dataItem.content);
-        } else {
-            console.error(`YAML content for ${dataItem.id} is null or undefined`);
-        }
-    });
-
-    // Merge all YAML objects
-    return yamlList.reduce((acc, item) => mergeObjects(acc, item.content), {});
-}
-
-const createElement = (tag, { classes = [], attributes = {}, innerHTML = '', children = [] } = {}) => {
-    const element = Object.assign(document.createElement(tag), { innerHTML });
-    classes.forEach(cls => element.classList.add(cls));
-    Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
-    children.forEach(child => element.appendChild(child));
-    return element;
-};
-
-const createTable = (headers, rows, includeHeader = true, classes = []) => {
-    const table = createElement('table', { attributes: { style: 'width: 100%' }, classes: classes });
-    if (includeHeader) {
-        const thead = createElement('thead');
-        thead.appendChild(createElement('tr', {
-            children: headers.map(headerText => createElement('th', { innerHTML: headerText }))
-        }));
-        table.appendChild(thead);
-    }
-    const tbody = createElement('tbody');
-    rows.forEach(rowData => {
-        tbody.appendChild(createElement('tr', {
-            children: rowData.map(cellData => createElement('td', { innerHTML: cellData }))
-        }));
-    });
-    table.appendChild(tbody);
-    return table;
-};
-
-const loadData = async (url) => {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Response status: ${response.status}`);
-        return await response.text();
-    } catch (error) {
-        console.error(error.message);
-        return "";
-    }
-};
-
-const createCopyButton = (data, language = null) => {
-    const wrapper = createElement('div', { classes: ['gem-ig-copy-container'] });
-    const languageElement = createElement('span', { classes: ['gem-id-code-lang'] })
-    if (language) {
-        languageElement.innerText = language.toLowerCase();
-    }
-    // The Copy Button
-    const buttonWrapper = createElement('div', { classes: ['gem-ig-copy-button-wrapper'] });
-    const button = createElement('button', { innerHTML: window.gemIGApiDocLabels.Copy_Button_Label});
-    // Add click event listener to copy button
-    button.addEventListener('click', function () {
-        navigator.clipboard.writeText(data).then(() => {
-            button.innerText = window.gemIGApiDocLabels.Copied_Button_Label;
-            setTimeout(() => button.innerText = window.gemIGApiDocLabels.Copy_Button_Label, 2000);
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-        });
-    });
-    wrapper.appendChild(languageElement);
-    buttonWrapper.appendChild(button);
-    wrapper.appendChild(buttonWrapper);
-    return wrapper;
-};
-
-const renderApiExample = (parent, buttonParent, example, data, exampleList, buttonList) => {
-    const exampleContainer = createElement('pre', { attributes: { style: 'display: none' } });
-    // The Copy Button
-    const copyButton = createCopyButton(data, example.type.toLowerCase());
-    exampleContainer.appendChild(copyButton);
-
-    const code = createElement('code', {
-        innerHTML: hljs.highlight(data, { language: example.type.toLowerCase() }).value
-    });
-    exampleContainer.appendChild(code);
-    exampleList.push(exampleContainer);
-
-    const toggleButton = createElement('button', {
-        classes: ['example', 'inline-button'],
-        children: [
-            createElement('span', { classes: ['label'], innerHTML: example.type.toUpperCase() }),
-            createElement('span', { innerHTML: example.name })
-        ]
-    });
-    toggleButton.addEventListener('click', () => {
-        exampleList.forEach(elem => elem.style.display = (elem === exampleContainer && elem.style.display !== 'block') ? 'block' : 'none');
-        buttonList.forEach(btn => btn.classList.toggle('active-button', btn === toggleButton && exampleContainer.style.display === 'block'));
-    });
-    buttonList.push(toggleButton);
-    buttonParent.appendChild(toggleButton);
-    parent.appendChild(exampleContainer);
-};
-
-const appendExampleElements = (exampleData, container) => {
-    const examplesButtonContainer = createElement('div', { classes: ['operation-block-description'] });
-    const examplesContainer = createElement('div', { classes: ['operation-block-description', 'operation-example'] });
-    container.appendChild(examplesButtonContainer);
-    container.appendChild(examplesContainer);
-
-    const exampleList = [], buttonList = [];
-    exampleData.forEach(example => {
-        if (example.data) {
-            renderApiExample(examplesContainer, examplesButtonContainer, example, example.data, exampleList, buttonList);
-        } else if (example.url) {
-            loadData(example.url).then(data => renderApiExample(examplesContainer, examplesButtonContainer, example, data, exampleList, buttonList));
-        }
-    });
-};
-
-const appendFhirDetails = (fhirData, parent) => {
-    if (fhirData.searchParams?.length) {
-        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.SearchParams_Header }));
-        const searchParametersRows = fhirData.searchParams.map(({ name, definition, type, documentation, expectation }) => [
-            `<a href="${definition}" target="_blank">${name}</a>`,
-            `<code>${type}</code>`,
-            documentation,
-            expectation
-        ]);
-        parent.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
-            window.gemIGApiDocLabels.Parameter_Label,
-            window.gemIGApiDocLabels.Type_Label,
-            window.gemIGApiDocLabels.Documentation_Label,
-            window.gemIGApiDocLabels.Expectation_Label
-        ], searchParametersRows, true, ['params-table'])] }));
-    }
-
-    if (fhirData.searchInclude || fhirData.searchRevInclude) {
-        parent.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.SearchInclude_And_RevInclude_Header }));
-        const rows = Array.from({ length: Math.max(fhirData.searchInclude?.length || 0, fhirData.searchRevInclude?.length || 0) }, (_, i) => [
-            fhirData.searchInclude?.[i] || '',
-            fhirData.searchRevInclude?.[i] || ''
-        ]);
-        parent.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable(['Include', 'RevInclude'], rows)] }));
-    }
-};
-
-const renderApiDocumentation = (container, apiData) => {
-    const httpMethods = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD'];
-    if (apiData.paths) {
-        Object.entries(apiData.paths).forEach(([path, pathData]) => {
-            Object.entries(pathData).forEach(([method, methodData]) => {
-                if (!httpMethods.includes(method.toUpperCase())) {
-                    console.log(`${method.toUpperCase()} is not a valid HTTP method. Skipping to next.`);
-                    return;
-                }
-                const section = createElement('div', { classes: ['gem-ig-api-doc'] });
-                const operationMainBlock = createElement('div', { classes: ['operation-block'], children: [
-                    createElement('div', { classes: ['operation-block-summary'], children: [
-                        createElement('div', {
-                            classes: ['operation-block-summary-control'],
-                            attributes: { 'aria-expanded': false },
-                            children: [
-                                createElement('span', { classes: ['operation-block-summary-method'], innerHTML: method.toUpperCase() }),
-                                createElement('div', { classes: ['operation-block-summary-path'], innerHTML: apiData.base ? `${apiData.base}${path}` : path })
-                            ]
-                        })
-                    ]
-                    })
-                ] });
-                let withLowPadding = false;
-                if (methodData.operationId) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], innerHTML: `${window.gemIGApiDocLabels.OperationId_Label}: <b>${methodData.operationId}</b>` }));
-                    withLowPadding = true;
-                }
-
-                if (methodData.contentTypes?.length) {
-                    const contentTypeHtml= methodData.contentTypes.map(value => `<b>${value}</b>`);
-                    let classesContentType = ['operation-block-description'];
-                    if (withLowPadding) {
-                        classesContentType.push('low-padding');
-                    }
-                    operationMainBlock.appendChild(createElement('div', { classes: classesContentType, innerHTML: `${window.gemIGApiDocLabels.ContentTypes_Label}: <b>${contentTypeHtml.join(", ")}</b>` }));
-
-                }
-
-                if (methodData.description) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description'], innerHTML: `${methodData.description}` }));
-                }
-                
-                if (methodData.headerParams?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.HeaderParams_Header }));
-                    const headerParamsRows = methodData.headerParams.map(({ name, type, description, expectation }) => [
-                        name,
-                        `<code>${type}</code>`, 
-                        description, 
-                        expectation
-                    ]);
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
-                        window.gemIGApiDocLabels.Parameter_Label,
-                        window.gemIGApiDocLabels.Type_Label,
-                        window.gemIGApiDocLabels.Description_Label,
-                        window.gemIGApiDocLabels.Expectation_Label
-                    ], headerParamsRows, true, ['params-table'])] }));
-                }
-
-                if (methodData.fhir) {
-                    const fhirDetailsContainer = createElement('div');
-                    operationMainBlock.appendChild(fhirDetailsContainer);
-                    if (methodData.fhir.capabilityStatement) {
-                        const capStmt = methodData.fhir.capabilityStatement;
-                        const promise = capStmt.data ? Promise.resolve(capStmt.data) : loadData(capStmt.url);
-                        promise.then(data => appendFhirDetails(parseFhirCapabilityStatement(data, capStmt.forResourceType), fhirDetailsContainer));
-                    } else {
-                        appendFhirDetails(methodData.fhir, fhirDetailsContainer);
-                    }
-                }
-
-                if (methodData.requestExamples?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.RequestExample_Header }));
-                    appendExampleElements(methodData.requestExamples, operationMainBlock);
-                }
-
-                if (methodData.responseExamples?.length) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.ResponseExample_Header }));
-                    appendExampleElements(methodData.responseExamples, operationMainBlock);
-                }
-
-                if (methodData.responses) {
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.Response_Header }));
-                    const responseRows = methodData.responses.map(({ statusCode, description, errorCode, note }) => [
-                        `<code>${statusCode}</code>`, 
-                        description, 
-                        errorCode, 
-                        note
-                    ]);
-                    operationMainBlock.appendChild(createElement('div', { classes: ['operation-block-description', 'with-table'], children: [createTable([
-                        window.gemIGApiDocLabels.StatusCode_Label,
-                        window.gemIGApiDocLabels.Description_Label,
-                        window.gemIGApiDocLabels.ErrorCode_Label,
-                        window.gemIGApiDocLabels.Note_Label
-                    ], responseRows)] }));
-                }
-
-                // Method type
-                operationMainBlock.classList.add(`operation-block-${method.toLowerCase()}`);
-                section.appendChild(operationMainBlock);
-                container.appendChild(section);
             });
-        });
-    }
-};
+            if (changed) {
+                let tempSpan = document.createElement("span");
+                tempSpan.innerHTML = newHTML;
+                parent.replaceChild(tempSpan, node);
+            }
 
-const parseFhirCapabilityStatement = (data, resourceType) => {
-    const { rest: [{ resource = [] } = {}] = [] } = JSON.parse(data);
-    const resourceDetails = resource.find(res => res.type === resourceType);
-    if (!resourceDetails) {
-        console.error(`${resourceType} not found!`);
-        return {};
+        } else {
+            Array.from(node.childNodes).forEach(replaceMatches);
+        }
     }
-    const translateExpectation = (expectation) => ({
-        "SHALL": window.gemIGApiDocLabels.Expectation_SHALL,
-        'SHOULD': window.gemIGApiDocLabels.Expectation_SHOULD,
-        'SHOULD-NOT': window.gemIGApiDocLabels.Expectation_SHOULD_NOT,
-        'MAY': window.gemIGApiDocLabels.Expectation_MAY
-    }[expectation] || expectation);
 
-    return {
-        searchParams: resourceDetails.searchParam?.map(({ name, definition, type, documentation = 'No description', extension }) => ({
-            name,
-            definition,
-            type,
-            documentation,
-            expectation: translateExpectation(extension?.find(ext => ext.url === "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation")?.valueCode)
-        })),
-        searchInclude: resourceDetails.searchInclude,
-        searchRevInclude: resourceDetails.searchRevInclude
-    };
-};
+    replaceMatches(document.body);
+
+}
+// Make public
+igtools.convertBibliographyToLink = convertBibliographyToLink;
+
+// Set up event listeners to initialize functions when the page has fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        resizeSVGs();
+        downloadSVG();
+        downloadImages();
+        enableExamples();
+        renderCodeBlocks();
+        fhirData();
+    } catch (error) {
+        console.error('Error initializing functions:', error);
+    }
+});
+
+// Set up event listener to resize SVGs when the browser window is resized
+window.addEventListener('resize', () => {
+    try {
+        resizeSVGs();
+    } catch (error) {
+        console.error('Error adjusting SVG size on window resize:', error);
+    }
+});
