@@ -1,0 +1,39 @@
+{
+  "name": "fhir-api-doc",
+  "version": "0.1.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.prod.js",
+    "dev": "webpack serve --config webpack.dev.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onyg/fhir-api-doc.git"
+  },
+  "keywords": [
+    "fhir",
+    "ig",
+    "api-ui"
+  ],
+  "author": "Ronald Martins",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/onyg/fhir-api-doc/issues"
+  },
+  "homepage": "https://github.com/onyg/fhir-api-doc#readme",
+  "dependencies": {
+    "@babel/cli": "^7.25.9",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "babel-loader": "^9.2.1",
+    "highlight.js": "^11.10.0",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^12.0.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  }
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="/favicon.png" sizes="any" type="image/png">
+        <title>FHIR Library Test</title>
+        <link href="/ig.gematik.css" rel="stylesheet" />
+        <script src="/ig.gematik.min.js"></script>
+        <link href="/ig.req.gematik.css" rel="stylesheet" />
+        <script src="/ig.req.gematik.min.js"></script>
+        <link href="/edge-dark.min.css" rel="stylesheet" />
+        <link href="/ig.apidoc.gematik.css" rel="stylesheet" />
+        <script src="/ig.apidoc.gematik.min.js"></script>
+        <script>
+            const literatureData = [
+                
+                {
+                    key: "FHIR Search Handling Errors",
+                    link: "http://hl7.org/fhir/R4/search.html#errors",
+                    title: "FHIR R4 Spezifikation für die Fehlerbehandlung in einer Suche",
+                    author: "HL7"
+                },
+                
+                {
+                    key: "FHIR Search Include",
+                    link: "https://www.hl7.org/fhir/r4/search.html#include",
+                    title: "FHIR R4 Spezifikation für das Einbeziehen weiterer Ressourcen in das Suchergebnis",
+                    author: "HL7"
+                },
+                
+                {
+                    key: "FHIR Search Revinclude",
+                    link: "https://www.hl7.org/fhir/r4/search.html#revinclude",
+                    title: "FHIR R4 Spezifikation für das Einbeziehen rückwärts referenzierter Ressourcen in das Suchergebnis",
+                    author: "HL7"
+                },
+                
+                {
+                    key: "FHIR Search Prefixes",
+                    link: "https://hl7.org/fhir/R4/search.html#prefix",
+                    title: "FHIR R4 Spezifikation für die Suche mit Vergleichsoperatoren und Präfixen",
+                    author: "HL7"
+                },
+                
+                {
+                    key: "FHIR Sorting",
+                    link: "https://www.hl7.org/fhir/r4/search.html#sort",
+                    title: "FHIR R4 Spezifikation zur Sortierung von Suchergebnissen",
+                    author: "HL7"
+                },
+                
+                {
+                    key: "FHIR JSON",
+                    link: "https://hl7.org/fhir/R4/json.html",
+                    title: "FHIR R4 Spezifikation zur JSON-Darstellung von Ressourcen",
+                    author: "HL7"
+                },
+                
+                {
+                    key: "RFC4122",
+                    link: "https://datatracker.ietf.org/doc/html/rfc4122#section-4.2",
+                    title: "RFC 4122: Algorithmen zur Erstellung einer zeitbasierten UUID",
+                    author: "IETF"
+                },
+                
+                {
+                    key: "Link Relation Types",
+                    link: "https://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1",
+                    title: "Link-Relationstypen gemäß IANA-Spezifikation",
+                    author: "IANA"
+                }
+                
+            ];
+            document.addEventListener("DOMContentLoaded", function () {
+                igtools.convertBibliographyToLink(literatureData);
+            });
+        </script>
+    </head>
+    <body>
+        <h1>IG Bibliography</h1>
+        <p><a href="/">API DOC</a></p>
+        <p><a href="/req.html">Req</a></p>
+        <p><a href="/base.html">Base</a></p>
+        <p><a href="/parse.html">Parse</a></p>
+        <p><a href="/bibliography.html">Bibliography</a></p>
+
+
+        <requirement actor="Audit Event Service, Medication Service" conformance="SHALL" key="IG-EPA29386S9L" title="UUID für Resource.id" version="1">
+            Der FHIR Data Service MUSS ausschließlich zeitbasierte Universally Unique IDentifier (UUID) gemäß [RFC4122] für logische IDs (d.h. FHIR-Element <i>Resource.id</i>) verwenden.
+        </requirement>
+
+        <requirement actor="Audit Event Service, Medication Service" conformance="SHALL" key="IG-EPA81327UVF" title="Umsetzung der Sortierfunktion gemäß FHIR" version="1">
+            Der FHIR Data Service MUSS die Sortierfunktion nach [FHIR Sorting] implementieren.
+        </requirement>
+    </body>
+</html>
+
