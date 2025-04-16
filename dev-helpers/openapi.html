@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="/favicon.png" sizes="any" type="image/png">
-        <title>FHIR Library Test</title>
+        <title>OpenAPI Test</title>
         <link href="/ig.gematik.css" rel="stylesheet" />
         <script src="/ig.gematik.min.js"></script>
         <link href="/ig.req.gematik.css" rel="stylesheet" />
@@ -12,9 +12,11 @@
         <link href="/edge-dark.min.css" rel="stylesheet" />
         <link href="/ig.apidoc.gematik.css" rel="stylesheet" />
         <script src="/ig.apidoc.gematik.min.js"></script>
+        <script src="/ig.openapi.gematik.min.js"></script>
+
     </head>
     <body>
-        <h1>IG REQ</h1>
+        <h1>IG OpenApi</h1>
         <p><a href="/">API DOC</a></p>
         <p><a href="/req.html">Req</a></p>
         <p><a href="/base.html">Base</a></p>
@@ -22,18 +24,7 @@
         <p><a href="/bibliography.html">Bibliography</a></p>
         <p><a href="/openapi.html">OpenAPI</a></p>
 
-        <h2>Suchparameter</h2>
-        <div 
-            data-fhir-capabilitystatement-url="./CapabilityStatement-epa-capabilitystatement-medication.json" 
-            data-fhir-resource-type="Medication"
-            data-fhir-capabilitystatement-render="search">
-        </div>
-        <h2>Include und Revinclude</h2>
-        <div 
-            data-fhir-capabilitystatement-url="./CapabilityStatement-epa-capabilitystatement-medication.json" 
-            data-fhir-resource-type="Medication"
-            data-fhir-capabilitystatement-render="include">
-        </div>
+        <div id="swagger-ui"></div>
+        <div class="ig-openapi" data-openapi-url="./epa-medication-service-server.openapi.yaml"></div>
     </body>
 </html>
-

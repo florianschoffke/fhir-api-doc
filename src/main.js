@@ -1,5 +1,6 @@
 import fhir from './fhir.js';
 import utils from './utils.js';
+// import openapi from './openapi.js';
 
 // Global variables for labels
 window.gemIGLabels = window.gemIGLabels || {
@@ -274,6 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
         enableExamples();
         renderCodeBlocks();
         fhirData();
+        // openapi.renderOpenApi();
     } catch (error) {
         console.error('Error initializing functions:', error);
     }

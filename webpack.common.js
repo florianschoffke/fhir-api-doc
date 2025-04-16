@@ -6,7 +6,8 @@ module.exports = {
     entry: {
         'ig': './src/main.js',
         'ig.apidoc': './src/apidoc.js',
-        'ig.req': './src/req.js'
+        'ig.req': './src/req.js',
+        'ig.openapi': './src/openapi.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
