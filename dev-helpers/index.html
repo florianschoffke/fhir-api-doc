@@ -261,6 +261,44 @@
                     type: "string"
                     description: "RequestId"
         </textarea>
+        <textarea data-apidoc-data="yaml">
+          base: "[base]"
+          paths:
+            /epa/patient/api/v1/fhir/Patient:
+              post:
+                include: 
+                  - "#GET"
+                description: "Gibt eine Liste von Patient-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
+                operationId: "listPatient"
+                fhir:
+                  capabilityStatement:
+                    url: '/CapabilityStatement-epa-patient-server.json'
+                    forResourceType: 'Patient'
+                headerParams:
+                  - name: "X-Request-ID"
+                    expectation: "KANN"
+                    type: "string"
+                    description: "RequestId"
+        </textarea>
+        <textarea data-apidoc-data="yaml">
+          base: "[base]"
+          paths:
+            /epa/patient/api/v1/fhir/Patient:
+              get:
+                include: 
+                  - "#GET"
+                description: "Gibt eine Liste von Patient-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
+                operationId: "listPatient"
+                fhir:
+                  capabilityStatement:
+                    url: '/CapabilityStatement-epa-patient-server-merged.json'
+                    forResourceType: 'Patient'
+                headerParams:
+                  - name: "X-Request-ID"
+                    expectation: "KANN"
+                    type: "string"
+                    description: "RequestId"
+        </textarea>
       </gem-ig-api-doc>
 
       <pre>
