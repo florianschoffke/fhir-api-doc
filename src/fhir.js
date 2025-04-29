@@ -1,14 +1,7 @@
+import utils from './utils.js';
 
 function parseFhirCapabilityStatement(data, resourceType) {
     const { rest = [] } = JSON.parse(data);
-
-    const translateExpectation = (expectation) => ({
-        "SHALL": window.gemIGApiDocLabels.Expectation_SHALL,
-        "SHALL-NOT": window.gemIGApiDocLabels.Expectation_SHOULD,
-        "SHOULD": window.gemIGApiDocLabels.Expectation_SHOULD,
-        "SHOULD-NOT": window.gemIGApiDocLabels.Expectation_SHOULD_NOT,
-        "MAY": window.gemIGApiDocLabels.Expectation_MAY
-    }[expectation] || expectation);
 
     for (const restEntry of rest) {
         const { resource = [] } = restEntry;
@@ -21,7 +14,7 @@ function parseFhirCapabilityStatement(data, resourceType) {
                     definition,
                     type,
                     documentation,
-                    expectation: translateExpectation(
+                    expectation: utils.translateExpectation(
                         extension?.find(ext => ext.url === "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation")?.valueCode
                     )
                 })),

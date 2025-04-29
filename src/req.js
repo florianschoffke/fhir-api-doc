@@ -1,11 +1,5 @@
 
-window.gematikRequirement = window.gematikRequirement || {
-    SHALL: "MUSS",
-    SHALL_NOT: "DARF NICHT",
-    SHOULD: "SOLL",
-    SHOULD_NOT: "SOLL NICHT",
-    MAY: "KANN"
-};
+import utils from './utils.js';
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -23,18 +17,6 @@ function addDataAnchorToRequirementLink() {
     });
 }
 
-function getConformanceText(conformance){
-    const translateConformance = (conformance) => ({
-        "SHALL": window.gematikRequirement.SHALL,
-        "SHALL NOT": window.gematikRequirement.SHALL_NOT,
-        "SHALL-NOT": window.gematikRequirement.SHALL_NOT,
-        "SHOULD": window.gematikRequirement.SHOULD,
-        "SHOULD NOT": window.gematikRequirement.SHOULD_NOT,
-        "SHOULD-NOT": window.gematikRequirement.SHOULD_NOT,
-        "MAY": window.gematikRequirement.MAY
-    }[conformance] || conformance);
-    return translateConformance(conformance)
-}
 
 function renderRequirements() {
     const requirements = document.querySelectorAll('requirement');
@@ -42,14 +24,14 @@ function renderRequirements() {
     requirements.forEach(req => {
 
         const reqKey = req.getAttribute('key') || '';
-        const reqVersion = parseFloat(req.getAttribute('version')) || 0; // Konvertiere zu einer Zahl
+        const reqVersion = parseFloat(req.getAttribute('version')) || 0;
         const combinedReqKey = reqKey && reqVersion > 1 
             ? `${reqKey}-${reqVersion}` 
             : reqKey;
         
         const actorText = req.getAttribute('actor') || '';
         const titleText = req.getAttribute('title') || '';
-        const conformanceText = getConformanceText(req.getAttribute('conformance') || '');
+        const conformanceText = utils.translateExpectation(req.getAttribute('conformance') || '');
         const descriptionHTML = req.innerHTML.trim();
 
         const reqDiv = document.createElement('div');
@@ -57,7 +39,6 @@ function renderRequirements() {
         if(combinedReqKey) {
             reqDiv.id = combinedReqKey;
         }
-        conformance="SHALL"
         const headingParts = [
             combinedReqKey, 
             titleText,

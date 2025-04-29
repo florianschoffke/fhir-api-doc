@@ -3,38 +3,12 @@ import hljs from 'highlight.js/lib/core';
 import xml from 'highlight.js/lib/languages/xml';
 import json from 'highlight.js/lib/languages/json';
 
+import labels from './labels.js';
 import fhir from './fhir.js';
 import utils from './utils.js';
 
 hljs.registerLanguage('xml', xml);
 hljs.registerLanguage('json', json);
-
-// Global variables for labels
-window.gemIGApiDocLabels = window.gemIGApiDocLabels || {
-    ContentTypes_Label: "Content Types",
-    HeaderParams_Header: "HTTP Header-Parameter",
-    Parameter_Label: "Parameter",
-    Type_Label: "Type",
-    Expectation_Label: "Service Anforderung",
-    Description_Label: "Beschreibung",
-    SearchParams_Header: "Suchparameter",
-    Documentation_Label: "Beschreibung",
-    Response_Header: "Antwort Status-Codes",
-    StatusCode_Label: "Code",
-    ErrorCode_Label: "Error Code",
-    Note_Label: "Beschreibung",
-    SearchInclude_And_RevInclude_Header: "Suche per Include oder RevInclude",
-    RequestExample_Header: "Beispielanfragen",
-    ResponseExample_Header: "Beispielantworten",
-    OperationId_Label: "OperationId",
-    Expectation_SHALL: "MUSS",
-    Expectation_SHALL_NOT: "DARF NICHT",
-    Expectation_SHOULD: "SOLL",
-    Expectation_SHOULD_NOT: "SOLL NICHT",
-    Expectation_MAY: "KANN",
-    Copy_Button_Label: "Code kopieren",
-    Copied_Button_Label: "Code wird kopiert"
-};
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -152,12 +126,12 @@ const createCopyButton = (data, language = null) => {
     }
     // The Copy Button
     const buttonWrapper = utils.createElement('div', { classes: ['gem-ig-copy-button-wrapper'] });
-    const button = utils.createElement('button', { innerHTML: window.gemIGApiDocLabels.Copy_Button_Label});
+    const button = utils.createElement('button', { innerHTML: window.gematikLabels.apiDoc.Copy_Button_Label});
     // Add click event listener to copy button
     button.addEventListener('click', function () {
         navigator.clipboard.writeText(data).then(() => {
-            button.innerText = window.gemIGApiDocLabels.Copied_Button_Label;
-            setTimeout(() => button.innerText = window.gemIGApiDocLabels.Copy_Button_Label, 2000);
+            button.innerText = window.gematikLabels.apiDoc.Copied_Button_Label;
+            setTimeout(() => button.innerText = window.gematikLabels.apiDoc.Copy_Button_Label, 2000);
         }).catch(err => {
             console.error('Failed to copy text: ', err);
         });
@@ -214,7 +188,7 @@ const appendExampleElements = (exampleData, container) => {
 
 const appendFhirDetails = (fhirData, parent) => {
     if (fhirData.searchParams?.length) {
-        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.SearchParams_Header }));
+        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchParams_Header }));
         const searchParametersRows = fhirData.searchParams.map(({ name, definition, type, documentation, expectation }) => [
             // definition ? `<a href="${definition}" target="_blank">${name}</a>` : name,
             name,
@@ -223,15 +197,15 @@ const appendFhirDetails = (fhirData, parent) => {
             expectation
         ]);
         parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
-            window.gemIGApiDocLabels.Parameter_Label,
-            window.gemIGApiDocLabels.Type_Label,
-            window.gemIGApiDocLabels.Documentation_Label,
-            window.gemIGApiDocLabels.Expectation_Label
+            window.gematikLabels.apiDoc.Parameter_Label,
+            window.gematikLabels.apiDoc.Type_Label,
+            window.gematikLabels.apiDoc.Documentation_Label,
+            window.gematikLabels.apiDoc.Expectation_Label
         ], searchParametersRows, true, ['params-table'])] }));
     }
 
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
-        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.SearchInclude_And_RevInclude_Header }));
+        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchInclude_And_RevInclude_Header }));
         const rows = Array.from({ length: Math.max(fhirData.searchInclude?.length || 0, fhirData.searchRevInclude?.length || 0) }, (_, i) => [
             fhirData.searchInclude?.[i] || '',
             fhirData.searchRevInclude?.[i] || ''
@@ -265,7 +239,7 @@ const renderApiDocumentation = (container, apiData) => {
                 ] });
                 let withLowPadding = false;
                 if (methodData.operationId) {
-                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-description'], innerHTML: `${window.gemIGApiDocLabels.OperationId_Label}: <b>${methodData.operationId}</b>` }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-description'], innerHTML: `${window.gematikLabels.apiDoc.OperationId_Label}: <b>${methodData.operationId}</b>` }));
                     withLowPadding = true;
                 }
 
@@ -275,7 +249,7 @@ const renderApiDocumentation = (container, apiData) => {
                     if (withLowPadding) {
                         classesContentType.push('low-padding');
                     }
-                    operationMainBlock.appendChild(utils.createElement('div', { classes: classesContentType, innerHTML: `${window.gemIGApiDocLabels.ContentTypes_Label}: <b>${contentTypeHtml.join(", ")}</b>` }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: classesContentType, innerHTML: `${window.gematikLabels.apiDoc.ContentTypes_Label}: <b>${contentTypeHtml.join(", ")}</b>` }));
 
                 }
 
@@ -284,7 +258,7 @@ const renderApiDocumentation = (container, apiData) => {
                 }
                 
                 if (methodData.headerParams?.length) {
-                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.HeaderParams_Header }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.HeaderParams_Header }));
                     const headerParamsRows = methodData.headerParams.map(({ name, type, description, expectation }) => [
                         name,
                         `<code>${type}</code>`, 
@@ -292,10 +266,10 @@ const renderApiDocumentation = (container, apiData) => {
                         expectation
                     ]);
                     operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
-                        window.gemIGApiDocLabels.Parameter_Label,
-                        window.gemIGApiDocLabels.Type_Label,
-                        window.gemIGApiDocLabels.Description_Label,
-                        window.gemIGApiDocLabels.Expectation_Label
+                        window.gematikLabels.apiDoc.Parameter_Label,
+                        window.gematikLabels.apiDoc.Type_Label,
+                        window.gematikLabels.apiDoc.Description_Label,
+                        window.gematikLabels.apiDoc.Expectation_Label
                     ], headerParamsRows, true, ['params-table'])] }));
                 }
 
@@ -312,17 +286,17 @@ const renderApiDocumentation = (container, apiData) => {
                 }
 
                 if (methodData.requestExamples?.length) {
-                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.RequestExample_Header }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.RequestExample_Header }));
                     appendExampleElements(methodData.requestExamples, operationMainBlock);
                 }
 
                 if (methodData.responseExamples?.length) {
-                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.ResponseExample_Header }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.ResponseExample_Header }));
                     appendExampleElements(methodData.responseExamples, operationMainBlock);
                 }
 
                 if (methodData.responses) {
-                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gemIGApiDocLabels.Response_Header }));
+                    operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.Response_Header }));
                     const responseRows = methodData.responses.map(({ statusCode, description, errorCode, note }) => [
                         `<code>${statusCode}</code>`, 
                         description, 
@@ -330,10 +304,10 @@ const renderApiDocumentation = (container, apiData) => {
                         note
                     ]);
                     operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
-                        window.gemIGApiDocLabels.StatusCode_Label,
-                        window.gemIGApiDocLabels.Description_Label,
-                        window.gemIGApiDocLabels.ErrorCode_Label,
-                        window.gemIGApiDocLabels.Note_Label
+                        window.gematikLabels.apiDoc.StatusCode_Label,
+                        window.gematikLabels.apiDoc.Description_Label,
+                        window.gematikLabels.apiDoc.ErrorCode_Label,
+                        window.gematikLabels.apiDoc.Note_Label
                     ], responseRows)] }));
                 }
 

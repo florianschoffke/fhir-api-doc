@@ -1,21 +1,7 @@
+import labels from './labels.js';
 import fhir from './fhir.js';
 import utils from './utils.js';
-// import openapi from './openapi.js';
 
-// Global variables for labels
-window.gemIGLabels = window.gemIGLabels || {
-    GEM_Download_Button_Image: "Bild herunterladen",
-    GEM_Download_Button_SVG: "SVG herunterladen",
-    GEM_FHIR_Expectation_SHALL: "MUSS",
-    GEM_FHIR_Expectation_SHALL_NOT: "DARF NICHT",
-    GEM_FHIR_Expectation_SHOULD: "SOLL",
-    GEM_FHIR_Expectation_SHOULD_NOT: "SOLL NICHT",
-    GEM_FHIR_Expectation_MAY: "KANN",
-    GEM_FHIR_Parameter_Label: "Parameter",
-    GEM_FHIR_Type_Label: "Type",
-    GEM_FHIR_Expectation_Label: "Service Anforderung",
-    GEM_FHIR_Documentation_Label: "Beschreibung"
-};
 
 window.igtools = window.igtools || {};
 
@@ -49,7 +35,7 @@ function downloadSVG() {
         downloadLink.href = URL.createObjectURL(blob);
         downloadLink.download = fileName;
         downloadLink.classList.add('gem-ig-download-btn');
-        downloadLink.innerText = window.gemIGLabels?.GEM_Download_Button_SVG || 'Download SVG';
+        downloadLink.innerText = window.gematikLabels.ig?.Download_Button_SVG || 'Download SVG';
 
         const downloadLinkWrapper = document.createElement('div');
         downloadLinkWrapper.classList.add('gem-ig-svg-downloadlink-wrapper');
@@ -107,7 +93,7 @@ function downloadImages() {
                             downloadLink.href = URL.createObjectURL(blob);
                             downloadLink.download = imgClone.src.split('/').pop();
                             downloadLink.classList.add('gem-ig-download-btn');
-                            downloadLink.innerText = window.gemIGLabels.GEM_Download_Button_Image;
+                            downloadLink.innerText = window.gematikLabels.ig.Download_Button_Image;
 
                             const downloadLinkWrapper = document.createElement('div');
                             downloadLinkWrapper.classList.add('gem-ig-img-downloadlink-wrapper');
@@ -184,10 +170,10 @@ function renderCapabilityStatementData(data, resourceType, what, parent) {
                 expectation
             ]);
             parent.appendChild(utils.createElement('div', { children: [utils.createTable([
-                window.gemIGLabels.GEM_FHIR_Parameter_Label,
-                window.gemIGLabels.GEM_FHIR_Type_Label,
-                window.gemIGLabels.GEM_FHIR_Documentation_Label,
-                window.gemIGLabels.GEM_FHIR_Expectation_Label
+                window.gematikLabels.ig.FHIR_Parameter_Label,
+                window.gematikLabels.ig.FHIR_Type_Label,
+                window.gematikLabels.ig.FHIR_Documentation_Label,
+                window.gematikLabels.ig.FHIR_Expectation_Label
             ], searchParametersRows, true)] }));
         }
     }
@@ -218,7 +204,6 @@ function fhirData() {
 
 function renderCodeBlocks() {
     document.querySelectorAll('code').forEach(codeElement => {
-        // Überprüfen, ob das übergeordnete Element ein <pre>-Tag ist
         const parentElement = codeElement.parentElement;
         if (parentElement && parentElement.tagName.toLowerCase() === 'pre') {
             const classes = Array.from(codeElement.classList);
@@ -275,7 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
         enableExamples();
         renderCodeBlocks();
         fhirData();
-        // openapi.renderOpenApi();
     } catch (error) {
         console.error('Error initializing functions:', error);
     }
