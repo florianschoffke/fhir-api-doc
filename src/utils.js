@@ -1,3 +1,4 @@
+import labels from './labels.js';
 
 const loadData = async (url) => {
     try {
@@ -40,9 +41,20 @@ const createTable = (headers, rows, includeHeader = true, classes = []) => {
 };
 
 
+const translateExpectation = (conformance) => ({
+    "SHALL": window.gematikLabels.requirements.SHALL,
+    "SHALL NOT": window.gematikLabels.requirements.SHALL_NOT,
+    "SHALL-NOT": window.gematikLabels.requirements.SHALL_NOT,
+    "SHOULD": window.gematikLabels.requirements.SHOULD,
+    "SHOULD NOT": window.gematikLabels.requirements.SHOULD_NOT,
+    "SHOULD-NOT": window.gematikLabels.requirements.SHOULD_NOT,
+    "MAY": window.gematikLabels.requirements.MAY
+}[conformance] || conformance);
+
 
 export default {
     loadData,
     createElement,
-    createTable
+    createTable,
+    translateExpectation
 };

@@ -324,3 +324,14 @@ a.gem-ig-download-btn:hover {
     margin-top: 10px;
     width: 100%;
 }
+
+
+/* ============ downloads css ============= */
+
+a[href$=".yaml"]:not([no-download^="true"]):after {
+    content: url(../images/download.png);
+    display: inline-block;
+    text-decoration: none;
+    padding-left: 3px;
+} 
+  

@@ -1,0 +1,74 @@
+
+.ig-openapi tr:nth-child(even),
+.ig-openapi tr:nth-child(odd) {
+    background: inherit !important;
+}
+
+.ig-openapi table th {
+    background: inherit !important;
+
+}
+
+.ig-openapi .swagger-ui .info {
+    margin: 0 0 0 0;
+}
+
+.ig-openapi .swagger-ui .info .title {
+    font-size: 22px;
+    border-bottom: 0px;
+}
+
+.ig-openapi .swagger-ui section {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.ig-openapi .swagger-ui .servers>label {
+    margin: 0 0 0 0;
+}
+
+.ig-openapi .swagger-ui h1, 
+.ig-openapi .swagger-ui h2,
+.ig-openapi .swagger-ui h3,
+.ig-openapi .swagger-ui h4, 
+.ig-openapi .swagger-ui h5,
+.ig-openapi .swagger-ui h6 {
+    --heading-prefix: "";
+    counter-reset: none;
+}
+
+.ig-openapi .swagger-ui h2:before,
+.ig-openapi .swagger-ui h3:before,
+.ig-openapi .swagger-ui h4:before,
+.ig-openapi .swagger-ui h5:before,
+.ig-openapi .swagger-ui h6:before {
+    color:silver;
+    counter-increment:none;
+    content:" ";
+}
+
+
+.ig-openapi .swagger-ui .scheme-container {
+    box-shadow: none;
+    margin: 0px;
+    padding: 0px 0px;
+    background-color: #bf1b1b;
+
+}
+
+.ig-openapi .swagger-ui {
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+}
+
+.ig-openapi .swagger-ui .wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.ig-openapi pre {
+    background-color: inherit;
+    border: 0px solid #cccccc;
+}
+
