@@ -194,13 +194,13 @@ const appendFhirDetails = (fhirData, parent) => {
             name,
             `<code>${type}</code>`,
             documentation,
-            expectation
+            // expectation
         ]);
         parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
             window.gematikLabels.apiDoc.Parameter_Label,
             window.gematikLabels.apiDoc.Type_Label,
             window.gematikLabels.apiDoc.Documentation_Label,
-            window.gematikLabels.apiDoc.Expectation_Label
+            // window.gematikLabels.apiDoc.Expectation_Label
         ], searchParametersRows, true, ['params-table'])] }));
     }
 
@@ -263,13 +263,13 @@ const renderApiDocumentation = (container, apiData) => {
                         name,
                         `<code>${type}</code>`, 
                         description, 
-                        expectation
+                        // expectation
                     ]);
                     operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
                         window.gematikLabels.apiDoc.Parameter_Label,
                         window.gematikLabels.apiDoc.Type_Label,
                         window.gematikLabels.apiDoc.Description_Label,
-                        window.gematikLabels.apiDoc.Expectation_Label
+                        // window.gematikLabels.apiDoc.Expectation_Label
                     ], headerParamsRows, true, ['params-table'])] }));
                 }
 

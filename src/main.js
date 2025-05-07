@@ -167,13 +167,13 @@ function renderCapabilityStatementData(data, resourceType, what, parent) {
                 name,
                 `<code>${type}</code>`,
                 documentation,
-                expectation
+                // expectation
             ]);
             parent.appendChild(utils.createElement('div', { children: [utils.createTable([
                 window.gematikLabels.ig.FHIR_Parameter_Label,
                 window.gematikLabels.ig.FHIR_Type_Label,
                 window.gematikLabels.ig.FHIR_Documentation_Label,
-                window.gematikLabels.ig.FHIR_Expectation_Label
+                // window.gematikLabels.ig.FHIR_Expectation_Label
             ], searchParametersRows, true)] }));
         }
     }
