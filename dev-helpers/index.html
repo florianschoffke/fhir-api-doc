@@ -81,12 +81,12 @@
                       definition: "http://hl7.org/fhir/SearchParameter/Resource-id"
                       type: "token"
                       expectation: "MUSS"
-                      documentation: "Resource​.id"
+                      documentation: "Resource.id"
                     - name: "_lastUpdated"
                       definition: "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated"
                       type: "date"
                       expectation: "MUSS"
-                      documentation: "Resource.​meta.​lastUpdated"
+                      documentation: "Resource.meta.lastUpdated"
                     - name: "identifier"
                       definition: "http://hl7.org/fhir/SearchParameter/clinical-identifier"
                       type: "token"
@@ -112,7 +112,7 @@
                     url: '/Bundle-example-searchset-medication.json'
                   - name: "Load HTML"
                     type: HTML
-                    urrl: '/Bundle-example-searchset-medication.xml.html'
+                    url: '/Bundle-example-searchset-medication.xml.html'
                 responses:
                   - statusCode: '200'
                     description: "Successful operation"
@@ -182,6 +182,10 @@
                 - name: "Load Json"
                   type: JSON
                   url: '/Bundle-example-searchset-medication.json'
+                errorResponseExamples:
+                - name: "Error Data JSON"
+                  type: JSON
+                  data: '{"resourceType": "Error"}'
                 responses:
                 - statusCode: '200'
                   description: "Successful operation"

@@ -27,10 +27,11 @@ window.gematikLabels = window.gematikLabels || {
       Response_Header: "Antwort Status-Codes",
       StatusCode_Label: "Code",
       ErrorCode_Label: "Error Code",
-      Note_Label: "Beschreibung",
+      Note_Label: "Bemerkungen",
       SearchInclude_And_RevInclude_Header: "Suche per Include oder RevInclude",
       RequestExample_Header: "Beispielanfragen",
       ResponseExample_Header: "Beispielantworten",
+      ErrorResponseExample_Header: "Beispielhafte Fehlerantworten",
       OperationId_Label: "OperationId",
       Copy_Button_Label: "Code kopieren",
       Copied_Button_Label: "Code wird kopiert"
