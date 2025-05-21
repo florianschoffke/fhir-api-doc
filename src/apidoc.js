@@ -63,17 +63,23 @@ function mergeObjects(base, derived) {
     const result = Array.isArray(base) ? [...base] : { ...base };
 
     for (const key in derived) {
-        if (Array.isArray(base[key]) && Array.isArray(derived[key])) {
-            // Merge arrays while avoiding duplicates
-            result[key] = [...base[key], ...derived[key].filter(item => !base[key].some(baseItem => baseItem.name === item.name))];
-        } else if (typeof derived[key] === 'object' && !Array.isArray(derived[key]) && key in base) {
+        if (Array.isArray(derived[key])) {
+            // Wenn base ebenfalls ein Array hat, zusammenführen
+            if (Array.isArray(base[key])) {
+                result[key] = [...base[key], ...derived[key]];
+            } else {
+                result[key] = [...derived[key]];
+            }
+        } else if (typeof derived[key] === 'object' && derived[key] !== null && typeof base[key] === 'object') {
             result[key] = mergeObjects(base[key], derived[key]);
         } else {
             result[key] = derived[key];
         }
     }
+    console.log(result);
     return result;
 }
+
 
 // Function to process YAML data, including generic include logic
 function loadYAMLWithIncludes(yamlList) {

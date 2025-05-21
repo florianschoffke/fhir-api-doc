@@ -29,7 +29,7 @@
 
     <gem-ig-api-doc>
 
-      <textarea data-apidoc-data="yaml" id="GET">
+      <textarea data-apidoc-data="yaml" id="GET-TOP">
         get:
           headerParams:
             - name: "x-test"
@@ -50,7 +50,7 @@
           paths:
             /epa/medication/api/v1/fhir/Medication:
               include: 
-                - "#GET"
+                - "#GET-TOP"
               get:
                 contentTypes:
                   - "application/fhir+xml"
@@ -224,6 +224,10 @@
                   expectation: "KANN"
                   type: "string"
                   description: "Include"
+                - name: "X-Test-OID"
+                  expectation: "KANN"
+                  type: "string"
+                  description: "Test"
               responseExamples:
                 - name: "EIN INCLUDE EXAMPLE"
                   type: JSON
