@@ -1,3 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="/favicon.png" sizes="any" type="image/png">
+        <title>FHIR Library Test</title>
+        <link href="/ig.gematik.css" rel="stylesheet" />
+        <script src="/ig.gematik.min.js"></script>
+        <link href="/ig.req.gematik.css" rel="stylesheet" />
+        <script src="/ig.req.gematik.min.js"></script>
+        <link href="/edge-dark.min.css" rel="stylesheet" />
+        <!-- <link href="/ig.apidoc.gematik.css" rel="stylesheet" /> -->
+        <script src="/ig.apidoc.gematik.min.js"></script>
+        <script src="/ig.capability.doc.gematik.min.js"></script>
+    </head>
+    <body>
+        <h1>IG REQ</h1>
+        <p><a href="/">API DOC</a></p>
+        <p><a href="/req.html">Req</a></p>
+        <p><a href="/base.html">Base</a></p>
+        <p><a href="/parse.html">Parse</a></p>
+        <p><a href="/cap.html">Cap</a></p>
+        <p><a href="/bibliography.html">Bibliography</a></p>
+        <p><a href="/openapi.html">OpenAPI</a></p>
+
+        <h2>1</h2>
+        <div 
+            data-api-fhir-capabilitystatement-url="./CapabilityStatement-epa-medication-service-server.json" 
+            data-api-fhir-resource-type="MedicationRequest"
+            data-api-fhir-interaction="read"
+            data-api-operation-id="getMedication">
+        </div>
+        <h2>2</h2>
+        <div 
+            data-api-fhir-capabilitystatement-url="./CapabilityStatement-epa-medication-service-server.json" 
+            data-api-fhir-resource-type="MedicationRequest"
+            data-api-fhir-interaction="update"
+            data-api-operation-id="getMedication"
+            data-api-url-path="Test/ID/Medication">
+        </div>
+        <h2>3</h2>
+        <div 
+            data-api-fhir-capabilitystatement-url="./CapabilityStatement-epa-medication-service-server.json" 
+            data-api-fhir-resource-type="MedicationRequest"
+            data-api-fhir-interaction="search-type"
+            data-api-operation-id="getMedication">
+            <div class="api-response-examples">
+                <div data-name="application/fhir+xml" data-type="XML" data-url="/Bundle-example-searchset-medication.xml"></div>
+                <div data-name="application/fhir+json" data-type="JSON" data-url="/Bundle-example-searchset-medication.json"></div>
+            </div>
+            <div class="api-request-examples">
+                <div data-name="application/fhir+xml" data-type="XML" data-url="/Bundle-example-searchset-medication.xml"></div>
+                <div data-name="application/fhir+json" data-type="JSON">
+                    {
+                        "resourceType": "Test"
+                    }
+                </div>
+            </div>
+            <div class="api-description">
+                Beispiel:
+                <br>
+                <pre>
+                    <code>
+                        POST http://epa4all/epa/mhd/api/v1/fhir/DocumentReference/_search?patient.identifier=http://fhir.de/sid/gkv/kvid-10|G995030566&status=current&type=http://www.ihe-d.de/fhir/CodeSystem/Dokumententypen|BERI&setting=http://www.ihe-d.de/fhir/CodeSystem/FachrichtungenAerztlich|ALLG&_content=Herz
+                    </code>
+                </pre>
+                Beispiel:
+                <br>
+                <pre>
+                    <code>
+                        POST /epa/mhd/api/v1/fhir/DocumentReference/_search HTTP/1.1
+                        Host: epa4all
+                        Content-Type: application/x-www-form-urlencoded
+                        Accept: application/fhir+json
+
+                        patient.identifier=http://fhir.de/sid/gkv/kvid-10|G995030566&status=current&setting=http://www.ihe-d.de/fhir/CodeSystem/FachrichtungenAerztlich|ALLG&_content=Kopf OR Zahl
+                    </code>
+                </pre>
+            </div>
+        </div>
+        <h2>4</h2>
+        <div 
+            data-api-fhir-resource-type="Patient"
+            data-api-fhir-interaction="update"
+            data-api-operation-id="getMedication"
+            data-api-fhir-capabilitystatement='
 {
   "resourceType": "CapabilityStatement",
   "id": "epa-patient-server",
@@ -965,3 +1052,9 @@
     }
   ]
 }
+            '
+            >
+        </div>
+    </body>
+</html>
+
