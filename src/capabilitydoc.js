@@ -39,26 +39,35 @@ function parseExampleDivs(container) {
 }
 
 function renderCapabilityStatementApiDoc() {
-    const capDivs = document.querySelectorAll('div[data-api-fhir-capabilitystatement-url], div[data-api-fhir-capabilitystatement]');
+    const capDivs = document.querySelectorAll('.gematik-apidoc');
+    // const capDivs = document.querySelectorAll('div[data-api-fhir-capabilitystatement-url], div[data-api-fhir-capabilitystatement]');
     capDivs.forEach(div => {
-        const cap = div.getAttribute('data-api-fhir-capabilitystatement');
-        const capUrl = div.getAttribute('data-api-fhir-capabilitystatement-url');
         const resourceType = div.getAttribute('data-api-fhir-resource-type');
         const interaction = div.getAttribute('data-api-fhir-interaction');
         const operationId = div.getAttribute('data-api-operation-id');
         const urlPath = div.getAttribute('data-api-url-path');
 
-        const descriptionDiv = div.querySelector('.api-description');
+        const descriptionDiv = div.querySelector('#api-description');
         const description = descriptionDiv?.innerHTML?.trim() ?? '';
 
+        let cap = null;
+        let capUrl = null;
+        const capabilityStatementContainer = div.querySelector('#CapabilityStatement');
+        if (capabilityStatementContainer) {
+            capUrl = capabilityStatementContainer.getAttribute('data-url');
+            if(utils.isJson(capabilityStatementContainer.textContent)) {
+                cap = capabilityStatementContainer.textContent;
+            }
+        }
+
         let responseExamples = null;
-        const responseExamplesContainer = div.querySelector('.api-response-examples');
+        const responseExamplesContainer = div.querySelector('#api-response-examples');
         if (responseExamplesContainer) {
             responseExamples = parseExampleDivs(responseExamplesContainer);
         }
 
         let requestExamples = null;
-        const requestExamplesContainer = div.querySelector('.api-request-examples');
+        const requestExamplesContainer = div.querySelector('#api-request-examples');
         if (requestExamplesContainer) {
             requestExamples = parseExampleDivs(requestExamplesContainer);
         }

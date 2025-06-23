@@ -25,31 +25,38 @@
         <p><a href="/openapi.html">OpenAPI</a></p>
 
         <h2>1</h2>
-        <div 
-            data-api-fhir-capabilitystatement-url="./CapabilityStatement-epa-medication-service-server.json" 
+        <div class="gematik-apidoc"
             data-api-fhir-resource-type="MedicationRequest"
             data-api-fhir-interaction="read"
             data-api-operation-id="getMedication">
+            <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
+        </div>
+        <h2>getMedicationList</h2>
+        <div class="gematik-apidoc"
+            data-api-fhir-system-operation="https://gematik.de/fhir/epa-medication/OperationDefinition/get-medication-list-op"
+            data-api-operation-id="getMedicationList">
+            <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
         </div>
         <h2>2</h2>
-        <div 
-            data-api-fhir-capabilitystatement-url="./CapabilityStatement-epa-medication-service-server.json" 
+        <div class="gematik-apidoc"
             data-api-fhir-resource-type="MedicationRequest"
             data-api-fhir-interaction="update"
             data-api-operation-id="getMedication"
             data-api-url-path="Test/ID/Medication">
+            <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json">
+            </div>
         </div>
         <h2>3</h2>
-        <div 
-            data-api-fhir-capabilitystatement-url="./CapabilityStatement-epa-medication-service-server.json" 
+        <div class="gematik-apidoc"
             data-api-fhir-resource-type="MedicationRequest"
             data-api-fhir-interaction="search-type"
             data-api-operation-id="getMedication">
-            <div class="api-response-examples">
+            <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
+            <div id="api-response-examples">
                 <div data-name="application/fhir+xml" data-type="XML" data-url="/Bundle-example-searchset-medication.xml"></div>
                 <div data-name="application/fhir+json" data-type="JSON" data-url="/Bundle-example-searchset-medication.json"></div>
             </div>
-            <div class="api-request-examples">
+            <div id="api-request-examples">
                 <div data-name="application/fhir+xml" data-type="XML" data-url="/Bundle-example-searchset-medication.xml"></div>
                 <div data-name="application/fhir+json" data-type="JSON">
                     {
@@ -57,7 +64,7 @@
                     }
                 </div>
             </div>
-            <div class="api-description">
+            <div id="api-description">
                 Beispiel:
                 <br>
                 <pre>
@@ -80,980 +87,979 @@
             </div>
         </div>
         <h2>4</h2>
-        <div 
+        <div class="gematik-apidoc"
             data-api-fhir-resource-type="Patient"
             data-api-fhir-interaction="update"
-            data-api-operation-id="getMedication"
-            data-api-fhir-capabilitystatement='
-{
-  "resourceType": "CapabilityStatement",
-  "id": "epa-patient-server",
-  "meta": {
-    "profile": [
-      "https://gematik.de/fhir/ti/StructureDefinition/ti-capability-statement"
-    ]
-  },
-  "url": "https://gematik.de/fhir/epa/CapabilityStatement/epa-patient-server",
-  "contact": [
-    {
-      "telecom": [
-        {
-          "system": "url",
-          "value": "https://www.gematik.de"
-        }
-      ]
-    }
-  ],
-  "format": [
-    "application/fhir+json",
-    "application/fhir+xml"
-  ],
-  "extension": [
-    {
-      "extension": [
-        {
-          "url": "name",
-          "valueString": "X-Request-ID"
-        },
-        {
-          "url": "type",
-          "valueString": "string"
-        },
-        {
-          "url": "description",
-          "valueString": "UUID of the request message"
-        },
-        {
-          "url": "format",
-          "valueString": "uuid"
-        },
-        {
-          "url": "required",
-          "valueBoolean": true
-        }
-      ],
-      "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-header"
-    },
-    {
-      "extension": [
-        {
-          "url": "name",
-          "valueString": "x-insurantid"
-        },
-        {
-          "url": "type",
-          "valueString": "string"
-        },
-        {
-          "url": "description",
-          "valueString": "Health Record Identifier"
-        },
-        {
-          "url": "pattern",
-          "valueString": "^[A-Z]{1}\\d{9}$"
-        },
-        {
-          "url": "required",
-          "valueBoolean": true
-        }
-      ],
-      "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-header"
-    },
-    {
-      "extension": [
-        {
-          "url": "name",
-          "valueString": "x-useragent"
-        },
-        {
-          "url": "type",
-          "valueString": "string"
-        },
-        {
-          "url": "description",
-          "valueString": "user agent information"
-        },
-        {
-          "url": "pattern",
-          "valueString": "^[a-zA-Z0-9]{20}\\/[a-zA-Z0-9\\-\\.]{1,15}$"
-        },
-        {
-          "url": "required",
-          "valueBoolean": true
-        }
-      ],
-      "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-header"
-    },
-    {
-      "extension": [
-        {
-          "url": "statusCode",
-          "valueString": "403"
-        },
-        {
-          "url": "description",
-          "valueString": "Request does not match schema"
-        },
-        {
-          "url": "responseType",
-          "valueString": "application/json"
-        },
-        {
-          "url": "errorCode",
-          "valueString": "invalAuth"
-        }
-      ],
-      "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-    },
-    {
-      "extension": [
-        {
-          "url": "statusCode",
-          "valueString": "403"
-        },
-        {
-          "url": "description",
-          "valueString": "Requestor has no valid entitlement"
-        },
-        {
-          "url": "responseType",
-          "valueString": "application/json"
-        },
-        {
-          "url": "errorCode",
-          "valueString": "notEntitled"
-        }
-      ],
-      "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-    },
-    {
-      "extension": [
-        {
-          "url": "statusCode",
-          "valueString": "403"
-        },
-        {
-          "url": "description",
-          "valueString": "Requestor role is not in the list of allowed user groups"
-        },
-        {
-          "url": "responseType",
-          "valueString": "application/json"
-        },
-        {
-          "url": "errorCode",
-          "valueString": "invalidOid"
-        }
-      ],
-      "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-    },
-    {
-      "extension": [
-        {
-          "url": "statusCode",
-          "valueString": "403"
-        },
-        {
-          "url": "description",
-          "valueString": "Device registration does not exist"
-        },
-        {
-          "url": "responseType",
-          "valueString": "application/json"
-        },
-        {
-          "url": "errorCode",
-          "valueString": "unregisteredDevice"
-        }
-      ],
-      "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-    },
-    {
-      "extension": [
-        {
-          "url": "statusCode",
-          "valueString": "404"
-        },
-        {
-          "url": "description",
-          "valueString": "Health record is in state UNKNOWN or INITIALIZED"
-        },
-        {
-          "url": "responseType",
-          "valueString": "application/json"
-        },
-        {
-          "url": "errorCode",
-          "valueString": "noHealthRecord"
-        }
-      ],
-      "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-    },
-    {
-      "extension": [
-        {
-          "url": "statusCode",
-          "valueString": "409"
-        },
-        {
-          "url": "description",
-          "valueString": "Health record is in state SUSPENDED"
-        },
-        {
-          "url": "responseType",
-          "valueString": "application/json"
-        },
-        {
-          "url": "errorCode",
-          "valueString": "statusMismatch"
-        }
-      ],
-      "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-    },
-    {
-      "extension": [
-        {
-          "url": "statusCode",
-          "valueString": "500"
-        },
-        {
-          "url": "description",
-          "valueString": "Any other error"
-        },
-        {
-          "url": "responseType",
-          "valueString": "application/json"
-        },
-        {
-          "url": "errorCode",
-          "valueString": "internalError"
-        }
-      ],
-      "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-    },
-    {
-      "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-base-url",
-      "valueString": "http://epa4all/epa/patient/api/v1/fhir"
-    }
-  ],
-  "rest": [
-    {
-      "mode": "server",
-      "resource": [
-        {
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-              "valueCode": "SHALL"
-            }
-          ],
-          "supportedProfile": [
-            "https://gematik.de/fhir/ti/StructureDefinition/ti-patient"
-          ],
-          "_supportedProfile": [
-            {
-              "extension": [
-                {
-                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-                  "valueCode": "SHALL"
-                }
-              ]
-            }
-          ],
-          "interaction": [
-            {
-              "extension": [
-                {
-                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-                  "valueCode": "SHALL"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "200"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Successful operation"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "400"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Unknown search parameter"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_PARAM_UNKNOWN"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "400"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Invalid query parameter(s)"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_BAD_SYNTAX"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "400"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Invalid request"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_BAD_FORMAT"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "404"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Unknown resource type"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                }
-              ],
-              "code": "search-type"
-            },
-            {
-              "extension": [
-                {
-                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-                  "valueCode": "SHALL"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "200"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Successful operation"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "400"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Invalid request"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_BAD_FORMAT"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "404"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Unknown resource type"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "404"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Resource is not known"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_RESOURCE_ID_FAIL"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                }
-              ],
-              "code": "history-type"
-            },
-            {
-              "extension": [
-                {
-                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-                  "valueCode": "SHALL"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "200"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Successful operation"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "400"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Invalid request"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_BAD_FORMAT"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "404"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Unknown resource type"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "404"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Resource is not known"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_RESOURCE_ID_FAIL"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                }
-              ],
-              "code": "read"
-            },
-            {
-              "extension": [
-                {
-                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-                  "valueCode": "SHALL"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "200"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Successful operation"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "400"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Invalid request"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_BAD_FORMAT"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "404"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Unknown resource type"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "404"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Resource is not known"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_RESOURCE_ID_FAIL"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                }
-              ],
-              "code": "history-instance"
-            },
-            {
-              "extension": [
-                {
-                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-                  "valueCode": "SHALL"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "200"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Successful operation"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "400"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Invalid request"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_BAD_FORMAT"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "404"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Unknown resource type"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "404"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Resource is not known"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_RESOURCE_ID_FAIL"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                }
-              ],
-              "code": "vread"
-            },
-            {
-              "extension": [
-                {
-                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-                  "valueCode": "SHALL"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "201"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Created, wenn eine neue Ressourceninstanz erstellt wurde"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "200"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Successful operation"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "400"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Invalid request"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_BAD_FORMAT"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "400"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Invalid request"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "malformedRequest"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "422"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Unprocessable Content, falls ein falscher Identifier (KVNR) in der Anfrage angegeben wurde"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_RESOURCE_ID_MISMATCH"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "403"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "ID-Token or Insurant-ID mismatch"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "SVC_IDENTITY_MISMATCH"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "404"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Unknown resource type"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "404"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Resource is not known"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "MSG_RESOURCE_ID_FAIL"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "412"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "Precondition Failed, wenn mehrere Ressourceninstanz gefunden wurden"
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "TIOperationOutcome"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "UPDATE_MULTIPLE_MATCHES"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                }
-              ],
-              "code": "update"
-            }
-          ],
-          "searchParam": [
-            {
-              "extension": [
-                {
-                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-                  "valueCode": "SHALL"
-                }
-              ],
-              "name": "identifier",
-              "definition": "http://hl7.org/fhir/SearchParameter/Patient-identifier",
-              "type": "token",
-              "documentation": "Patient.identifier"
-            }
-          ],
-          "type": "Patient",
-          "versioning": "versioned-update",
-          "readHistory": true,
-          "profile": "https://gematik.de/fhir/epa/StructureDefinition/epa-patient",
-          "_profile": {
-            "extension": [
+            data-api-operation-id="getMedication">
+            <div id="CapabilityStatement">
               {
-                "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-                "valueCode": "SHALL"
+                "resourceType": "CapabilityStatement",
+                "id": "epa-patient-server",
+                "meta": {
+                  "profile": [
+                    "https://gematik.de/fhir/ti/StructureDefinition/ti-capability-statement"
+                  ]
+                },
+                "url": "https://gematik.de/fhir/epa/CapabilityStatement/epa-patient-server",
+                "contact": [
+                  {
+                    "telecom": [
+                      {
+                        "system": "url",
+                        "value": "https://www.gematik.de"
+                      }
+                    ]
+                  }
+                ],
+                "format": [
+                  "application/fhir+json",
+                  "application/fhir+xml"
+                ],
+                "extension": [
+                  {
+                    "extension": [
+                      {
+                        "url": "name",
+                        "valueString": "X-Request-ID"
+                      },
+                      {
+                        "url": "type",
+                        "valueString": "string"
+                      },
+                      {
+                        "url": "description",
+                        "valueString": "UUID of the request message"
+                      },
+                      {
+                        "url": "format",
+                        "valueString": "uuid"
+                      },
+                      {
+                        "url": "required",
+                        "valueBoolean": true
+                      }
+                    ],
+                    "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-header"
+                  },
+                  {
+                    "extension": [
+                      {
+                        "url": "name",
+                        "valueString": "x-insurantid"
+                      },
+                      {
+                        "url": "type",
+                        "valueString": "string"
+                      },
+                      {
+                        "url": "description",
+                        "valueString": "Health Record Identifier"
+                      },
+                      {
+                        "url": "pattern",
+                        "valueString": "^[A-Z]{1}\\d{9}$"
+                      },
+                      {
+                        "url": "required",
+                        "valueBoolean": true
+                      }
+                    ],
+                    "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-header"
+                  },
+                  {
+                    "extension": [
+                      {
+                        "url": "name",
+                        "valueString": "x-useragent"
+                      },
+                      {
+                        "url": "type",
+                        "valueString": "string"
+                      },
+                      {
+                        "url": "description",
+                        "valueString": "user agent information"
+                      },
+                      {
+                        "url": "pattern",
+                        "valueString": "^[a-zA-Z0-9]{20}\\/[a-zA-Z0-9\\-\\.]{1,15}$"
+                      },
+                      {
+                        "url": "required",
+                        "valueBoolean": true
+                      }
+                    ],
+                    "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-header"
+                  },
+                  {
+                    "extension": [
+                      {
+                        "url": "statusCode",
+                        "valueString": "403"
+                      },
+                      {
+                        "url": "description",
+                        "valueString": "Request does not match schema"
+                      },
+                      {
+                        "url": "responseType",
+                        "valueString": "application/json"
+                      },
+                      {
+                        "url": "errorCode",
+                        "valueString": "invalAuth"
+                      }
+                    ],
+                    "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                  },
+                  {
+                    "extension": [
+                      {
+                        "url": "statusCode",
+                        "valueString": "403"
+                      },
+                      {
+                        "url": "description",
+                        "valueString": "Requestor has no valid entitlement"
+                      },
+                      {
+                        "url": "responseType",
+                        "valueString": "application/json"
+                      },
+                      {
+                        "url": "errorCode",
+                        "valueString": "notEntitled"
+                      }
+                    ],
+                    "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                  },
+                  {
+                    "extension": [
+                      {
+                        "url": "statusCode",
+                        "valueString": "403"
+                      },
+                      {
+                        "url": "description",
+                        "valueString": "Requestor role is not in the list of allowed user groups"
+                      },
+                      {
+                        "url": "responseType",
+                        "valueString": "application/json"
+                      },
+                      {
+                        "url": "errorCode",
+                        "valueString": "invalidOid"
+                      }
+                    ],
+                    "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                  },
+                  {
+                    "extension": [
+                      {
+                        "url": "statusCode",
+                        "valueString": "403"
+                      },
+                      {
+                        "url": "description",
+                        "valueString": "Device registration does not exist"
+                      },
+                      {
+                        "url": "responseType",
+                        "valueString": "application/json"
+                      },
+                      {
+                        "url": "errorCode",
+                        "valueString": "unregisteredDevice"
+                      }
+                    ],
+                    "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                  },
+                  {
+                    "extension": [
+                      {
+                        "url": "statusCode",
+                        "valueString": "404"
+                      },
+                      {
+                        "url": "description",
+                        "valueString": "Health record is in state UNKNOWN or INITIALIZED"
+                      },
+                      {
+                        "url": "responseType",
+                        "valueString": "application/json"
+                      },
+                      {
+                        "url": "errorCode",
+                        "valueString": "noHealthRecord"
+                      }
+                    ],
+                    "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                  },
+                  {
+                    "extension": [
+                      {
+                        "url": "statusCode",
+                        "valueString": "409"
+                      },
+                      {
+                        "url": "description",
+                        "valueString": "Health record is in state SUSPENDED"
+                      },
+                      {
+                        "url": "responseType",
+                        "valueString": "application/json"
+                      },
+                      {
+                        "url": "errorCode",
+                        "valueString": "statusMismatch"
+                      }
+                    ],
+                    "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                  },
+                  {
+                    "extension": [
+                      {
+                        "url": "statusCode",
+                        "valueString": "500"
+                      },
+                      {
+                        "url": "description",
+                        "valueString": "Any other error"
+                      },
+                      {
+                        "url": "responseType",
+                        "valueString": "application/json"
+                      },
+                      {
+                        "url": "errorCode",
+                        "valueString": "internalError"
+                      }
+                    ],
+                    "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                  },
+                  {
+                    "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-base-url",
+                    "valueString": "http://epa4all/epa/patient/api/v1/fhir"
+                  }
+                ],
+                "rest": [
+                  {
+                    "mode": "server",
+                    "resource": [
+                      {
+                        "extension": [
+                          {
+                            "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                            "valueCode": "SHALL"
+                          }
+                        ],
+                        "supportedProfile": [
+                          "https://gematik.de/fhir/ti/StructureDefinition/ti-patient"
+                        ],
+                        "_supportedProfile": [
+                          {
+                            "extension": [
+                              {
+                                "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                                "valueCode": "SHALL"
+                              }
+                            ]
+                          }
+                        ],
+                        "interaction": [
+                          {
+                            "extension": [
+                              {
+                                "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                                "valueCode": "SHALL"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "200"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Successful operation"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "400"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Unknown search parameter"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_PARAM_UNKNOWN"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "400"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Invalid query parameter(s)"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_BAD_SYNTAX"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "400"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Invalid request"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_BAD_FORMAT"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "404"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Unknown resource type"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_UNKNOWN_TYPE"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              }
+                            ],
+                            "code": "search-type"
+                          },
+                          {
+                            "extension": [
+                              {
+                                "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                                "valueCode": "SHALL"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "200"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Successful operation"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "400"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Invalid request"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_BAD_FORMAT"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "404"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Unknown resource type"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_UNKNOWN_TYPE"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "404"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Resource is not known"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_RESOURCE_ID_FAIL"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              }
+                            ],
+                            "code": "history-type"
+                          },
+                          {
+                            "extension": [
+                              {
+                                "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                                "valueCode": "SHALL"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "200"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Successful operation"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "400"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Invalid request"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_BAD_FORMAT"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "404"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Unknown resource type"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_UNKNOWN_TYPE"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "404"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Resource is not known"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_RESOURCE_ID_FAIL"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              }
+                            ],
+                            "code": "read"
+                          },
+                          {
+                            "extension": [
+                              {
+                                "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                                "valueCode": "SHALL"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "200"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Successful operation"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "400"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Invalid request"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_BAD_FORMAT"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "404"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Unknown resource type"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_UNKNOWN_TYPE"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "404"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Resource is not known"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_RESOURCE_ID_FAIL"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              }
+                            ],
+                            "code": "history-instance"
+                          },
+                          {
+                            "extension": [
+                              {
+                                "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                                "valueCode": "SHALL"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "200"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Successful operation"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "400"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Invalid request"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_BAD_FORMAT"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "404"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Unknown resource type"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_UNKNOWN_TYPE"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "404"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Resource is not known"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_RESOURCE_ID_FAIL"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              }
+                            ],
+                            "code": "vread"
+                          },
+                          {
+                            "extension": [
+                              {
+                                "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                                "valueCode": "SHALL"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "201"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Created, wenn eine neue Ressourceninstanz erstellt wurde"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "200"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Successful operation"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "400"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Invalid request"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_BAD_FORMAT"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "400"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Invalid request"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "application/json"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "malformedRequest"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "422"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Unprocessable Content, falls ein falscher Identifier (KVNR) in der Anfrage angegeben wurde"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_RESOURCE_ID_MISMATCH"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "403"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "ID-Token or Insurant-ID mismatch"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "SVC_IDENTITY_MISMATCH"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "404"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Unknown resource type"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_UNKNOWN_TYPE"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "404"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Resource is not known"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "MSG_RESOURCE_ID_FAIL"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              },
+                              {
+                                "extension": [
+                                  {
+                                    "url": "statusCode",
+                                    "valueString": "412"
+                                  },
+                                  {
+                                    "url": "description",
+                                    "valueString": "Precondition Failed, wenn mehrere Ressourceninstanz gefunden wurden"
+                                  },
+                                  {
+                                    "url": "responseType",
+                                    "valueString": "TIOperationOutcome"
+                                  },
+                                  {
+                                    "url": "errorCode",
+                                    "valueString": "UPDATE_MULTIPLE_MATCHES"
+                                  }
+                                ],
+                                "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                              }
+                            ],
+                            "code": "update"
+                          }
+                        ],
+                        "searchParam": [
+                          {
+                            "extension": [
+                              {
+                                "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                                "valueCode": "SHALL"
+                              }
+                            ],
+                            "name": "identifier",
+                            "definition": "http://hl7.org/fhir/SearchParameter/Patient-identifier",
+                            "type": "token",
+                            "documentation": "Patient.identifier"
+                          }
+                        ],
+                        "type": "Patient",
+                        "versioning": "versioned-update",
+                        "readHistory": true,
+                        "profile": "https://gematik.de/fhir/epa/StructureDefinition/epa-patient",
+                        "_profile": {
+                          "extension": [
+                            {
+                              "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                              "valueCode": "SHALL"
+                            }
+                          ]
+                        },
+                        "conditionalUpdate": true,
+                        "_conditionalUpdate": {
+                          "extension": [
+                            {
+                              "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                              "valueCode": "SHALL"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "version": "1.1.5",
+                "status": "active",
+                "publisher": "gematik GmbH",
+                "date": "2025-05-28",
+                "name": "EPAPatientServer",
+                "title": "EPA CapabilityStatement für den Patient Service",
+                "description": "EPA Capability Statement für den Patient Service",
+                "kind": "requirements",
+                "fhirVersion": "4.0.1",
+                "imports": [
+                  "https://gematik.de/fhir/epa/CapabilityStatement/epa-basic-server"
+                ],
+                "_imports": [
+                  {
+                    "extension": [
+                      {
+                        "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                        "valueCode": "SHALL"
+                      }
+                    ]
+                  }
+                ]
               }
-            ]
-          },
-          "conditionalUpdate": true,
-          "_conditionalUpdate": {
-            "extension": [
-              {
-                "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-                "valueCode": "SHALL"
-              }
-            ]
-          }
-        }
-      ]
-    }
-  ],
-  "version": "1.1.5",
-  "status": "active",
-  "publisher": "gematik GmbH",
-  "date": "2025-05-28",
-  "name": "EPAPatientServer",
-  "title": "EPA CapabilityStatement für den Patient Service",
-  "description": "EPA Capability Statement für den Patient Service",
-  "kind": "requirements",
-  "fhirVersion": "4.0.1",
-  "imports": [
-    "https://gematik.de/fhir/epa/CapabilityStatement/epa-basic-server"
-  ],
-  "_imports": [
-    {
-      "extension": [
-        {
-          "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-          "valueCode": "SHALL"
-        }
-      ]
-    }
-  ]
-}
-            '
-            >
+            </div>
         </div>
     </body>
 </html>

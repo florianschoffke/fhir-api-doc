@@ -76,7 +76,6 @@ function mergeObjects(base, derived) {
             result[key] = derived[key];
         }
     }
-    console.log(result);
     return result;
 }
 
