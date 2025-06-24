@@ -26,6 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function parseExampleDivs(container) {
+    if(!container) {
+        return null;
+    }
     const exampleDivs = Array.from(container.querySelectorAll('div[data-name][data-type]'));
 
     return exampleDivs.map(div => {
@@ -44,18 +47,74 @@ function parseExampleDivs(container) {
     });
 }
 
+
+function parseValueDivs(container) {
+    if (!container) {
+        return null;
+    }
+    const divs = Array.from(container.querySelectorAll('div[data-value]'));
+    return divs.map(div => div.getAttribute('data-value'));
+}
+
+
+function parseHeaderParams(container) {
+    if (!container) {
+        return [];
+    }
+    // const divs = Array.from(container.querySelectorAll('div[data-name][data-type]'));
+    const divs = Array.from(container.children);
+
+    return divs.map(div => {
+        const name = div.getAttribute('data-name');
+        const type = div.getAttribute('data-type');
+        const description = div.innerHTML;
+        const expectation = "";
+
+        return {
+            name,
+            type,
+            description,
+            expectation
+        };
+    });
+}
+
+function parseResponseInfos(container) {
+    if (!container) {
+        return [];
+    }
+    const divs = Array.from(container.children);
+
+    return divs.map(div => {
+        const statusCode = div.getAttribute('data-code');
+        const errorCode = div.getAttribute('data-error-code');
+        const description = div.innerHTML;
+        const responseType = div.getAttribute('data-response-type');
+
+        return {
+            statusCode,
+            errorCode,
+            description,
+            responseType
+        };
+    });
+}
+
+
+
 function renderCapabilityStatementApiDoc() {
     const capDivs = document.querySelectorAll('.gematik-apidoc, .gematik-api');
-    // const capDivs = document.querySelectorAll('div[data-api-fhir-capabilitystatement-url], div[data-api-fhir-capabilitystatement]');
     capDivs.forEach(div => {
-        const _apiType = div.getAttribute('data-api-type');
+        let _apiType = div.getAttribute('data-api-type');
+        if(!_apiType) {
+            _apiType = ApiType.CUSTOM;
+        }
         const resourceType = div.getAttribute('data-api-fhir-resource-type');
         const interaction = div.getAttribute('data-api-fhir-interaction');
         const operationId = div.getAttribute('data-api-operation-id');
         const urlPath = div.getAttribute('data-api-url-path');
-
-        // const operationDefinition = div.getAttribute('data-api-fhir-operation-definition');
         const invokeLevel = div.getAttribute('data-api-fhir-invoke-level');
+        const httpMethod = div.getAttribute('data-api-method');
 
         const descriptionDiv = div.querySelector('#api-description');
         const description = descriptionDiv?.innerHTML?.trim() ?? '';
@@ -80,44 +139,44 @@ function renderCapabilityStatementApiDoc() {
             }
         }
 
-        let responseExamples = null;
-        const responseExamplesContainer = div.querySelector('#api-response-examples');
-        if (responseExamplesContainer) {
-            responseExamples = parseExampleDivs(responseExamplesContainer);
-        }
-
-        let requestExamples = null;
-        const requestExamplesContainer = div.querySelector('#api-request-examples');
-        if (requestExamplesContainer) {
-            requestExamples = parseExampleDivs(requestExamplesContainer);
-        }
+        const formats = parseValueDivs(div.querySelector('#api-formats'));
+        const responseExamples = parseExampleDivs(div.querySelector('#api-response-examples'));
+        const requestExamples = parseExampleDivs(div.querySelector('#api-request-examples'));
+        const headerParams = parseHeaderParams(div.querySelector('#api-header-parameter'));
+        const responseInfos = parseResponseInfos(div.querySelector('#api-response'));
 
         div.innerHTML = "";
         if (_apiType === ApiType.FHIRResource) {
             if (cap && resourceType) {
-                renderCapabilityStatementResourceApiDocumentation(cap, resourceType, interaction, div, operationId, urlPath, description, requestExamples, responseExamples);
+                renderCapabilityStatementResourceApiDocumentation(div, cap, resourceType, interaction, operationId, urlPath, description, requestExamples, responseExamples);
             } else if (capUrl && resourceType) {
-                utils.loadData(capUrl).then(data => renderCapabilityStatementResourceApiDocumentation(data, resourceType, interaction, div, operationId, urlPath, description, requestExamples, responseExamples));
+                utils.loadData(capUrl).then(data => renderCapabilityStatementResourceApiDocumentation(div, data, resourceType, interaction, operationId, urlPath, description, requestExamples, responseExamples));
             }
         } else if (_apiType === ApiType.FHIROperation) {
             if (cap) {
-                renderWithOperationDefinition(cap, operationDefinition, operationDefinitionUrl, invokeLevel, div, resourceType, operationId, urlPath, description, requestExamples, responseExamples);
+                renderWithOperationDefinition(div, cap, operationDefinition, operationDefinitionUrl, invokeLevel, resourceType, operationId, urlPath, description, requestExamples, responseExamples);
             } else if (capUrl) {
-                utils.loadData(capUrl).then(data => renderWithOperationDefinition(data, operationDefinition, operationDefinitionUrl, invokeLevel, div, resourceType, operationId, urlPath, description, requestExamples, responseExamples));
+                utils.loadData(capUrl).then(data => renderWithOperationDefinition(div, data, operationDefinition, operationDefinitionUrl, invokeLevel, resourceType, operationId, urlPath, description, requestExamples, responseExamples));
+            }
+        } else if (_apiType === ApiType.CUSTOM) {
+            if (!capUrl) {
+                renderCustomApiDocumentation(div, urlPath, httpMethod, operationId, formats, description, requestExamples, responseExamples, headerParams, responseInfos, cap);
+            } else {
+                utils.loadData(capUrl).then(data => renderCustomApiDocumentation(div, urlPath, httpMethod, operationId, formats, description, requestExamples, responseExamples, headerParams, responseInfos, data));
             }
         }
     });
 }
 
-function renderWithOperationDefinition(capability, operationDefinition, operationDefinitionUrl, invokeLevel, parent, resourceType=null, operationId=null, urlPath=null, description=null, requestExamples=null, responseExamples=null) {
+function renderWithOperationDefinition(parent, capability, operationDefinition, operationDefinitionUrl, invokeLevel, resourceType=null, operationId=null, urlPath=null, description=null, requestExamples=null, responseExamples=null) {
     if (!capability) {
         console.error(`CapabilityStatement is ${capability}!`);
         return;
     }
     if (operationDefinition) {
-        renderCapabilityStatementOperationApiDocumentation(capability, operationDefinition, invokeLevel, parent, resourceType, operationId, urlPath, description, requestExamples, responseExamples);
+        renderCapabilityStatementOperationApiDocumentation(parent, capability, operationDefinition, invokeLevel, resourceType, operationId, urlPath, description, requestExamples, responseExamples);
     } else if (operationDefinitionUrl) {
-        utils.loadData(operationDefinitionUrl).then(data => renderCapabilityStatementOperationApiDocumentation(capability, data, invokeLevel, parent, resourceType, operationId, urlPath, description, requestExamples, responseExamples));
+        utils.loadData(operationDefinitionUrl).then(data => renderCapabilityStatementOperationApiDocumentation(parent, capability, data, invokeLevel, resourceType, operationId, urlPath, description, requestExamples, responseExamples));
     }
 }
 
@@ -291,17 +350,20 @@ function appendInfoBox(parent, operationId=null, formats=[], description=null) {
     }
 }
 
-function appendHeaderInfo(parent, fhirData, httpMethod=null) {
-    if (fhirData.headerParams?.length) {
+function appendHeaderInfo(parent, headerParams, formats, httpMethod=null) {
+    if(!headerParams) {
+        return;
+    }
+    if (headerParams?.length) {
         parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.HeaderParams_Header }));
-        const headerParamsRows = fhirData.headerParams.map(({ name, type, description, expectation }) => [
+        const headerParamsRows = headerParams.map(({ name, type, description, expectation }) => [
             name,
             `<code>${type}</code>`, 
             description, 
             // expectation
         ]);
-        if (httpMethod === "GET" && Array.isArray(fhirData.formats) && fhirData.formats.length > 1) {
-            const acceptHeaderValue = fhirData.formats.join(', ');
+        if (httpMethod === "GET" && Array.isArray(formats) && formats.length > 1) {
+            const acceptHeaderValue = formats.join(', ');
             headerParamsRows.push([
                 'Accept',
                 '<code>string</code>',
@@ -333,10 +395,10 @@ function appendExamples(parent, forRequest, forResponse) {
 }
 
 
-function appendResponseInfo(parent, fhirData) {
-    if (fhirData.responseInfos) {
+function appendResponseInfo(parent, responseInfos) {
+    if (responseInfos) {
         parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.Response_Header }));
-        const responseRows = fhirData.responseInfos.map(({ statusCode, description, errorCode, responseType }) => [
+        const responseRows = responseInfos.map(({ statusCode, description, errorCode, responseType }) => [
             `<code>${statusCode}</code>`, 
             description, 
             errorCode, 
@@ -369,9 +431,9 @@ function appendSearchParameters(parent, fhirData) {
 }
 
 
-function renderCapabilityStatementResourceApiDocumentation(data, resourceType, interaction, parent, operationId=null, urlPath=null, description=null, requestExamples=null, responseExamples=null) {
+function renderCapabilityStatementResourceApiDocumentation(parent, capability, resourceType, interaction, operationId=null, urlPath=null, description=null, requestExamples=null, responseExamples=null) {
     parent.classList.add("gem-ig-api-doc");
-    const fhirData = fhir.parseFhirCapabilityStatement(data, resourceType, interaction);
+    const fhirData = fhir.parseFhirCapabilityStatement(capability, resourceType, interaction);
     if (!(interaction in MAP_METHODS)) {
         console.warn(`Interaction code "${interaction.code}" is not mapped to an HTTP method.`);
         return;
@@ -386,7 +448,7 @@ function renderCapabilityStatementResourceApiDocumentation(data, resourceType, i
 
     appendInfoBox(operationMainBlock, operationId, fhirData.formats, description);
 
-    appendHeaderInfo(operationMainBlock, fhirData, MAP_METHODS[interaction]);
+    appendHeaderInfo(operationMainBlock, fhirData.headerParams, fhirData.formats, MAP_METHODS[interaction]);
 
     if (fhirData.searchParams?.length & (interaction == "search-type" | interaction == "_search" | (interaction == "update" & fhirData.conditionalUpdate))) {
         appendSearchParameters(operationMainBlock, fhirData);
@@ -404,11 +466,11 @@ function renderCapabilityStatementResourceApiDocumentation(data, resourceType, i
     }
 
     appendExamples(operationMainBlock, requestExamples, responseExamples);
-    appendResponseInfo(operationMainBlock, fhirData);
+    appendResponseInfo(operationMainBlock, fhirData.responseInfos);
 }
 
 
-function renderCapabilityStatementOperationApiDocumentation(capability, operationDefinition, invokeLevel, parent, resourceType=null, operationId=null, urlPath=null, description=null, requestExamples=null, responseExamples=null) {
+function renderCapabilityStatementOperationApiDocumentation(parent, capability, operationDefinition, invokeLevel, resourceType=null, operationId=null, urlPath=null, description=null, requestExamples=null, responseExamples=null) {
     parent.classList.add("gem-ig-api-doc");
     const fhirData = fhir.parseFhirOperationCapabilityStatement(capability, operationDefinition, invokeLevel, resourceType);
     fhirData.methods.forEach(httpMethod => {
@@ -426,11 +488,39 @@ function renderCapabilityStatementOperationApiDocumentation(capability, operatio
         parent.appendChild(operationMainBlock);
 
         appendInfoBox(operationMainBlock, operationId, fhirData.formats, description);
-        appendHeaderInfo(operationMainBlock, fhirData, httpMethod);
+        appendHeaderInfo(operationMainBlock, fhirData.headerParams, fhirData.formats, httpMethod);
         if (fhirData.searchParams?.length) {
             appendSearchParameters(operationMainBlock, fhirData);
         }
         appendExamples(operationMainBlock, requestExamples, responseExamples);
-        appendResponseInfo(operationMainBlock, fhirData);
+        appendResponseInfo(operationMainBlock, fhirData.responseInfos);
     });
+}
+
+
+function renderCustomApiDocumentation(parent, urlPath, httpMethod, operationId=null, formats=null, description=null, requestExamples=null, responseExamples=null, headerParams=null, responseInfos=null, capability=null) {
+    parent.classList.add("gem-ig-api-doc");
+    const METHOD = ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD"];
+    httpMethod = String(httpMethod || "").toUpperCase();
+    if(!(METHOD.includes(httpMethod))) {
+        console.warn(`This HTTP method "${httpMethod}" is not supported. Default: GET`);
+        httpMethod = "GET";
+    }
+    const urlBase = "[base]/"
+    urlPath = utils.removeLeadingSlash(urlPath);
+    const operationMainBlock = createOperationMainBlock(httpMethod, urlBase ? `${urlBase}${urlPath}` : urlPath);
+    parent.appendChild(operationMainBlock);
+
+    appendInfoBox(operationMainBlock, operationId, formats, description);
+
+    headerParams = headerParams || []
+    responseInfos = responseInfos || []
+    if(capability) {
+        const fhirData = fhir.parseGlobalServerInfo(capability);
+        headerParams = [...headerParams, ...fhirData.headerParams];
+        responseInfos = [...responseInfos, ...fhirData.responseInfos];
+    }
+    appendHeaderInfo(operationMainBlock, headerParams, formats, httpMethod);
+    appendExamples(operationMainBlock, requestExamples, responseExamples);
+    appendResponseInfo(operationMainBlock, responseInfos);
 }

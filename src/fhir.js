@@ -77,8 +77,25 @@ function extractResponseInfoValues(extensions) {
 }
 
 
+
+function parseGlobalServerInfo(data) {
+    const capabilityStatement = utils.toJson(data);
+    const { extension: extensions = [] } = capabilityStatement;
+    const globalHeaders = extractHeaderValues(extensions);
+    const globalResponses = extractResponseInfoValues(extensions);
+
+    return {
+        headerParams: [...globalHeaders],
+        responseInfos: [...globalResponses],
+        formats: capabilityStatement.format,
+        baseUrl: extractBaseUrl(extensions)
+
+    };
+}
+
+
 function parseFhirCapabilityStatement(data, resourceType, interactionCode = "search-type") {
-    const capabilityStatement = JSON.parse(data);
+    const capabilityStatement = utils.toJson(data);
 
     const { extension: extensions = [] } = capabilityStatement;
     const globalHeaders = extractHeaderValues(extensions);
@@ -152,8 +169,8 @@ function getOperation(operationDefinition, invokeLevel, restEntry, resourceType=
 
 
 function parseFhirOperationCapabilityStatement(data, opData, invokeLevel, resourceType) {
-    const capabilityStatement = JSON.parse(data);
-    const operationDefinition = JSON.parse(opData);
+    const capabilityStatement = utils.toJson(data);
+    const operationDefinition = utils.toJson(opData);
     const { extension: extensions = [] } = capabilityStatement;
     const globalHeaders = extractHeaderValues(extensions);
     const globalResponses = extractResponseInfoValues(extensions);
@@ -193,75 +210,9 @@ function parseFhirOperationCapabilityStatement(data, opData, invokeLevel, resour
     };
 }
 
-
-// function parseFhirOperationCapabilityStatement(data, opData, invokeLevel, resourceType) {
-//     const capabilityStatement = JSON.parse(data);
-//     const operationDefinition = JSON.parse(opData);
-//     const { extension: extensions = [] } = capabilityStatement;
-//     const globalHeaders = extractHeaderValues(extensions);
-//     const globalResponses = extractResponseInfoValues(extensions);
-//     const { rest: rest = [] } = capabilityStatement;
-//     for (const restEntry of rest) {
-//       let localHeaders = [];
-//       let localResponses = [];
-//       const filteredParams = (operationDefinition?.parameter || [])
-//         .filter(param => param.use === "in")
-//         .map(({ name, type, documentation = '-' }) => ({
-//           name,
-//           type,
-//           documentation
-//       }));
-
-//       if (invokeLevel === Invoke_Level.system) {
-//         const { operation = [] } = restEntry;
-//         const operationDetails = operation.find(op => op.definition === operationDefinition.url);
-//         if (!operationDetails) continue;
-
-//         localHeaders = operation?.extension
-//             ? extractHeaderValues(operation.extension)
-//             : [];
-
-//         localResponses = operation?.extension
-//             ? extractResponseInfoValues(operation.extension)
-//             : [];
-//       } else if(invokeLevel === Invoke_Level.type | invokeLevel === Invoke_Level.instance) {
-//         if(!resourceType){
-//           console.error(`You need a resourceType when invoke level is "${invokeLevel}"`);
-//           continue;
-//         }
-//         const { resource = [] } = restEntry;
-//         const resourceDetails = resource.find(res => res.type === resourceType);
-//         if (!resourceDetails) continue;
-
-//         const { operation = [] } = restEntry;
-//         const operationDetails = operation.find(op => op.definition === operationDefinition.url);
-//         if (!operationDetails) continue;
-//         localHeaders = operation?.extension
-//             ? extractHeaderValues(operation.extension)
-//             : [];
-
-//         localResponses = operation?.extension
-//             ? extractResponseInfoValues(operation.extension)
-//             : [];
-//       }
-//       let methods = extractHttpMethods(operationDefinition.extension)
-//       return {
-//           baseUrl: extractBaseUrl(extensions),
-//           code: `${operationDefinition.code}`,
-//           formats: capabilityStatement.format,
-//           headerParams: [...globalHeaders, ...localHeaders],
-//           responseInfos: [...globalResponses, ...localResponses],
-//           searchParams: filteredParams,
-//           methods: methods
-//       };
-//     }
-//     return {
-//       methods:[]
-//     };
-// }
-
 export default {
     parseFhirCapabilityStatement,
     parseFhirOperationCapabilityStatement,
+    parseGlobalServerInfo,
     Invoke_Level
 };

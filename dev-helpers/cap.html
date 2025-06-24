@@ -25,15 +25,39 @@
         <p><a href="/openapi.html">OpenAPI</a></p>
 
 
+
         <h2>Custom</h2>
         <div class="gematik-api"
-            data-api-type="FHIROperation"
-            data-api-fhir-invoke-level="system"
-            data-api-operation-id="getMedicationList">
+            data-api-type="Custom"
+            data-api-method="GET"
+            data-api-operation-id="CustomOperationID"
+            data-api-url-path="/epa/medication/render/v1/eml/xhtml">
             <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
-            <div id="OperationDefinition" data-url="./OperationDefinition-get-medication-list-op.json"></div>
+            <div id="api-formats">
+                <div data-value="application/json"></div>
+            </div>
+            <div id="api-header-parameter">
+              <div data-name="X-Test-ID" data-type="string">Das ist ein test</div>
+              <div data-name="X-Custom-ID" data-type="string">Der Custom Header</div>
+            </div>
+           <div id="api-response">
+              <div data-code="504" data-error-code="invalAuth" data-response-type="application/json">Das ist ein test</div>
+              <div data-code="501" data-error-code="Internal" data-response-type="application/json">Das ist ein Internal Error</div>
+            </div>
+            <div id="api-description">
+              test
+            </div>
+            <div id="api-response-examples">
+                <div data-name="application/json" data-type="JSON" data-url="/Bundle-example-searchset-medication.json"></div>
+            </div>
+            <div id="api-request-examples">
+                <div data-name="application/json" data-type="JSON">
+                    {
+                        "resourceType": "Test"
+                    }
+                </div>
+            </div>
         </div>
-
 
         <h2>getMedicationList</h2>
         <div class="gematik-api"
@@ -75,6 +99,7 @@
         </div>
         <h2>2</h2>
         <div class="gematik-apidoc"
+            data-api-type="FHIRResource"
             data-api-fhir-resource-type="MedicationRequest"
             data-api-fhir-interaction="update"
             data-api-operation-id="getMedication"
@@ -84,6 +109,7 @@
         </div>
         <h2>3</h2>
         <div class="gematik-apidoc"
+            data-api-type="FHIRResource"
             data-api-fhir-resource-type="MedicationRequest"
             data-api-fhir-interaction="search-type"
             data-api-operation-id="getMedication">
@@ -124,6 +150,7 @@
         </div>
         <h2>4</h2>
         <div class="gematik-apidoc"
+            data-api-type="FHIRResource"
             data-api-fhir-resource-type="Patient"
             data-api-fhir-interaction="update"
             data-api-operation-id="getMedication">

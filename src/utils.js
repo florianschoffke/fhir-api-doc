@@ -53,14 +53,35 @@ const translateExpectation = (conformance) => ({
 
 
 const isJson = (str) => {
-  if (typeof str !== "string") return false;
+    if (typeof str !== "string") return false;
 
-  try {
-    const parsed = JSON.parse(str);
-    return typeof parsed === "object" && parsed !== null;
-  } catch (e) {
-    return false;
-  }
+    try {
+        const parsed = JSON.parse(str);
+        return typeof parsed === "object" && parsed !== null;
+    } catch (e) {
+        return false;
+    }
+}
+
+function toJson(value) {
+    if (typeof value === "object" && value !== null) {
+        return value; // already a JSON object or array
+    }
+
+    if (typeof value === "string") {
+        try {
+            const parsed = JSON.parse(value);
+            return typeof parsed === "object" && parsed !== null ? parsed : null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    return null; // anything else is not JSON
+}
+
+function removeLeadingSlash(str) {
+  return str.startsWith('/') ? str.slice(1) : str;
 }
 
 export default {
@@ -68,5 +89,7 @@ export default {
     createElement,
     createTable,
     translateExpectation,
-    isJson
+    isJson,
+    toJson,
+    removeLeadingSlash
 };
