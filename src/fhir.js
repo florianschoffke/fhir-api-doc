@@ -1,45 +1,90 @@
 import utils from './utils.js';
 
 
-function extractExtensionValues(array, targetUrl) {
-//   const targetUrl = "https://gematik.de/fhir/ti/StructureDefinition/extension-http-header";
+const Invoke_Level = {
+  system: "system",
+  type: "type",
+  instance: "instance"
+};
 
+
+function extractExtensionValues(array, targetUrl) {
   return array
     .filter(item => item.url === targetUrl)
     .map(item => {
-      const header = {};
+      const result = {};
       for (const ext of item.extension) {
         if (ext.url && ext.url.startsWith("value")) continue; // skip malformed
 
         const valueKey = Object.keys(ext).find(k => k.startsWith("value"));
         if (valueKey) {
-          header[ext.url] = ext[valueKey];
+          result[ext.url] = ext[valueKey];
         }
       }
-      return header;
+      return result;
     });
 }
 
-function extractBaseUrl(extensions, baseUrlExtension = "https://gematik.de/fhir/ti/StructureDefinition/extension-base-url") {
+function extractExtensionValue(extensions, url) {
   if (!Array.isArray(extensions)) return null;
 
-  const ext = extensions.find(e => e.url === baseUrlExtension && typeof e.valueString === "string");
+  const ext = extensions.find(e => e.url === url && typeof e.valueString === "string");
 
   return ext ? ext.valueString : null;
 }
 
 
+function extractExtensionCode(extensions, url) {
+  if (!Array.isArray(extensions)) return null;
+
+  const ext = extensions.find(e => e.url === url && typeof e.valueCode === "string");
+
+  return ext ? ext.valueCode : null;
+}
+
+
+
+function extractBaseUrl(extensions) {
+  return extractExtensionValue(extensions, "https://gematik.de/fhir/ti/StructureDefinition/extension-base-url");
+}
+
+
+function extractHttpMethods(extensions) {
+  const _default = ["POST"];
+  const _url = "https://gematik.de/fhir/ti/StructureDefinition/extension-http-method";
+
+  if (!Array.isArray(extensions)) {
+    return _default;
+  }
+
+  const methods = extensions
+    .filter(ext => ext.url === _url && typeof ext.valueCode === "string")
+    .map(ext => ext.valueCode.toUpperCase());
+
+  return methods.length > 0 ? methods : _default;
+}
+
+
+function extractHeaderValues(extensions) {
+  const targetUrlHeaders = "https://gematik.de/fhir/ti/StructureDefinition/extension-http-header";
+  return extractExtensionValues(extensions, targetUrlHeaders);
+}
+
+
+function extractResponseInfoValues(extensions) {
+  const targetUrlResponses = "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info";
+  return extractExtensionValues(extensions, targetUrlResponses);
+}
+
 
 function parseFhirCapabilityStatement(data, resourceType, interactionCode = "search-type") {
-    const targetUrlHeaders = "https://gematik.de/fhir/ti/StructureDefinition/extension-http-header";
-    const targetUrlResponses = "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info";
     const capabilityStatement = JSON.parse(data);
-    const { rest: rest = [] } = capabilityStatement;
+
     const { extension: extensions = [] } = capabilityStatement;
+    const globalHeaders = extractHeaderValues(extensions);
+    const globalResponses = extractResponseInfoValues(extensions);
 
-    const globalHeaders = extractExtensionValues(extensions, targetUrlHeaders);
-    const globalResponses = extractExtensionValues(extensions, targetUrlResponses);
-
+    const { rest: rest = [] } = capabilityStatement;
     for (const restEntry of rest) {
         const { resource = [] } = restEntry;
         const resourceDetails = resource.find(res => res.type === resourceType);
@@ -51,11 +96,11 @@ function parseFhirCapabilityStatement(data, resourceType, interactionCode = "sea
         );
 
         const localHeaders = interaction?.extension
-            ? extractExtensionValues(interaction.extension, targetUrlHeaders)
+            ? extractHeaderValues(interaction.extension)
             : [];
 
         const localResponses = interaction?.extension
-            ? extractExtensionValues(interaction.extension, targetUrlResponses)
+            ? extractResponseInfoValues(interaction.extension)
             : [];
 
         return {
@@ -84,6 +129,139 @@ function parseFhirCapabilityStatement(data, resourceType, interactionCode = "sea
 }
 
 
+function getOperation(operationDefinition, invokeLevel, restEntry, resourceType=null) {
+
+  if (invokeLevel === Invoke_Level.system) {
+    const { operation = [] } = restEntry;
+    return operation.find(op => op.definition === operationDefinition.url);
+  } else if(invokeLevel === Invoke_Level.type | invokeLevel === Invoke_Level.instance) {
+    if(!resourceType){
+      console.error(`You need a resourceType when invoke level is "${invokeLevel}"`);
+      return null;
+    }
+    const { resource = [] } = restEntry;
+    const resourceDetails = resource.find(res => res.type === resourceType);
+    if (!resourceDetails) {
+      return null;
+    }
+    const { operation = [] } = restEntry;
+    return operation.find(op => op.definition === operationDefinition.url);
+  }
+  return null;
+}
+
+
+function parseFhirOperationCapabilityStatement(data, opData, invokeLevel, resourceType) {
+    const capabilityStatement = JSON.parse(data);
+    const operationDefinition = JSON.parse(opData);
+    const { extension: extensions = [] } = capabilityStatement;
+    const globalHeaders = extractHeaderValues(extensions);
+    const globalResponses = extractResponseInfoValues(extensions);
+    const { rest: rest = [] } = capabilityStatement;
+    for (const restEntry of rest) {
+      let localHeaders = [];
+      let localResponses = [];
+      const searchParams = (operationDefinition?.parameter || [])
+        .filter(param => param.use === "in")
+        .map(({ name, type, documentation = '-' }) => ({
+          name,
+          type,
+          documentation
+      }));
+
+      const operation = getOperation(operationDefinition, invokeLevel, restEntry, resourceType)
+      localHeaders = operation?.extension
+          ? extractHeaderValues(operation.extension)
+          : [];
+
+      localResponses = operation?.extension
+          ? extractResponseInfoValues(operation.extension)
+          : [];
+      let methods = extractHttpMethods(operationDefinition.extension)
+      return {
+          baseUrl: extractBaseUrl(extensions),
+          code: `${operationDefinition.code}`,
+          formats: capabilityStatement.format,
+          headerParams: [...globalHeaders, ...localHeaders],
+          responseInfos: [...globalResponses, ...localResponses],
+          searchParams: searchParams,
+          methods: methods
+      };
+    }
+    return {
+      methods:[]
+    };
+}
+
+
+// function parseFhirOperationCapabilityStatement(data, opData, invokeLevel, resourceType) {
+//     const capabilityStatement = JSON.parse(data);
+//     const operationDefinition = JSON.parse(opData);
+//     const { extension: extensions = [] } = capabilityStatement;
+//     const globalHeaders = extractHeaderValues(extensions);
+//     const globalResponses = extractResponseInfoValues(extensions);
+//     const { rest: rest = [] } = capabilityStatement;
+//     for (const restEntry of rest) {
+//       let localHeaders = [];
+//       let localResponses = [];
+//       const filteredParams = (operationDefinition?.parameter || [])
+//         .filter(param => param.use === "in")
+//         .map(({ name, type, documentation = '-' }) => ({
+//           name,
+//           type,
+//           documentation
+//       }));
+
+//       if (invokeLevel === Invoke_Level.system) {
+//         const { operation = [] } = restEntry;
+//         const operationDetails = operation.find(op => op.definition === operationDefinition.url);
+//         if (!operationDetails) continue;
+
+//         localHeaders = operation?.extension
+//             ? extractHeaderValues(operation.extension)
+//             : [];
+
+//         localResponses = operation?.extension
+//             ? extractResponseInfoValues(operation.extension)
+//             : [];
+//       } else if(invokeLevel === Invoke_Level.type | invokeLevel === Invoke_Level.instance) {
+//         if(!resourceType){
+//           console.error(`You need a resourceType when invoke level is "${invokeLevel}"`);
+//           continue;
+//         }
+//         const { resource = [] } = restEntry;
+//         const resourceDetails = resource.find(res => res.type === resourceType);
+//         if (!resourceDetails) continue;
+
+//         const { operation = [] } = restEntry;
+//         const operationDetails = operation.find(op => op.definition === operationDefinition.url);
+//         if (!operationDetails) continue;
+//         localHeaders = operation?.extension
+//             ? extractHeaderValues(operation.extension)
+//             : [];
+
+//         localResponses = operation?.extension
+//             ? extractResponseInfoValues(operation.extension)
+//             : [];
+//       }
+//       let methods = extractHttpMethods(operationDefinition.extension)
+//       return {
+//           baseUrl: extractBaseUrl(extensions),
+//           code: `${operationDefinition.code}`,
+//           formats: capabilityStatement.format,
+//           headerParams: [...globalHeaders, ...localHeaders],
+//           responseInfos: [...globalResponses, ...localResponses],
+//           searchParams: filteredParams,
+//           methods: methods
+//       };
+//     }
+//     return {
+//       methods:[]
+//     };
+// }
+
 export default {
-    parseFhirCapabilityStatement
+    parseFhirCapabilityStatement,
+    parseFhirOperationCapabilityStatement,
+    Invoke_Level
 };

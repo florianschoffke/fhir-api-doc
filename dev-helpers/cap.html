@@ -24,18 +24,54 @@
         <p><a href="/bibliography.html">Bibliography</a></p>
         <p><a href="/openapi.html">OpenAPI</a></p>
 
-        <h2>1</h2>
-        <div class="gematik-apidoc"
-            data-api-fhir-resource-type="MedicationRequest"
-            data-api-fhir-interaction="read"
-            data-api-operation-id="getMedication">
-            <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
-        </div>
-        <h2>getMedicationList</h2>
-        <div class="gematik-apidoc"
-            data-api-fhir-system-operation="https://gematik.de/fhir/epa-medication/OperationDefinition/get-medication-list-op"
+
+        <h2>Custom</h2>
+        <div class="gematik-api"
+            data-api-type="FHIROperation"
+            data-api-fhir-invoke-level="system"
             data-api-operation-id="getMedicationList">
             <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
+            <div id="OperationDefinition" data-url="./OperationDefinition-get-medication-list-op.json"></div>
+        </div>
+
+
+        <h2>getMedicationList</h2>
+        <div class="gematik-api"
+            data-api-type="FHIROperation"
+            data-api-fhir-invoke-level="system"
+            data-api-operation-id="getMedicationList">
+            <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
+            <div id="OperationDefinition" data-url="./OperationDefinition-get-medication-list-op.json"></div>
+        </div>
+
+        <h2>getMedicationListInstance</h2>
+        <div class="gematik-apidoc"
+            data-api-type="FHIROperation"
+            data-api-fhir-invoke-level="instance"
+            data-api-fhir-resource-type="Medication"
+            data-api-operation-id="getMedicationList">
+            <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
+            <div id="OperationDefinition" data-url="./OperationDefinition-get-medication-list-op.json"></div>
+        </div>
+        <h2>1</h2>
+        <div class="gematik-apidoc"
+            data-api-type="FHIRResource"
+            data-api-fhir-resource-type="MedicationRequest"
+            data-api-fhir-interaction="search-type"
+            data-api-operation-id="getMedication">
+            <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
+            <div id="api-response-examples">
+                <div data-name="application/fhir+xml" data-type="XML" data-url="/Bundle-example-searchset-medication.xml"></div>
+                <div data-name="application/fhir+json" data-type="JSON" data-url="/Bundle-example-searchset-medication.json"></div>
+            </div>
+            <div id="api-request-examples">
+                <div data-name="application/fhir+xml" data-type="XML" data-url="/Bundle-example-searchset-medication.xml"></div>
+                <div data-name="application/fhir+json" data-type="JSON">
+                    {
+                        "resourceType": "Test"
+                    }
+                </div>
+            </div>
         </div>
         <h2>2</h2>
         <div class="gematik-apidoc"
