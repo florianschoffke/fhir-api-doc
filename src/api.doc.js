@@ -2,6 +2,9 @@ import fhir from './fhir.js';
 import utils from './utils.js';
 import labels from './labels.js';
 
+// For deprecation
+import apidoc from './apidoc.js'
+
 import jsyaml from 'js-yaml';
 import hljs from 'highlight.js/lib/core';
 import xml from 'highlight.js/lib/languages/xml';
@@ -116,12 +119,12 @@ function renderCapabilityStatementApiDoc() {
         const invokeLevel = div.getAttribute('data-api-fhir-invoke-level');
         const httpMethod = div.getAttribute('data-api-method');
 
-        const descriptionDiv = div.querySelector('#api-description');
+        const descriptionDiv = div.querySelector('#description, #Description');
         const description = descriptionDiv?.innerHTML?.trim() ?? '';
 
         let cap = null;
         let capUrl = null;
-        const capabilityStatementContainer = div.querySelector('#CapabilityStatement');
+        const capabilityStatementContainer = div.querySelector('#CapabilityStatement, #Capability-Statement, #capability-statement');
         if (capabilityStatementContainer) {
             capUrl = capabilityStatementContainer.getAttribute('data-url');
             if(utils.isJson(capabilityStatementContainer.textContent)) {
@@ -131,7 +134,7 @@ function renderCapabilityStatementApiDoc() {
 
         let operationDefinition = null;
         let operationDefinitionUrl = null;
-        const operationDefinitionContainer = div.querySelector('#OperationDefinition');
+        const operationDefinitionContainer = div.querySelector('#OperationDefinition, #Operation-Definition, #operation-definition');
         if (operationDefinitionContainer) {
             operationDefinitionUrl = operationDefinitionContainer.getAttribute('data-url');
             if(utils.isJson(operationDefinitionContainer.textContent)) {
@@ -139,11 +142,11 @@ function renderCapabilityStatementApiDoc() {
             }
         }
 
-        const formats = parseValueDivs(div.querySelector('#api-formats'));
-        const responseExamples = parseExampleDivs(div.querySelector('#api-response-examples'));
-        const requestExamples = parseExampleDivs(div.querySelector('#api-request-examples'));
-        const headerParams = parseHeaderParams(div.querySelector('#api-header-parameter'));
-        const responseInfos = parseResponseInfos(div.querySelector('#api-response'));
+        const formats = parseValueDivs(div.querySelector('#formats, #Formats'));
+        const responseExamples = parseExampleDivs(div.querySelector('#response-examples, #Response-Examples, #ResponseExamples'));
+        const requestExamples = parseExampleDivs(div.querySelector('#request-examples, #Request-Examples, #RequestExamples'));
+        const headerParams = parseHeaderParams(div.querySelector('#header-parameters, #Header-Parameters, #HeaderParameters'));
+        const responseInfos = parseResponseInfos(div.querySelector('#responses, #Responses'));
 
         div.innerHTML = "";
         if (_apiType === ApiType.FHIRResource) {

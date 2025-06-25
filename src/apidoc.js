@@ -220,6 +220,7 @@ const appendFhirDetails = (fhirData, parent) => {
 };
 
 const renderApiDocumentation = (container, apiData) => {
+    console.warn("DEPRECATED: The API visualization using the YAML configuration is deprecated and will be removed in a future release.");
     const httpMethods = ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD'];
     if (apiData.paths) {
         Object.entries(apiData.paths).forEach(([path, pathData]) => {

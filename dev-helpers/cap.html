@@ -11,8 +11,8 @@
         <script src="/ig.req.gematik.min.js"></script>
         <link href="/edge-dark.min.css" rel="stylesheet" />
         <!-- <link href="/ig.apidoc.gematik.css" rel="stylesheet" /> -->
-        <script src="/ig.apidoc.gematik.min.js"></script>
-        <script src="/ig.capability.doc.gematik.min.js"></script>
+        <!-- <script src="/ig.apidoc.gematik.min.js"></script> -->
+        <script src="/ig.api.doc.gematik.min.js"></script>
     </head>
     <body>
         <h1>IG REQ</h1>
@@ -33,24 +33,24 @@
             data-api-operation-id="CustomOperationID"
             data-api-url-path="/epa/medication/render/v1/eml/xhtml">
             <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
-            <div id="api-formats">
+            <div id="Formats">
                 <div data-value="application/json"></div>
             </div>
-            <div id="api-header-parameter">
+            <div id="HeaderParameters">
               <div data-name="X-Test-ID" data-type="string">Das ist ein test</div>
               <div data-name="X-Custom-ID" data-type="string">Der Custom Header</div>
             </div>
-           <div id="api-response">
+           <div id="Responses">
               <div data-code="504" data-error-code="invalAuth" data-response-type="application/json">Das ist ein test</div>
               <div data-code="501" data-error-code="Internal" data-response-type="application/json">Das ist ein Internal Error</div>
             </div>
-            <div id="api-description">
+            <div id="Description">
               test
             </div>
-            <div id="api-response-examples">
+            <div id="response-examples">
                 <div data-name="application/json" data-type="JSON" data-url="/Bundle-example-searchset-medication.json"></div>
             </div>
-            <div id="api-request-examples">
+            <div id="request-examples">
                 <div data-name="application/json" data-type="JSON">
                     {
                         "resourceType": "Test"
@@ -84,11 +84,11 @@
             data-api-fhir-interaction="search-type"
             data-api-operation-id="getMedication">
             <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
-            <div id="api-response-examples">
+            <div id="response-examples">
                 <div data-name="application/fhir+xml" data-type="XML" data-url="/Bundle-example-searchset-medication.xml"></div>
                 <div data-name="application/fhir+json" data-type="JSON" data-url="/Bundle-example-searchset-medication.json"></div>
             </div>
-            <div id="api-request-examples">
+            <div id="request-examples">
                 <div data-name="application/fhir+xml" data-type="XML" data-url="/Bundle-example-searchset-medication.xml"></div>
                 <div data-name="application/fhir+json" data-type="JSON">
                     {
@@ -114,11 +114,11 @@
             data-api-fhir-interaction="search-type"
             data-api-operation-id="getMedication">
             <div id="CapabilityStatement" data-url="./CapabilityStatement-epa-medication-service-server.json"></div>
-            <div id="api-response-examples">
+            <div id="response-examples">
                 <div data-name="application/fhir+xml" data-type="XML" data-url="/Bundle-example-searchset-medication.xml"></div>
                 <div data-name="application/fhir+json" data-type="JSON" data-url="/Bundle-example-searchset-medication.json"></div>
             </div>
-            <div id="api-request-examples">
+            <div id="request-examples">
                 <div data-name="application/fhir+xml" data-type="XML" data-url="/Bundle-example-searchset-medication.xml"></div>
                 <div data-name="application/fhir+json" data-type="JSON">
                     {
@@ -126,7 +126,7 @@
                     }
                 </div>
             </div>
-            <div id="api-description">
+            <div id="description">
                 Beispiel:
                 <br>
                 <pre>

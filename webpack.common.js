@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
     entry: {
         'ig': './src/main.js',
-        'ig.capability.doc': './src/capabilitydoc.js',
+        'ig.api.doc': './src/api.doc.js',
         'ig.apidoc': './src/apidoc.js',
         'ig.req': './src/req.js',
         'ig.openapi': './src/openapi.js',
