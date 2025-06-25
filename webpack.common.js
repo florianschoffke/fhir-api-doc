@@ -6,7 +6,6 @@ module.exports = {
     entry: {
         'ig': './src/main.js',
         'ig.api.doc': './src/api.doc.js',
-        'ig.apidoc': './src/apidoc.js',
         'ig.req': './src/req.js',
         'ig.openapi': './src/openapi.js',
         'ig.epa': './src/epa.js'

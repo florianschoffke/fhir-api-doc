@@ -5,7 +5,6 @@ import labels from './labels.js';
 // For deprecation
 import apidoc from './apidoc.js'
 
-import jsyaml from 'js-yaml';
 import hljs from 'highlight.js/lib/core';
 import xml from 'highlight.js/lib/languages/xml';
 import json from 'highlight.js/lib/languages/json';
@@ -173,7 +172,11 @@ function renderCapabilityStatementApiDoc() {
 
 function renderWithOperationDefinition(parent, capability, operationDefinition, operationDefinitionUrl, invokeLevel, resourceType=null, operationId=null, urlPath=null, description=null, requestExamples=null, responseExamples=null) {
     if (!capability) {
-        console.error(`CapabilityStatement is ${capability}!`);
+        console.error(`CapabilityStatement is required but was not provided! CapabilityStatement is ${capability}.`);
+        return;
+    }
+    if (!operationDefinition && !operationDefinitionUrl) {
+        console.error(`OperationDefinition is required but was not provided!`);
         return;
     }
     if (operationDefinition) {
@@ -435,10 +438,18 @@ function appendSearchParameters(parent, fhirData) {
 
 
 function renderCapabilityStatementResourceApiDocumentation(parent, capability, resourceType, interaction, operationId=null, urlPath=null, description=null, requestExamples=null, responseExamples=null) {
+    if (!capability) {
+        console.error(`CapabilityStatement is required but was not provided. CapabilityStatement is ${capability}!`);
+        return;
+    }
+    let _interaction = interaction;
+    if (_interaction == "_search") {
+        _interaction = "search-type";
+    }
     parent.classList.add("gem-ig-api-doc");
-    const fhirData = fhir.parseFhirCapabilityStatement(capability, resourceType, interaction);
+    const fhirData = fhir.parseFhirCapabilityStatement(capability, resourceType, _interaction);
     if (!(interaction in MAP_METHODS)) {
-        console.warn(`Interaction code "${interaction.code}" is not mapped to an HTTP method.`);
+        console.warn(`Interaction code "${interaction}" is not mapped to an HTTP method.`);
         return;
     }
     if(!urlPath) {
@@ -452,13 +463,12 @@ function renderCapabilityStatementResourceApiDocumentation(parent, capability, r
     appendInfoBox(operationMainBlock, operationId, fhirData.formats, description);
 
     appendHeaderInfo(operationMainBlock, fhirData.headerParams, fhirData.formats, MAP_METHODS[interaction]);
-
-    if (fhirData.searchParams?.length & (interaction == "search-type" | interaction == "_search" | (interaction == "update" & fhirData.conditionalUpdate))) {
+    if (fhirData.searchParams?.length && (_interaction == "search-type" | (_interaction == "update" & fhirData.conditionalUpdate))) {
         appendSearchParameters(operationMainBlock, fhirData);
     }
 
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
-        if (interaction == "search-type") {
+        if (_interaction == "search-type") {
             operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchInclude_And_RevInclude_Header }));
             const rows = Array.from({ length: Math.max(fhirData.searchInclude?.length || 0, fhirData.searchRevInclude?.length || 0) }, (_, i) => [
                 fhirData.searchInclude?.[i] || '',
