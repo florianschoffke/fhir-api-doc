@@ -37,10 +37,12 @@ function parseExampleDivs(container) {
         const name = div.getAttribute('data-name');
         const type = div.getAttribute('data-type');
         const url = div.getAttribute('data-url');
+        const render = div.getAttribute('data-render');
 
         return {
         name,
         type,
+        render,
         ...(url
             ? { url }
             : { data: div.innerHTML.trim() }
@@ -271,15 +273,25 @@ const createCopyButton = (data, language = null) => {
 };
 
 const renderApiExample = (parent, buttonParent, example, data, exampleList, buttonList) => {
+    let renderType = example.render?.toLowerCase() || example.type?.toLowerCase() ;
     const exampleContainer = utils.createElement('pre', { attributes: { style: 'display: none' } });
-    // The Copy Button
-    const copyButton = createCopyButton(data, example.type.toLowerCase());
-    exampleContainer.appendChild(copyButton);
 
-    const code = utils.createElement('code', {
-        innerHTML: hljs.highlight(data, { language: example.type.toLowerCase() }).value
-    });
-    exampleContainer.appendChild(code);
+    let content = data;
+    if (renderType.toUpperCase() == "IG-FRAGMENT") {
+        content = utils.createElement('div', {classes:['html-example'], innerHTML: data}).innerText;
+    }
+    // The Copy Button
+    exampleContainer.appendChild(createCopyButton(content, example.type.toLowerCase()));
+    if (renderType.toUpperCase() == "HTML") {
+        exampleContainer.appendChild(
+            utils.createElement('div', {classes:['html-example'], innerHTML: content})
+        );
+    } else {
+        const view = utils.createElement('code', {
+            innerHTML: hljs.highlight(content, { language: example.type.toLowerCase() }).value
+        });
+        exampleContainer.appendChild(view);
+    }
     exampleList.push(exampleContainer);
 
     const toggleButton = utils.createElement('button', {

@@ -196,7 +196,13 @@ textarea[data-apidoc-data="yaml"] {
     background: rgba(var(--fhir-api-doc-color), 0.2);
 }
 
-.gem-ig-api-doc pre {
+.operation-block-description > pre {
+    background-color: #171c19;
+    color: #fff;
+    padding: 10px;
+}
+
+.gem-ig-api-doc .operation-example > pre {
     background-color: #171c19;
     color: #fff;
     overflow: auto;
@@ -206,6 +212,14 @@ textarea[data-apidoc-data="yaml"] {
 
 .gem-ig-api-doc code {
     color: inherit;
+}
+
+.gem-ig-api-doc .operation-example > pre > .html-example {
+    overflow: auto;
+    padding: 10px;
+    color: black;
+    background: white;
+
 }
 
 /* Common styles for operation-block by method */
@@ -265,6 +279,8 @@ textarea[data-apidoc-data="yaml"] {
     font-size: 13px;
     font-family: 'Courier New', Courier, monospace;
     background-color: rgba(255, 255, 255, 0.187);
+    /* background-color: rgb(110, 110, 110); */
+    color: #fff;
 }
 
 .operation-block .gem-id-code-lang {

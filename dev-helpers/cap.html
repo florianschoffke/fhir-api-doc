@@ -109,7 +109,11 @@
             </div>
             <div id="request-examples">
                 <div data-name="application/fhir+xml" data-type="XML" data-url="/Bundle-example-searchset-medication.xml"></div>
-                <div data-name="application/fhir+json" data-type="JSON">
+                <div data-name="application/fhir+json" data-type="JSON" data-render="html">
+                  <table>
+                    <tr><td>Test</td></tr>
+                    <tr><td>Test</td></tr>
+                  </table>
                     {
                         "resourceType": "Test"
                     }
@@ -167,13 +171,14 @@
                 </pre>
             </div>
         </div>
-        <h2>4</h2>
+        <h2>4 Patient</h2>
         <div class="gematik-apidoc"
             data-api-type="FHIRResource"
             data-api-fhir-resource-type="Patient"
             data-api-fhir-interaction="update"
             data-api-operation-id="getMedication">
             <div id="CapabilityStatement">
+              <pre>
               {
                 "resourceType": "CapabilityStatement",
                 "id": "epa-patient-server",
@@ -1141,6 +1146,7 @@
                   }
                 ]
               }
+              </pre>
             </div>
         </div>
     </body>

@@ -132,8 +132,8 @@ function parseFhirCapabilityStatement(data, resourceType, interactionCode = "sea
             })),
             searchInclude: resourceDetails.searchInclude,
             searchRevInclude: resourceDetails.searchRevInclude,
-            headerParams: [...globalHeaders, ...localHeaders],
-            responseInfos: [...globalResponses, ...localResponses],
+            headerParams: [...localHeaders, ...globalHeaders],
+            responseInfos: [...localResponses, ...globalResponses],
             formats: capabilityStatement.format,
             conditionalUpdate: resourceDetails.conditionalUpdate,
             baseUrl: extractBaseUrl(extensions)
@@ -199,8 +199,8 @@ function parseFhirOperationCapabilityStatement(data, opData, invokeLevel, resour
           baseUrl: extractBaseUrl(extensions),
           code: `${operationDefinition.code}`,
           formats: capabilityStatement.format,
-          headerParams: [...globalHeaders, ...localHeaders],
-          responseInfos: [...globalResponses, ...localResponses],
+          headerParams: [...localHeaders, ...globalHeaders],
+          responseInfos: [...localResponses, ...globalResponses],
           searchParams: searchParams,
           methods: methods
       };
