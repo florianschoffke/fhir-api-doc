@@ -61,7 +61,7 @@ function parseValueDivs(container) {
 }
 
 
-function parseHeaderParams(container) {
+function parseParams(container) {
     if (!container) {
         return [];
     }
@@ -146,7 +146,8 @@ function renderCapabilityStatementApiDoc() {
         const formats = parseValueDivs(div.querySelector('#formats, #Formats'));
         const responseExamples = parseExampleDivs(div.querySelector('#response-examples, #Response-Examples, #ResponseExamples'));
         const requestExamples = parseExampleDivs(div.querySelector('#request-examples, #Request-Examples, #RequestExamples'));
-        const headerParams = parseHeaderParams(div.querySelector('#header-parameters, #Header-Parameters, #HeaderParameters'));
+        const headerParams = parseParams(div.querySelector('#header-parameters, #Header-Parameters, #HeaderParameters'));
+        const searchParams = parseParams(div.querySelector('#search-parameters,  #Search-Parameters, #SearchParameters'));
         const responseInfos = parseResponseInfos(div.querySelector('#responses, #Responses'));
 
         div.innerHTML = "";
@@ -164,9 +165,9 @@ function renderCapabilityStatementApiDoc() {
             }
         } else if (_apiType === ApiType.CUSTOM) {
             if (!capUrl) {
-                renderCustomApiDocumentation(div, urlPath, httpMethod, operationId, formats, description, requestExamples, responseExamples, headerParams, responseInfos, cap);
+                renderCustomApiDocumentation(div, urlPath, httpMethod, operationId, formats, description, requestExamples, responseExamples, headerParams, searchParams, responseInfos, cap);
             } else {
-                utils.loadData(capUrl).then(data => renderCustomApiDocumentation(div, urlPath, httpMethod, operationId, formats, description, requestExamples, responseExamples, headerParams, responseInfos, data));
+                utils.loadData(capUrl).then(data => renderCustomApiDocumentation(div, urlPath, httpMethod, operationId, formats, description, requestExamples, responseExamples, headerParams, searchParams, responseInfos, data));
             }
         }
     });
@@ -431,9 +432,9 @@ function appendResponseInfo(parent, responseInfos) {
     }
 }
 
-function appendSearchParameters(parent, fhirData) {
+function appendSearchParameters(parent, params) {
     parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchParams_Header }));
-    const searchParametersRows = fhirData.searchParams.map(({ name, definition, type, documentation, expectation }) => [
+    const searchParametersRows = params.map(({ name, definition, type, documentation, expectation }) => [
         name,
         `<code>${type}</code>`,
         documentation,
@@ -476,7 +477,7 @@ function renderCapabilityStatementResourceApiDocumentation(parent, capability, r
 
     appendHeaderInfo(operationMainBlock, fhirData.headerParams, fhirData.formats, MAP_METHODS[interaction]);
     if (fhirData.searchParams?.length && (_interaction == "search-type" | (_interaction == "update" & fhirData.conditionalUpdate))) {
-        appendSearchParameters(operationMainBlock, fhirData);
+        appendSearchParameters(operationMainBlock, fhirData.searchParams);
     }
 
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
@@ -515,7 +516,7 @@ function renderCapabilityStatementOperationApiDocumentation(parent, capability, 
         appendInfoBox(operationMainBlock, operationId, fhirData.formats, description);
         appendHeaderInfo(operationMainBlock, fhirData.headerParams, fhirData.formats, httpMethod);
         if (fhirData.searchParams?.length) {
-            appendSearchParameters(operationMainBlock, fhirData);
+            appendSearchParameters(operationMainBlock, fhirData.searchParams);
         }
         appendExamples(operationMainBlock, requestExamples, responseExamples);
         appendResponseInfo(operationMainBlock, fhirData.responseInfos);
@@ -523,7 +524,7 @@ function renderCapabilityStatementOperationApiDocumentation(parent, capability, 
 }
 
 
-function renderCustomApiDocumentation(parent, urlPath, httpMethod, operationId=null, formats=null, description=null, requestExamples=null, responseExamples=null, headerParams=null, responseInfos=null, capability=null) {
+function renderCustomApiDocumentation(parent, urlPath, httpMethod, operationId=null, formats=null, description=null, requestExamples=null, responseExamples=null, headerParams=null, searchParams=null, responseInfos=null, capability=null) {
     parent.classList.add("gem-ig-api-doc");
     const METHOD = ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD"];
     httpMethod = String(httpMethod || "").toUpperCase();
@@ -546,6 +547,9 @@ function renderCustomApiDocumentation(parent, urlPath, httpMethod, operationId=n
         responseInfos = [...responseInfos, ...fhirData.responseInfos];
     }
     appendHeaderInfo(operationMainBlock, headerParams, formats, httpMethod);
+    if(searchParams) {
+        appendSearchParameters(operationMainBlock, searchParams);
+    }
     appendExamples(operationMainBlock, requestExamples, responseExamples);
     appendResponseInfo(operationMainBlock, responseInfos);
 }

@@ -36,9 +36,13 @@
             <div id="Formats">
                 <div data-value="application/json"></div>
             </div>
-            <div id="HeaderParameters">
+            <div id="SearchParameters">
+              <div data-name="signed" data-type="boolean">Signierte PDF/A anfordern (`true`) oder unsignierte PDF/A anfordern (`false`)</div>
+              <div data-name="lowerDateTime" data-type="datetime">Frühester Zeitpunkt zur Berücksichtigung der Audit-Ereignisse z.B. 2025-07-15T00:00:00</div>
+            </div>
+           <div id="HeaderParameters">
               <div data-name="X-Test-ID" data-type="string">Das ist ein test</div>
-              <div data-name="X-Custom-ID" data-type="string">Der Custom Header</div>
+              <div data-name="X-Test-ID2" data-type="string">Das ist ein test</div>
             </div>
            <div id="Responses">
               <div data-code="504" data-error-code="invalAuth" data-response-type="application/json">Das ist ein test</div>
