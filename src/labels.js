@@ -28,7 +28,7 @@ window.gematikLabels = window.gematikLabels || {
       StatusCode_Label: "Code",
       ErrorCode_Label: "Error Code",
       Note_Label: "Bemerkungen",
-      Content_Type: "Content Type",
+      Response_Type: "Antwort",
       SearchInclude_And_RevInclude_Header: "Suche per Include oder RevInclude",
       RequestExample_Header: "Beispielanfragen",
       ResponseExample_Header: "Beispielantworten",

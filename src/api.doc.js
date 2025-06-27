@@ -71,12 +71,14 @@ function parseParams(container) {
     return divs.map(div => {
         const name = div.getAttribute('data-name');
         const type = div.getAttribute('data-type');
+        const documentation = div.innerHTML;
         const description = div.innerHTML;
         const expectation = "";
 
         return {
             name,
             type,
+            documentation,
             description,
             expectation
         };
@@ -427,12 +429,12 @@ function appendResponseInfo(parent, responseInfos) {
             window.gematikLabels.apiDoc.StatusCode_Label,
             window.gematikLabels.apiDoc.Description_Label,
             window.gematikLabels.apiDoc.ErrorCode_Label,
-            window.gematikLabels.apiDoc.Content_Type
+            window.gematikLabels.apiDoc.Response_Type
         ], responseRows)] }));
     }
 }
 
-function appendSearchParameters(parent, params) {
+function appendSearchParameters(parent, params, httpMethod, formats=null) {
     parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchParams_Header }));
     const searchParametersRows = params.map(({ name, definition, type, documentation, expectation }) => [
         name,
@@ -440,6 +442,19 @@ function appendSearchParameters(parent, params) {
         documentation,
         // expectation
     ]);
+    if (httpMethod === "GET" && Array.isArray(formats) && formats.length > 1) {
+        const alreadyHasFormat = searchParametersRows.some(row => row[0] === '_format');
+        if (!alreadyHasFormat) {
+            const _formatValue = formats.join(', ');
+            const element = [
+                '_format',
+                '<code>string</code>',
+                `Specify alternative response formats by their MIME-types (when a client is unable acccess accept: header) Available values : ${_formatValue}`,
+                // 'MAY'
+            ];
+            searchParametersRows.unshift(element);
+        }
+    }
     parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
         window.gematikLabels.apiDoc.Parameter_Label,
         window.gematikLabels.apiDoc.Type_Label,
@@ -477,7 +492,7 @@ function renderCapabilityStatementResourceApiDocumentation(parent, capability, r
 
     appendHeaderInfo(operationMainBlock, fhirData.headerParams, fhirData.formats, MAP_METHODS[interaction]);
     if (fhirData.searchParams?.length && (_interaction == "search-type" | (_interaction == "update" & fhirData.conditionalUpdate))) {
-        appendSearchParameters(operationMainBlock, fhirData.searchParams);
+        appendSearchParameters(operationMainBlock, fhirData.searchParams, MAP_METHODS[interaction], fhirData.formats);
     }
 
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
@@ -516,7 +531,7 @@ function renderCapabilityStatementOperationApiDocumentation(parent, capability, 
         appendInfoBox(operationMainBlock, operationId, fhirData.formats, description);
         appendHeaderInfo(operationMainBlock, fhirData.headerParams, fhirData.formats, httpMethod);
         if (fhirData.searchParams?.length) {
-            appendSearchParameters(operationMainBlock, fhirData.searchParams);
+            appendSearchParameters(operationMainBlock, fhirData.searchParams, httpMethod, fhirData.formats);
         }
         appendExamples(operationMainBlock, requestExamples, responseExamples);
         appendResponseInfo(operationMainBlock, fhirData.responseInfos);
@@ -548,7 +563,7 @@ function renderCustomApiDocumentation(parent, urlPath, httpMethod, operationId=n
     }
     appendHeaderInfo(operationMainBlock, headerParams, formats, httpMethod);
     if(searchParams) {
-        appendSearchParameters(operationMainBlock, searchParams);
+        appendSearchParameters(operationMainBlock, searchParams, httpMethod, formats);
     }
     appendExamples(operationMainBlock, requestExamples, responseExamples);
     appendResponseInfo(operationMainBlock, responseInfos);
