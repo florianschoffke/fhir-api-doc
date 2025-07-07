@@ -561,9 +561,9 @@ function renderCustomApiDocumentation(parent, urlPath, httpMethod, operationId=n
         headerParams = [...headerParams, ...fhirData.headerParams];
         responseInfos = [...responseInfos, ...fhirData.responseInfos];
     }
-    appendHeaderInfo(operationMainBlock, headerParams, formats, httpMethod);
+    appendHeaderInfo(operationMainBlock, headerParams, [], httpMethod);
     if(searchParams) {
-        appendSearchParameters(operationMainBlock, searchParams, httpMethod, formats);
+        appendSearchParameters(operationMainBlock, searchParams, httpMethod, []);
     }
     appendExamples(operationMainBlock, requestExamples, responseExamples);
     appendResponseInfo(operationMainBlock, responseInfos);
