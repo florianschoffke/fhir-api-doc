@@ -373,31 +373,33 @@ function appendInfoBox(parent, operationId=null, formats=[], description=null) {
 
 function appendHeaderInfo(parent, headerParams, formats, httpMethod=null) {
     if(!headerParams) {
-        return;
+        headerParams = [];
     }
-    if (headerParams?.length) {
-        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.HeaderParams_Header }));
-        const headerParamsRows = headerParams.map(({ name, type, description, expectation }) => [
+    let headerParamsRows = [];
+    let acceptHeaderValue = "*/*";
+    if (Array.isArray(formats) && formats.length > 1) {
+        acceptHeaderValue = formats.join(', ');
+    }
+    headerParamsRows.push([
+        'Accept',
+        '<code>string</code>',
+        `Formats: <code>${acceptHeaderValue}</code>`
+    ]);
+    parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.HeaderParams_Header }));
+    headerParamsRows = headerParamsRows.concat(
+        headerParams.map(({ name, type, description, expectation }) => [
             name,
-            `<code>${type}</code>`, 
-            description, 
+            `<code>${type}</code>`,
+            description
             // expectation
-        ]);
-        if (httpMethod === "GET" && Array.isArray(formats) && formats.length > 1) {
-            const acceptHeaderValue = formats.join(', ');
-            headerParamsRows.push([
-                'Accept',
-                '<code>string</code>',
-                `Formats: <code>${acceptHeaderValue}</code>`
-            ]);
-        }
-        parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
-            window.gematikLabels.apiDoc.Parameter_Label,
-            window.gematikLabels.apiDoc.Type_Label,
-            window.gematikLabels.apiDoc.Description_Label,
-            // window.gematikLabels.apiDoc.Expectation_Label
-        ], headerParamsRows, true, ['params-table'])] }));
-    }
+        ])
+    );
+    parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
+        window.gematikLabels.apiDoc.Parameter_Label,
+        window.gematikLabels.apiDoc.Type_Label,
+        window.gematikLabels.apiDoc.Description_Label,
+        // window.gematikLabels.apiDoc.Expectation_Label
+    ], headerParamsRows, true, ['params-table'])] }));
 }
 
 
@@ -435,6 +437,9 @@ function appendResponseInfo(parent, responseInfos) {
 }
 
 function appendSearchParameters(parent, params, httpMethod, formats=null) {
+    if(!params | params.length == 0) {
+        params = [];
+    }
     parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchParams_Header }));
     const searchParametersRows = params.map(({ name, definition, type, documentation, expectation }) => [
         name,

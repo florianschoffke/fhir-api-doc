@@ -64,6 +64,35 @@
             </div>
         </div>
 
+        <h2>Custom noSearch</h2>
+        <div class="gematik-api"
+            data-api-type="Custom"
+            data-api-method="GET"
+            data-api-operation-id="CustomOperationID"
+            data-api-url-path="/epa/medication/render/v1/eml/xhtml">
+            <div id="Formats">
+                <div data-value="application/json"></div>
+                <div data-value="application/xml"></div>
+            </div>
+           <div id="Responses">
+              <div data-code="504" data-error-code="invalAuth" data-response-type="application/json">Das ist ein test</div>
+              <div data-code="501" data-error-code="Internal" data-response-type="application/json">Das ist ein Internal Error</div>
+            </div>
+            <div id="Description">
+              test
+            </div>
+            <div id="response-examples">
+                <div data-name="application/json" data-type="JSON" data-url="/Bundle-example-searchset-medication.json"></div>
+            </div>
+            <div id="request-examples">
+                <div data-name="application/json" data-type="JSON">
+                    {
+                        "resourceType": "Test"
+                    }
+                </div>
+            </div>
+        </div>
+
         <h2>getMedicationList</h2>
         <div class="gematik-api"
             data-api-type="FHIROperation"
