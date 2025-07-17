@@ -147,7 +147,6 @@ function parseFhirCapabilityStatement(data, resourceType, interactionCode = "sea
 
 
 function getOperation(operationDefinition, invokeLevel, restEntry, resourceType=null) {
-
   if (invokeLevel === Invoke_Level.system) {
     const { operation = [] } = restEntry;
     return operation.find(op => op.definition === operationDefinition.url);
@@ -161,7 +160,7 @@ function getOperation(operationDefinition, invokeLevel, restEntry, resourceType=
     if (!resourceDetails) {
       return null;
     }
-    const { operation = [] } = restEntry;
+    const { operation = [] } = resourceDetails;
     return operation.find(op => op.definition === operationDefinition.url);
   }
   return null;

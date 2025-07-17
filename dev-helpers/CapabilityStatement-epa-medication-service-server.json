@@ -6,10 +6,6 @@
       "https://gematik.de/fhir/ti/StructureDefinition/ti-capability-statement"
     ]
   },
-  "text": {
-    "status": "extensions",
-    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p class=\"res-header-id\"><b>Generated Narrative: CapabilityStatement epa-basic-server</b></p><a name=\"epa-basic-server\"> </a><a name=\"hcepa-basic-server\"> </a><a name=\"epa-basic-server-de-DE\"> </a><div style=\"display: inline-block; background-color: #d9e0e7; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\"/><p style=\"margin-bottom: 0px\">Profile: <a href=\"https://gematik.de/fhir/ti/1.1.0/StructureDefinition-ti-capability-statement.html\">Capability Statement Profil für TI FHIR Data Service</a></p></div><h2 id=\"title\">EPA Basic Server</h2><ul><li>Implementation Guide Version: 1.1.5 </li><li>FHIR Version: 4.0.1 </li><li>Supported Formats: <code>application/fhir+json</code></li><li>Supported Patch Formats: </li><li>Published on: 2025-05-28 </li><li>Published by: gematik GmbH </li></ul><blockquote class=\"impl-note\"><p><strong>Note to Implementers: FHIR Capabilities</strong></p><p>Any FHIR capability may be 'allowed' by the system unless explicitly marked as 'SHALL NOT'. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case.</p></blockquote><h2 id=\"rest\">FHIR RESTful Capabilities</h2><div class=\"panel panel-default\"><div class=\"panel-heading\"><h3 id=\"mode1\" class=\"panel-title\">Mode: <code>server</code></h3></div><div class=\"panel-body\"><div class=\"lead\"><em>Summary of System-wide Interactions</em></div></div></div></div>"
-  },
   "extension": [
     {
       "extension": [
@@ -94,7 +90,7 @@
         },
         {
           "url": "description",
-          "valueString": "Request does not match schema"
+          "valueString": "Requestor not authorized (no user session with valid ID-Token available)"
         },
         {
           "url": "responseType",
@@ -157,7 +153,7 @@
         },
         {
           "url": "description",
-          "valueString": "Device registration does not exist"
+          "valueString": "Device registration does not exist (if requestor role is oid_versicherter only)"
         },
         {
           "url": "responseType",
@@ -260,11 +256,11 @@
     }
   ],
   "url": "https://gematik.de/fhir/epa-medication/CapabilityStatement/epa-medication-service-server",
-  "version": "1.1.5",
+  "version": "1.2.0-b.1",
   "name": "EPAMedicationServiceServer",
-  "title": "EPA CapabilityStatement für den the Medication Service",
-  "status": "active",
-  "date": "2025-05-28",
+  "title": "EPA CapabilityStatement für den Medication Service",
+  "status": "draft",
+  "date": "2025-07-15",
   "publisher": "gematik GmbH",
   "contact": [
     {
@@ -276,7 +272,7 @@
       ]
     }
   ],
-  "description": "EPA CapabilityStatement für den the Medication Service",
+  "description": "EPA CapabilityStatement für den Medication Service",
   "jurisdiction": [
     {
       "coding": [
@@ -408,27 +404,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "search-type"
@@ -490,27 +465,6 @@
                     {
                       "url": "errorCode",
                       "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -616,27 +570,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "read"
@@ -736,27 +669,6 @@
                     {
                       "url": "responseType",
                       "valueString": "EPAMSOperationOutcome"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -862,27 +774,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "vread"
@@ -912,6 +803,17 @@
               "definition": "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated",
               "type": "date",
               "documentation": "Resource.meta.lastUpdated"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_has",
+              "type": "string",
+              "documentation": "Return resources linked to by the given target"
             },
             {
               "extension": [
@@ -960,16 +862,29 @@
               "definition": "http://hl7.org/fhir/SearchParameter/Medication-ingredient-code",
               "type": "token",
               "documentation": "Medication.ingredient.item as CodeableConcept"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "rx-prescription",
+              "definition": "https://gematik.de/fhir/epa-medication/SearchParameter/rx-prescription-process-sp",
+              "type": "token",
+              "documentation": "Medication.extension"
             }
           ],
           "searchRevInclude": [
             "MedicationRequest:medication",
-            "MedicationDispense:medication"
+            "MedicationDispense:medication",
+            "MedicationStatement:medication"
           ],
           "type": "Medication",
           "versioning": "versioned-update",
           "readHistory": true,
-          "profile": "https://gematik.de/fhir/epa-medication/StructureDefinition/epa-medication",
+          "profile": "https://gematik.de/fhir/epa-medication/StructureDefinition/emp-medication",
           "_profile": {
             "extension": [
               {
@@ -1068,27 +983,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "search-type"
@@ -1150,27 +1044,6 @@
                     {
                       "url": "errorCode",
                       "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -1276,27 +1149,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "read"
@@ -1396,27 +1248,6 @@
                     {
                       "url": "responseType",
                       "valueString": "EPAMSOperationOutcome"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -1522,27 +1353,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "vread"
@@ -1572,6 +1382,17 @@
               "definition": "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated",
               "type": "date",
               "documentation": "Resource.meta.lastUpdated"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_has",
+              "type": "string",
+              "documentation": "Return resources linked to by the given target"
             },
             {
               "extension": [
@@ -1639,12 +1460,13 @@
             "MedicationRequest:requester"
           ],
           "searchRevInclude": [
-            "MedicationDispense:prescription"
+            "MedicationDispense:prescription",
+            "MedicationStatement:derived-from"
           ],
           "type": "MedicationRequest",
           "versioning": "versioned-update",
           "readHistory": true,
-          "profile": "https://gematik.de/fhir/epa-medication/StructureDefinition/epa-medication-request",
+          "profile": "https://gematik.de/fhir/epa-medication/StructureDefinition/emp-medication-request",
           "_profile": {
             "extension": [
               {
@@ -1743,27 +1565,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "search-type"
@@ -1825,27 +1626,6 @@
                     {
                       "url": "errorCode",
                       "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -1951,27 +1731,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "read"
@@ -2071,27 +1830,6 @@
                     {
                       "url": "responseType",
                       "valueString": "EPAMSOperationOutcome"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -2197,27 +1935,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "vread"
@@ -2247,6 +1964,17 @@
               "definition": "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated",
               "type": "date",
               "documentation": "Resource.meta.lastUpdated"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_has",
+              "type": "string",
+              "documentation": "Return resources linked to by the given target"
             },
             {
               "extension": [
@@ -2319,12 +2047,27 @@
               "definition": "http://hl7.org/fhir/SearchParameter/medications-medication",
               "type": "reference",
               "documentation": "MedicationDispense.medication as Reference"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "rx-prescription",
+              "definition": "https://gematik.de/fhir/epa-medication/SearchParameter/rx-prescription-process-sp",
+              "type": "token",
+              "documentation": "MedicationDispense.extension"
             }
           ],
           "searchInclude": [
             "MedicationDispense:medication",
             "MedicationDispense:performer",
             "MedicationDispense:prescription"
+          ],
+          "searchRevInclude": [
+            "MedicationStatement:derived-from"
           ],
           "type": "MedicationDispense",
           "versioning": "versioned-update",
@@ -2344,19 +2087,6 @@
             {
               "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
               "valueCode": "SHALL"
-            }
-          ],
-          "supportedProfile": [
-            "https://gematik.de/fhir/directory/StructureDefinition/OrganizationDirectory"
-          ],
-          "_supportedProfile": [
-            {
-              "extension": [
-                {
-                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
-                  "valueCode": "SHALL"
-                }
-              ]
             }
           ],
           "interaction": [
@@ -2441,27 +2171,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "search-type"
@@ -2523,27 +2232,6 @@
                     {
                       "url": "errorCode",
                       "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -2649,27 +2337,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "read"
@@ -2769,27 +2436,6 @@
                     {
                       "url": "responseType",
                       "valueString": "EPAMSOperationOutcome"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -2895,24 +2541,830 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                }
+              ],
+              "code": "vread"
+            }
+          ],
+          "searchParam": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_id",
+              "definition": "http://hl7.org/fhir/SearchParameter/Resource-id",
+              "type": "token",
+              "documentation": "Resource.id"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_lastUpdated",
+              "definition": "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated",
+              "type": "date",
+              "documentation": "Resource.meta.lastUpdated"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_has",
+              "type": "string",
+              "documentation": "Return resources linked to by the given target"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "identifier",
+              "definition": "http://hl7.org/fhir/SearchParameter/clinical-identifier",
+              "type": "token",
+              "documentation": "MedicationStatement.identifier"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "medication",
+              "definition": "http://hl7.org/fhir/SearchParameter/medications-medication",
+              "type": "reference",
+              "documentation": "MedicationStatement.medication as Reference"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "status",
+              "definition": "http://hl7.org/fhir/SearchParameter/medications-status",
+              "type": "token",
+              "documentation": "MedicationStatement.status"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "effective",
+              "definition": "http://hl7.org/fhir/SearchParameter/MedicationStatement-effective",
+              "type": "date",
+              "documentation": "MedicationStatement.effective"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "rx-prescription",
+              "definition": "https://gematik.de/fhir/epa-medication/SearchParameter/rx-prescription-process-sp",
+              "type": "token",
+              "documentation": "Medication.extension"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "derived-from",
+              "definition": "https://gematik.de/fhir/epa-medication/SearchParameter/derived-from-sp",
+              "type": "reference",
+              "documentation": "MedicationStatement.derivedFrom as Reference"
+            }
+          ],
+          "searchInclude": [
+            "MedicationStatement:medication",
+            "MedicationStatement:part-of",
+            "MedicationStatement:derived-from"
+          ],
+          "searchRevInclude": [
+            "Provenance:target"
+          ],
+          "operation": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "name",
+                      "valueString": "X-Requesting-Organization"
+                    },
+                    {
+                      "url": "type",
+                      "valueString": "string"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Base64 encoded FHIR Organization resource in JSON format used to identify the originator of the request"
+                    },
+                    {
+                      "url": "format",
+                      "valueString": "base64(fhir+json:Organization)"
+                    },
+                    {
+                      "url": "required",
+                      "valueBoolean": true
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-header"
                 },
                 {
                   "extension": [
                     {
                       "url": "statusCode",
-                      "valueString": "423"
+                      "valueString": "200"
                     },
                     {
                       "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
+                      "valueString": "Successful operation"
                     },
                     {
                       "url": "responseType",
-                      "valueString": "application/json"
+                      "valueString": "Parameters"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Invalid dosage structure or content"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
                     },
                     {
                       "url": "errorCode",
-                      "valueString": "locked"
+                      "valueString": "MEDSVC_DOSAGE_INVALID"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Parameter with wrong status"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MEDSVC_STATUS_INVALID"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                }
+              ],
+              "name": "add-eml-entry",
+              "definition": "https://gematik.de/fhir/epa-medication/OperationDefinition/add-eml-entry-op"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "name",
+                      "valueString": "X-Requesting-Organization"
+                    },
+                    {
+                      "url": "type",
+                      "valueString": "string"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Base64 encoded FHIR Organization resource in JSON format used to identify the originator of the request"
+                    },
+                    {
+                      "url": "format",
+                      "valueString": "base64(fhir+json:Organization)"
+                    },
+                    {
+                      "url": "required",
+                      "valueBoolean": true
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-header"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "200"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Successful operation"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "Parameters"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Resource is not known"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_RESOURCE_ID_FAIL"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Invalid dosage structure or content"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MEDSVC_DOSAGE_INVALID"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Parameter with wrong status"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MEDSVC_STATUS_INVALID"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                }
+              ],
+              "name": "update-eml-entry",
+              "definition": "https://gematik.de/fhir/epa-medication/OperationDefinition/update-eml-entry-op"
+            }
+          ],
+          "type": "MedicationStatement",
+          "versioning": "versioned-update",
+          "readHistory": true,
+          "profile": "https://gematik.de/fhir/epa-medication/StructureDefinition/epa-medication-statement",
+          "_profile": {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                "valueCode": "SHALL"
+              }
+            ]
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+              "valueCode": "SHALL"
+            }
+          ],
+          "supportedProfile": [
+            "https://gematik.de/fhir/directory/StructureDefinition/OrganizationDirectory",
+            "https://gematik.de/fhir/ti/StructureDefinition/ti-organization"
+          ],
+          "_supportedProfile": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ]
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ]
+            }
+          ],
+          "interaction": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "200"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Successful operation"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Unknown search parameter"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_PARAM_UNKNOWN"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Invalid query parameter(s)"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_BAD_SYNTAX"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Unknown resource type"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_UNKNOWN_TYPE"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                }
+              ],
+              "code": "search-type"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "200"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Successful operation"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Invalid request"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_BAD_FORMAT"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Unknown resource type"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_UNKNOWN_TYPE"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                }
+              ],
+              "code": "history-type"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "200"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Successful operation"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Invalid request"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_BAD_FORMAT"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Unknown resource type"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_UNKNOWN_TYPE"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Resource is not known"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_RESOURCE_ID_FAIL"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "410"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Resource was deleted"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                }
+              ],
+              "code": "read"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "200"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Successful operation"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Invalid request"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_BAD_FORMAT"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Unknown resource type"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_UNKNOWN_TYPE"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Resource is not known"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_RESOURCE_ID_FAIL"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "410"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Resource was deleted"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                }
+              ],
+              "code": "history-instance"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "200"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Successful operation"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Invalid request"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_BAD_FORMAT"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Unknown resource type"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_UNKNOWN_TYPE"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Resource is not known"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_RESOURCE_ID_FAIL"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "410"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Resource was deleted"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -2945,6 +3397,17 @@
               "definition": "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated",
               "type": "date",
               "documentation": "Resource.meta.lastUpdated"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_has",
+              "type": "string",
+              "documentation": "Return resources linked to by the given target"
             },
             {
               "extension": [
@@ -2988,9 +3451,18 @@
             }
           ],
           "supportedProfile": [
-            "https://gematik.de/fhir/directory/StructureDefinition/PractitionerDirectory"
+            "https://gematik.de/fhir/directory/StructureDefinition/PractitionerDirectory",
+            "https://gematik.de/fhir/ti/StructureDefinition/ti-practitioner"
           ],
           "_supportedProfile": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ]
+            },
             {
               "extension": [
                 {
@@ -3082,27 +3554,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "search-type"
@@ -3164,27 +3615,6 @@
                     {
                       "url": "errorCode",
                       "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -3290,27 +3720,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "read"
@@ -3410,27 +3819,6 @@
                     {
                       "url": "responseType",
                       "valueString": "EPAMSOperationOutcome"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -3536,27 +3924,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "vread"
@@ -3586,6 +3953,17 @@
               "definition": "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated",
               "type": "date",
               "documentation": "Resource.meta.lastUpdated"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_has",
+              "type": "string",
+              "documentation": "Return resources linked to by the given target"
             },
             {
               "extension": [
@@ -3709,27 +4087,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "search-type"
@@ -3791,27 +4148,6 @@
                     {
                       "url": "errorCode",
                       "valueString": "MSG_UNKNOWN_TYPE"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -3917,27 +4253,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "read"
@@ -4037,27 +4352,6 @@
                     {
                       "url": "responseType",
                       "valueString": "EPAMSOperationOutcome"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -4163,27 +4457,6 @@
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
-                },
-                {
-                  "extension": [
-                    {
-                      "url": "statusCode",
-                      "valueString": "423"
-                    },
-                    {
-                      "url": "description",
-                      "valueString": "If the insurant objected to the medication process or objected to the submission of prescription and dispensation data into the ePA system, the Medication Service is locked."
-                    },
-                    {
-                      "url": "responseType",
-                      "valueString": "application/json"
-                    },
-                    {
-                      "url": "errorCode",
-                      "valueString": "locked"
-                    }
-                  ],
-                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
                 }
               ],
               "code": "vread"
@@ -4213,6 +4486,17 @@
               "definition": "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated",
               "type": "date",
               "documentation": "Resource.meta.lastUpdated"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_has",
+              "type": "string",
+              "documentation": "Return resources linked to by the given target"
             },
             {
               "extension": [
@@ -4262,6 +4546,329 @@
           "type": "PractitionerRole",
           "versioning": "versioned-update",
           "readHistory": true
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+              "valueCode": "SHALL"
+            }
+          ],
+          "supportedProfile": [
+            "https://gematik.de/fhir/epa/StructureDefinition/epa-activity-provenance",
+            "https://gematik.de/fhir/epa-medication/StructureDefinition/emp-chronology-provenance"
+          ],
+          "_supportedProfile": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ]
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ]
+            }
+          ],
+          "interaction": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "200"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Successful operation"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Unknown search parameter"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_PARAM_UNKNOWN"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Invalid query parameter(s)"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_BAD_SYNTAX"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Unknown resource type"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_UNKNOWN_TYPE"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                }
+              ],
+              "code": "search-type"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "200"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Successful operation"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "400"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Invalid request"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_BAD_FORMAT"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Unknown resource type"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_UNKNOWN_TYPE"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "404"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Resource is not known"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    },
+                    {
+                      "url": "errorCode",
+                      "valueString": "MSG_RESOURCE_ID_FAIL"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                },
+                {
+                  "extension": [
+                    {
+                      "url": "statusCode",
+                      "valueString": "410"
+                    },
+                    {
+                      "url": "description",
+                      "valueString": "Resource was deleted"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "EPAMSOperationOutcome"
+                    }
+                  ],
+                  "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+                }
+              ],
+              "code": "read"
+            }
+          ],
+          "searchParam": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_id",
+              "definition": "http://hl7.org/fhir/SearchParameter/Resource-id",
+              "type": "token",
+              "documentation": "Resource.id"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_lastUpdated",
+              "definition": "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated",
+              "type": "date",
+              "documentation": "Resource.meta.lastUpdated"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "_has",
+              "type": "string",
+              "documentation": "Return resources linked to by the given target"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "identifier",
+              "definition": "http://hl7.org/fhir/SearchParameter/clinical-identifier",
+              "type": "token",
+              "documentation": "MedicationStatement.identifier"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "agent",
+              "definition": "http://hl7.org/fhir/SearchParameter/Provenance-agent",
+              "type": "reference",
+              "documentation": "Who participated"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "target",
+              "definition": "http://hl7.org/fhir/SearchParameter/Provenance-target",
+              "type": "reference",
+              "documentation": "Target References - usually version specific"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "recorded",
+              "definition": "http://hl7.org/fhir/SearchParameter/Provenance-recorded",
+              "type": "date",
+              "documentation": "When the activity was recorded / updated"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+                  "valueCode": "SHALL"
+                }
+              ],
+              "name": "when",
+              "definition": "http://hl7.org/fhir/SearchParameter/Provenance-when",
+              "type": "date",
+              "documentation": "Provenance.occurred as dateTime"
+            }
+          ],
+          "searchInclude": [
+            "Provenance:agent",
+            "Provenance:target"
+          ],
+          "type": "Provenance",
+          "versioning": "versioned-update",
+          "readHistory": true
         }
       ],
       "operation": [
@@ -4280,6 +4887,73 @@
                 {
                   "url": "description",
                   "valueString": "Successful operation"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "Parameters"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Unknown search parameter"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_PARAM_UNKNOWN"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Invalid query parameter(s)"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_BAD_SYNTAX"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Invalid request"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_BAD_FORMAT"
                 }
               ],
               "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -4324,6 +4998,73 @@
                 {
                   "url": "description",
                   "valueString": "Successful operation"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "Parameters"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Unknown search parameter"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_PARAM_UNKNOWN"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Invalid query parameter(s)"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_BAD_SYNTAX"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Invalid request"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_BAD_FORMAT"
                 }
               ],
               "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -4347,6 +5088,73 @@
                 {
                   "url": "description",
                   "valueString": "Successful operation"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "Parameters"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Unknown search parameter"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_PARAM_UNKNOWN"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Invalid query parameter(s)"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_BAD_SYNTAX"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Invalid request"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_BAD_FORMAT"
                 }
               ],
               "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -4391,6 +5199,73 @@
                 {
                   "url": "description",
                   "valueString": "Successful operation"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "Parameters"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Unknown search parameter"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_PARAM_UNKNOWN"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Invalid query parameter(s)"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_BAD_SYNTAX"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Invalid request"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_BAD_FORMAT"
                 }
               ],
               "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -4414,6 +5289,10 @@
                 {
                   "url": "description",
                   "valueString": "Successful operation"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "Bundle"
                 }
               ],
               "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
@@ -4505,6 +5384,144 @@
           ],
           "name": "medication-list",
           "definition": "https://gematik.de/fhir/epa-medication/OperationDefinition/get-medication-list-op"
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+              "valueCode": "SHALL"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "200"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Successful operation"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "Bundle"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Unknown search parameter"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_PARAM_UNKNOWN"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Invalid query parameter(s)"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_BAD_SYNTAX"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "400"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Invalid request"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_BAD_FORMAT"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "404"
+                },
+                {
+                  "url": "description",
+                  "valueString": "No Resource found matching the query"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "EPAMSOperationOutcome"
+                },
+                {
+                  "url": "errorCode",
+                  "valueString": "MSG_NO_MATCH"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            }
+          ],
+          "name": "medication-plan",
+          "definition": "https://gematik.de/fhir/epa-medication/OperationDefinition/get-medication-plan-op"
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation",
+              "valueCode": "SHALL"
+            },
+            {
+              "extension": [
+                {
+                  "url": "statusCode",
+                  "valueString": "200"
+                },
+                {
+                  "url": "description",
+                  "valueString": "Successful operation"
+                },
+                {
+                  "url": "responseType",
+                  "valueString": "Bundle"
+                }
+              ],
+              "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
+            }
+          ],
+          "name": "medication-plan-log",
+          "definition": "https://gematik.de/fhir/epa-medication/OperationDefinition/medication-plan-log-op"
         }
       ]
     }
