@@ -464,7 +464,7 @@ function appendSearchParameters(parent, params, httpMethod, formats=null) {
             searchParametersRows.unshift(element);
         }
     }
-    if(!params | params.length == 0) {
+    if(!searchParametersRows | searchParametersRows.length == 0) {
         return;
     }
     parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchParams_Header }));
