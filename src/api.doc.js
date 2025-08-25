@@ -440,7 +440,12 @@ function appendSearchParameters(parent, params, httpMethod, formats=null) {
     if(!params | params.length == 0) {
         params = [];
     }
-    const searchParametersRows = params.map(({ name, definition, type, documentation, expectation }) => [
+    // In OperationDefinition resources, parameters named "resource" are typically used to describe the request body structure.
+    // This is not formally required by the FHIR spec but considered best practice.
+    // Therefore, we exclude such parameters from the list of query/search parameters.
+    const searchParametersRows = params
+        .filter(({ name }) => name !== "resource")
+        .map(({ name, definition, type, documentation, expectation }) => [
         name,
         `<code>${type}</code>`,
         documentation,
