@@ -440,14 +440,13 @@ function appendSearchParameters(parent, params, httpMethod, formats=null) {
     if(!params | params.length == 0) {
         params = [];
     }
-    parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchParams_Header }));
     const searchParametersRows = params.map(({ name, definition, type, documentation, expectation }) => [
         name,
         `<code>${type}</code>`,
         documentation,
         // expectation
     ]);
-    if (httpMethod === "GET" && Array.isArray(formats) && formats.length > 1) {
+    if (Array.isArray(formats) && formats.length > 1) {
         const alreadyHasFormat = searchParametersRows.some(row => row[0] === '_format');
         if (!alreadyHasFormat) {
             const _formatValue = formats.join(', ');
@@ -460,6 +459,10 @@ function appendSearchParameters(parent, params, httpMethod, formats=null) {
             searchParametersRows.unshift(element);
         }
     }
+    if(!params | params.length == 0) {
+        return;
+    }
+    parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchParams_Header }));
     parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
         window.gematikLabels.apiDoc.Parameter_Label,
         window.gematikLabels.apiDoc.Type_Label,
@@ -496,9 +499,8 @@ function renderCapabilityStatementResourceApiDocumentation(parent, capability, r
     appendInfoBox(operationMainBlock, operationId, fhirData.formats, description);
 
     appendHeaderInfo(operationMainBlock, fhirData.headerParams, fhirData.formats, MAP_METHODS[interaction]);
-    if (fhirData.searchParams?.length && (_interaction == "search-type" | (_interaction == "update" & fhirData.conditionalUpdate))) {
-        appendSearchParameters(operationMainBlock, fhirData.searchParams, MAP_METHODS[interaction], fhirData.formats);
-    }
+    appendSearchParameters(operationMainBlock, fhirData.searchParams, MAP_METHODS[interaction], fhirData.formats);
+
 
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
         if (_interaction == "search-type") {
@@ -535,9 +537,7 @@ function renderCapabilityStatementOperationApiDocumentation(parent, capability, 
 
         appendInfoBox(operationMainBlock, operationId, fhirData.formats, description);
         appendHeaderInfo(operationMainBlock, fhirData.headerParams, fhirData.formats, httpMethod);
-        if (fhirData.searchParams?.length) {
-            appendSearchParameters(operationMainBlock, fhirData.searchParams, httpMethod, fhirData.formats);
-        }
+        appendSearchParameters(operationMainBlock, fhirData.searchParams, httpMethod, fhirData.formats);
         appendExamples(operationMainBlock, requestExamples, responseExamples);
         appendResponseInfo(operationMainBlock, fhirData.responseInfos);
     });
@@ -567,9 +567,7 @@ function renderCustomApiDocumentation(parent, urlPath, httpMethod, operationId=n
         responseInfos = [...responseInfos, ...fhirData.responseInfos];
     }
     appendHeaderInfo(operationMainBlock, headerParams, [], httpMethod);
-    if(searchParams?.length) {
-        appendSearchParameters(operationMainBlock, searchParams, httpMethod, []);
-    }
+    appendSearchParameters(operationMainBlock, searchParams, httpMethod, []);
     appendExamples(operationMainBlock, requestExamples, responseExamples);
     appendResponseInfo(operationMainBlock, responseInfos);
 }
