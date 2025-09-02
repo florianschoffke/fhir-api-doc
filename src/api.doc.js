@@ -504,7 +504,8 @@ function renderCapabilityStatementResourceApiDocumentation(parent, capability, r
     appendInfoBox(operationMainBlock, operationId, fhirData.formats, description);
 
     appendHeaderInfo(operationMainBlock, fhirData.headerParams, fhirData.formats, MAP_METHODS[interaction]);
-    appendSearchParameters(operationMainBlock, fhirData.searchParams, MAP_METHODS[interaction], fhirData.formats);
+    const searchParameters = _interaction === "search-type" ? fhirData.searchParams : [];
+    appendSearchParameters(operationMainBlock, searchParameters, MAP_METHODS[interaction], fhirData.formats);
 
 
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
