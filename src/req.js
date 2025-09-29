@@ -25,11 +25,23 @@ function renderRequirements() {
 
         const reqKey = req.getAttribute('key') || '';
         const reqVersion = parseFloat(req.getAttribute('version')) || 0;
-        const combinedReqKey = reqKey && reqVersion > 1 
+        // version starts with 0. 0 -> 1 -> 2 -> ...
+        const combinedReqKey = reqKey && reqVersion > 0
             ? `${reqKey}-${reqVersion}` 
             : reqKey;
         
-        const actorText = req.getAttribute('actor') || '';
+        // actor with attribute version for backwards compatibility
+        let actorText = req.getAttribute('actor') || '';
+        const actors = req.querySelectorAll('actor') || [];
+        if (actors.length > 0) {
+            actorText = Array.from(actors)
+                .map(actor => {
+                    const name = actor.getAttribute('name');
+                    req.removeChild(actor);
+                    return name;
+                }).filter(Boolean).join(', ');
+        }
+
         const titleText = req.getAttribute('title') || '';
         const conformanceText = utils.translateExpectation(req.getAttribute('conformance') || '');
         const descriptionHTML = req.innerHTML.trim();
