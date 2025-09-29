@@ -965,6 +965,10 @@
                     {
                       "url": "description",
                       "valueString": "Successful operation"
+                    },
+                    {
+                      "url": "responseType",
+                      "valueString": "Bundle"
                     }
                   ],
                   "url": "https://gematik.de/fhir/ti/StructureDefinition/extension-http-response-info"
