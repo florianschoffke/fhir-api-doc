@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addDataAnchorToRequirementLink();
 });
 
+
 function addDataAnchorToRequirementLink() {
     document.querySelectorAll(".requirement-link").forEach(function (link) {
         let anchor = link.getAttribute("data-anchor");
@@ -17,6 +18,26 @@ function addDataAnchorToRequirementLink() {
     });
 }
 
+
+function removeActorTags(xmlString) {
+    xmlString = xmlString.replace(/<actor\b[^>]*\/>/gi, '');
+    xmlString = xmlString.replace(/<actor\b[^>]*>[\s\S]*?<\/actor>/gi, '');
+    return xmlString;
+}
+
+
+function removeMetaTags(xmlString) {
+    xmlString = xmlString.replace(/<meta\b[^>]*\/?>/gi, '');
+    xmlString = xmlString.replace(/<meta\b[^>]*>[\s\S]*?<\/meta>/gi, '');
+    return xmlString;
+}
+
+
+function cleanRequirementDescription(desc) {
+    desc = removeActorTags(desc);
+    desc = removeMetaTags(desc);
+    return desc;
+}
 
 function renderRequirements() {
     const requirements = document.querySelectorAll('requirement');
@@ -37,14 +58,14 @@ function renderRequirements() {
             actorText = Array.from(actors)
                 .map(actor => {
                     const name = actor.getAttribute('name');
-                    req.removeChild(actor);
                     return name;
                 }).filter(Boolean).join(', ');
         }
 
         const titleText = req.getAttribute('title') || '';
         const conformanceText = utils.translateExpectation(req.getAttribute('conformance') || '');
-        const descriptionHTML = req.innerHTML.trim();
+
+        const descriptionHTML = cleanRequirementDescription(req.innerHTML.trim());
 
         const reqDiv = document.createElement('div');
         reqDiv.classList.add('requirement');

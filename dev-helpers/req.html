@@ -27,12 +27,28 @@
             Lorem Ipsum
         </h2>
         <requirement key="REQ-00001" version="1" actor="Service" title="Test Anforderung" conformance="SHALL">
+            <meta lockversion="true"/>
+            <actor name="EPA-Audit-Service"/>
             <actor name="EPA-Medication-Service">
                 <testProcedure id="Produkttest"/>
                 <testProcedure id="Produktgutachten"/>
             </actor>
             <actor name="EPA-PS">
                 <testProcedure id="Produkttest"/>
+            </actor>
+            Der Anbieter des ePA-Aktensystems MUSS den in diesem Leitfaden definierten MHD Service implementieren und dabei 
+            die Vorgaben der FHIR-Spezifikation berücksichtigen. Der MHD Service MUSS den logischen IHE ITI Akteur Document 
+            Responder mit seinen Schnittstellen Find Document References [ITI-67] und Retrieve Document [ITI-68] implementieren. 
+            Der Anbieter des ePA-Aktensystems MUSS die Konformität der MHD-Service-Implementierung in einem Zulassungsverfahren nachweisen.
+            <a href="http://hl7.org/fhir/R4/index.html">FHIR-Spezifikation</a>
+        </requirement>
+
+        <requirement key="REQ-00001" version="1" actor="Service" title="Test Anforderung" conformance="SHALL">
+            <meta lockversion="true"/>
+            <actor name="EPA-Audit-Service" />
+            <actor name="EPA-Medication-Service">
+                <testProcedure id="Produkttest"/>
+                <testProcedure id="Produktgutachten"/>
             </actor>
             Der Anbieter des ePA-Aktensystems MUSS den in diesem Leitfaden definierten MHD Service implementieren und dabei 
             die Vorgaben der FHIR-Spezifikation berücksichtigen. Der MHD Service MUSS den logischen IHE ITI Akteur Document 
