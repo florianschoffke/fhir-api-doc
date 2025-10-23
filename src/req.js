@@ -46,9 +46,14 @@ function renderRequirements() {
 
         const reqKey = req.getAttribute('key') || '';
         const reqVersion = parseFloat(req.getAttribute('version')) || 0;
-        // version starts with 0. 0 -> 1 -> 2 -> ...
+
+        // version starts with (1 -> "01", 9 -> "09", 10 -> "10")
+        const formattedVersion = reqVersion > 0 
+            ? String(reqVersion).padStart(2, '0') 
+            : '';
+
         const combinedReqKey = reqKey && reqVersion > 0
-            ? `${reqKey}-${reqVersion}` 
+            ? `${reqKey}-${formattedVersion}` 
             : reqKey;
         
         // actor with attribute version for backwards compatibility
