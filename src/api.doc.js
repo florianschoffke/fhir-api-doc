@@ -2,9 +2,6 @@ import fhir from './fhir.js';
 import utils from './utils.js';
 import labels from './labels.js';
 
-// For deprecation
-import apidoc from './apidoc.js'
-
 import hljs from 'highlight.js/lib/core';
 import xml from 'highlight.js/lib/languages/xml';
 import json from 'highlight.js/lib/languages/json';
