@@ -1,5 +1,3 @@
-import labels from './labels.js';
-
 const loadData = async (url) => {
     try {
         const response = await fetch(url);
@@ -40,6 +38,29 @@ const createTable = (headers, rows, includeHeader = true, classes = []) => {
     return table;
 };
 
+const createCopyButton = (data, language = null) => {
+    const wrapper = createElement('div', { classes: ['gem-ig-copy-container'] });
+    const languageElement = createElement('span', { classes: ['gem-id-code-lang'] })
+    if (language) {
+        languageElement.innerText = language.toLowerCase();
+    }
+    // The Copy Button
+    const buttonWrapper = createElement('div', { classes: ['gem-ig-copy-button-wrapper'] });
+    const button = createElement('button', { innerHTML: window.gematikLabels.apiDoc.Copy_Button_Label});
+    // Add click event listener to copy button
+    button.addEventListener('click', function () {
+        navigator.clipboard.writeText(data).then(() => {
+            button.innerText = window.gematikLabels.apiDoc.Copied_Button_Label;
+            setTimeout(() => button.innerText = window.gematikLabels.apiDoc.Copy_Button_Label, 2000);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    });
+    wrapper.appendChild(languageElement);
+    buttonWrapper.appendChild(button);
+    wrapper.appendChild(buttonWrapper);
+    return wrapper;
+};
 
 const translateExpectation = (conformance) => ({
     "SHALL": window.gematikLabels.requirements.SHALL,
@@ -56,5 +77,6 @@ export default {
     loadData,
     createElement,
     createTable,
+    createCopyButton,
     translateExpectation
 };

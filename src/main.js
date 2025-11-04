@@ -1,4 +1,3 @@
-import labels from './labels.js';
 import fhir from './fhir.js';
 import utils from './utils.js';
 
@@ -162,6 +161,7 @@ function renderCapabilityStatementData(data, resourceType, what, parent) {
     const fhirData = fhir.parseFhirCapabilityStatement(data, resourceType);
     if(what == 'search') {
         if (fhirData.searchParams?.length) {
+            // eslint-disable-next-line no-unused-vars
             const searchParametersRows = fhirData.searchParams.map(({ name, definition, type, documentation, expectation }) => [
                 // definition ? `<a href="${definition}" target="_blank">${name}</a>` : name,
                 name,
@@ -210,7 +210,7 @@ function renderCodeBlocks() {
             const languageClass = classes.find((cls) => cls.includes("language-"));
             
             if (languageClass && !languageClass.includes('plaintext')) {
-                const button = createCopyButton(codeElement.textContent);
+                const button = utils.createCopyButton(codeElement.textContent);
                 parentElement.insertBefore(button, codeElement);
             }
         }

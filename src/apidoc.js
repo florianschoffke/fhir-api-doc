@@ -3,7 +3,6 @@ import hljs from 'highlight.js/lib/core';
 import xml from 'highlight.js/lib/languages/xml';
 import json from 'highlight.js/lib/languages/json';
 
-import labels from './labels.js';
 import fhir from './fhir.js';
 import utils from './utils.js';
 
@@ -77,8 +76,6 @@ function mergeObjects(base, derived) {
 
 // Function to process YAML data, including generic include logic
 function loadYAMLWithIncludes(yamlList) {
-    const yamlMap = Object.fromEntries(yamlList.filter(item => item.id).map(item => [item.id, item.content]));
-
     function processIncludes(obj) {
         for (const key in obj) {
             if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
@@ -117,35 +114,10 @@ function loadYAMLWithIncludes(yamlList) {
     return yamlList.reduce((acc, item) => mergeObjects(acc, item.content), {});
 }
 
-
-const createCopyButton = (data, language = null) => {
-    const wrapper = utils.createElement('div', { classes: ['gem-ig-copy-container'] });
-    const languageElement = utils.createElement('span', { classes: ['gem-id-code-lang'] })
-    if (language) {
-        languageElement.innerText = language.toLowerCase();
-    }
-    // The Copy Button
-    const buttonWrapper = utils.createElement('div', { classes: ['gem-ig-copy-button-wrapper'] });
-    const button = utils.createElement('button', { innerHTML: window.gematikLabels.apiDoc.Copy_Button_Label});
-    // Add click event listener to copy button
-    button.addEventListener('click', function () {
-        navigator.clipboard.writeText(data).then(() => {
-            button.innerText = window.gematikLabels.apiDoc.Copied_Button_Label;
-            setTimeout(() => button.innerText = window.gematikLabels.apiDoc.Copy_Button_Label, 2000);
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-        });
-    });
-    wrapper.appendChild(languageElement);
-    buttonWrapper.appendChild(button);
-    wrapper.appendChild(buttonWrapper);
-    return wrapper;
-};
-
 const renderApiExample = (parent, buttonParent, example, data, exampleList, buttonList) => {
     const exampleContainer = utils.createElement('pre', { attributes: { style: 'display: none' } });
     // The Copy Button
-    const copyButton = createCopyButton(data, example.type.toLowerCase());
+    const copyButton = utils.createCopyButton(data, example.type.toLowerCase());
     exampleContainer.appendChild(copyButton);
 
     const code = utils.createElement('code', {
@@ -189,6 +161,7 @@ const appendExampleElements = (exampleData, container) => {
 const appendFhirDetails = (fhirData, parent) => {
     if (fhirData.searchParams?.length) {
         parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchParams_Header }));
+        // eslint-disable-next-line no-unused-vars
         const searchParametersRows = fhirData.searchParams.map(({ name, definition, type, documentation, expectation }) => [
             // definition ? `<a href="${definition}" target="_blank">${name}</a>` : name,
             name,
