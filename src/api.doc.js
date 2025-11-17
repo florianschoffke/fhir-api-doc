@@ -14,9 +14,9 @@ hljs.registerLanguage('json', json);
 
 
 const ApiType = {
-  FHIRResource: "FHIRResource",
-  FHIROperation: "FHIROperation",
-  CUSTOM: "Custom"
+    FHIRResource: "FHIRResource",
+    FHIROperation: "FHIROperation",
+    CUSTOM: "Custom"
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -37,13 +37,13 @@ function parseExampleDivs(container) {
         const render = div.getAttribute('data-render');
 
         return {
-        name,
-        type,
-        render,
-        ...(url
-            ? { url }
-            : { data: div.innerHTML.trim() }
-        )
+            name,
+            type,
+            render,
+            ...(url
+                ? { url }
+                : { data: div.innerHTML.trim() }
+            )
         };
     });
 }
@@ -236,14 +236,14 @@ function parseBaseUrl(fullUrl) {
         }
 
         return [host, path];
-    } catch (e) {
+    } catch {
         console.warn("Wrong URL:", fullUrl);
         return [null, ""];
     }
 }
 
 function removeLeadingTabs(text) {
-  return text.replace(/^[\t ]+/gm, '');
+    return text.replace(/^[\t ]+/gm, '');
 }
 
 
@@ -419,13 +419,13 @@ function appendResponseInfo(parent, responseInfos) {
     if (responseInfos) {
         parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: gematikLabels.apiDoc.Response_Header }));
         const responseRows = responseInfos.slice()
-        .sort((a, b) => Number(a.statusCode) - Number(b.statusCode))
-        .map(({ statusCode, description, errorCode, responseType }) => [
-            `<code>${statusCode}</code>`, 
-            description, 
-            errorCode, 
-            responseType
-        ]);
+            .sort((a, b) => Number(a.statusCode) - Number(b.statusCode))
+            .map(({ statusCode, description, errorCode, responseType }) => [
+                `<code>${statusCode}</code>`, 
+                description, 
+                errorCode, 
+                responseType
+            ]);
         parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
             gematikLabels.apiDoc.StatusCode_Label,
             gematikLabels.apiDoc.Description_Label,
@@ -445,11 +445,11 @@ function appendSearchParameters(parent, params, httpMethod, formats=null) {
     const searchParametersRows = params
         .filter(({ name }) => name !== "resource")
         .map(({ name, definition, type, documentation, expectation }) => [
-        name,
-        `<code>${type}</code>`,
-        documentation,
+            name,
+            `<code>${type}</code>`,
+            documentation,
         // expectation
-    ]);
+        ]);
     if (Array.isArray(formats) && formats.length > 1) {
         const alreadyHasFormat = searchParametersRows.some(row => row[0] === '_format');
         if (!alreadyHasFormat) {

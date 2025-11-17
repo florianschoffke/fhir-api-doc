@@ -81,7 +81,7 @@ const isJson = (str) => {
     try {
         const parsed = JSON.parse(str);
         return typeof parsed === "object" && parsed !== null;
-    } catch (e) {
+    } catch {
         return false;
     }
 }
@@ -95,7 +95,7 @@ function toJson(value) {
         try {
             const parsed = JSON.parse(value);
             return typeof parsed === "object" && parsed !== null ? parsed : null;
-        } catch (e) {
+        } catch {
             return null;
         }
     }
