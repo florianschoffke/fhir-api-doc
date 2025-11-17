@@ -1,6 +1,6 @@
 import fhir from './fhir.js';
 import utils from './utils.js';
-import labels from './labels.js';
+import gematikLabels from './labels.js'
 
 import hljs from 'highlight.js/lib/core';
 import xml from 'highlight.js/lib/languages/xml';
@@ -256,12 +256,12 @@ const createCopyButton = (data, language = null) => {
     }
     // The Copy Button
     const buttonWrapper = utils.createElement('div', { classes: ['gem-ig-copy-button-wrapper'] });
-    const button = utils.createElement('button', { innerHTML: window.gematikLabels.apiDoc.Copy_Button_Label});
+    const button = utils.createElement('button', { innerHTML: gematikLabels.apiDoc.Copy_Button_Label});
     // Add click event listener to copy button
     button.addEventListener('click', function () {
         navigator.clipboard.writeText(data).then(() => {
-            button.innerText = window.gematikLabels.apiDoc.Copied_Button_Label;
-            setTimeout(() => button.innerText = window.gematikLabels.apiDoc.Copy_Button_Label, 2000);
+            button.innerText = gematikLabels.apiDoc.Copied_Button_Label;
+            setTimeout(() => button.innerText = gematikLabels.apiDoc.Copy_Button_Label, 2000);
         }).catch(err => {
             console.error('Failed to copy text: ', err);
         });
@@ -350,7 +350,7 @@ function createOperationMainBlock(httpMethod, urlPath) {
 function appendInfoBox(parent, operationId=null, formats=[], description=null) {
     let withLowPadding = false;
     if (operationId) {
-        parent.appendChild(utils.createElement('div', { classes: ['operation-block-description'], innerHTML: `${window.gematikLabels.apiDoc.OperationId_Label}: <b>${operationId}</b>` }));
+        parent.appendChild(utils.createElement('div', { classes: ['operation-block-description'], innerHTML: `${gematikLabels.apiDoc.OperationId_Label}: <b>${operationId}</b>` }));
         withLowPadding = true;
     }
     if (formats?.length) {
@@ -359,7 +359,7 @@ function appendInfoBox(parent, operationId=null, formats=[], description=null) {
         if (withLowPadding) {
             classesContentType.push('low-padding');
         }
-        parent.appendChild(utils.createElement('div', { classes: classesContentType, innerHTML: `${window.gematikLabels.apiDoc.ContentTypes_Label}: <b>${contentTypeHtml.join(", ")}</b>` }));
+        parent.appendChild(utils.createElement('div', { classes: classesContentType, innerHTML: `${gematikLabels.apiDoc.ContentTypes_Label}: <b>${contentTypeHtml.join(", ")}</b>` }));
     }
     // description
     if (description) {
@@ -382,7 +382,7 @@ function appendHeaderInfo(parent, headerParams, formats, httpMethod=null) {
         '<code>string</code>',
         `Formats: <code>${acceptHeaderValue}</code>`
     ]);
-    parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.HeaderParams_Header }));
+    parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: gematikLabels.apiDoc.HeaderParams_Header }));
     headerParamsRows = headerParamsRows.concat(
         headerParams.map(({ name, type, description, expectation }) => [
             name,
@@ -392,10 +392,10 @@ function appendHeaderInfo(parent, headerParams, formats, httpMethod=null) {
         ])
     );
     parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
-        window.gematikLabels.apiDoc.Parameter_Label,
-        window.gematikLabels.apiDoc.Type_Label,
-        window.gematikLabels.apiDoc.Description_Label,
-        // window.gematikLabels.apiDoc.Expectation_Label
+        gematikLabels.apiDoc.Parameter_Label,
+        gematikLabels.apiDoc.Type_Label,
+        gematikLabels.apiDoc.Description_Label,
+        // gematikLabels.apiDoc.Expectation_Label
     ], headerParamsRows, true, ['params-table'])] }));
 }
 
@@ -403,12 +403,12 @@ function appendHeaderInfo(parent, headerParams, formats, httpMethod=null) {
 function appendExamples(parent, forRequest, forResponse) {
 
     if (forRequest?.length) {
-        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.RequestExample_Header }));
+        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: gematikLabels.apiDoc.RequestExample_Header }));
         appendExampleElements(forRequest, parent);
     }
 
     if (forResponse?.length) {
-        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.ResponseExample_Header }));
+        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: gematikLabels.apiDoc.ResponseExample_Header }));
         appendExampleElements(forResponse, parent);
     }
 
@@ -417,7 +417,7 @@ function appendExamples(parent, forRequest, forResponse) {
 
 function appendResponseInfo(parent, responseInfos) {
     if (responseInfos) {
-        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.Response_Header }));
+        parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: gematikLabels.apiDoc.Response_Header }));
         const responseRows = responseInfos.slice()
         .sort((a, b) => Number(a.statusCode) - Number(b.statusCode))
         .map(({ statusCode, description, errorCode, responseType }) => [
@@ -427,10 +427,10 @@ function appendResponseInfo(parent, responseInfos) {
             responseType
         ]);
         parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
-            window.gematikLabels.apiDoc.StatusCode_Label,
-            window.gematikLabels.apiDoc.Description_Label,
-            window.gematikLabels.apiDoc.ErrorCode_Label,
-            window.gematikLabels.apiDoc.Response_Type
+            gematikLabels.apiDoc.StatusCode_Label,
+            gematikLabels.apiDoc.Description_Label,
+            gematikLabels.apiDoc.ErrorCode_Label,
+            gematikLabels.apiDoc.Response_Type
         ], responseRows)] }));
     }
 }
@@ -466,12 +466,12 @@ function appendSearchParameters(parent, params, httpMethod, formats=null) {
     if(!searchParametersRows | searchParametersRows.length == 0) {
         return;
     }
-    parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchParams_Header }));
+    parent.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: gematikLabels.apiDoc.SearchParams_Header }));
     parent.appendChild(utils.createElement('div', { classes: ['operation-block-description', 'with-table'], children: [utils.createTable([
-        window.gematikLabels.apiDoc.Parameter_Label,
-        window.gematikLabels.apiDoc.Type_Label,
-        window.gematikLabels.apiDoc.Documentation_Label,
-        // window.gematikLabels.apiDoc.Expectation_Label
+        gematikLabels.apiDoc.Parameter_Label,
+        gematikLabels.apiDoc.Type_Label,
+        gematikLabels.apiDoc.Documentation_Label,
+        // gematikLabels.apiDoc.Expectation_Label
     ], searchParametersRows, true, ['params-table'])] }));
 
 }
@@ -509,7 +509,7 @@ function renderCapabilityStatementResourceApiDocumentation(parent, capability, r
 
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
         if (_interaction == "search-type") {
-            operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: window.gematikLabels.apiDoc.SearchInclude_And_RevInclude_Header }));
+            operationMainBlock.appendChild(utils.createElement('div', { classes: ['operation-block-section-header'], innerHTML: gematikLabels.apiDoc.SearchInclude_And_RevInclude_Header }));
             const rows = Array.from({ length: Math.max(fhirData.searchInclude?.length || 0, fhirData.searchRevInclude?.length || 0) }, (_, i) => [
                 fhirData.searchInclude?.[i] || '',
                 fhirData.searchRevInclude?.[i] || ''

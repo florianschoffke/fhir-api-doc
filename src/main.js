@@ -1,6 +1,6 @@
 import fhir from './fhir.js';
 import utils from './utils.js';
-
+import gematikLabels from './labels.js'
 
 window.igtools = window.igtools || {};
 
@@ -34,7 +34,7 @@ function downloadSVG() {
         downloadLink.href = URL.createObjectURL(blob);
         downloadLink.download = fileName;
         downloadLink.classList.add('gem-ig-download-btn');
-        downloadLink.innerText = window.gematikLabels.ig?.Download_Button_SVG || 'Download SVG';
+        downloadLink.innerText = gematikLabels.ig?.Download_Button_SVG || 'Download SVG';
 
         const downloadLinkWrapper = document.createElement('div');
         downloadLinkWrapper.classList.add('gem-ig-svg-downloadlink-wrapper');
@@ -92,7 +92,7 @@ function downloadImages() {
                             downloadLink.href = URL.createObjectURL(blob);
                             downloadLink.download = imgClone.src.split('/').pop();
                             downloadLink.classList.add('gem-ig-download-btn');
-                            downloadLink.innerText = window.gematikLabels.ig.Download_Button_Image;
+                            downloadLink.innerText = gematikLabels.ig.Download_Button_Image;
 
                             const downloadLinkWrapper = document.createElement('div');
                             downloadLinkWrapper.classList.add('gem-ig-img-downloadlink-wrapper');
@@ -170,10 +170,10 @@ function renderCapabilityStatementTableData(data, resourceType, what, parent) {
                 // expectation
             ]);
             parent.appendChild(utils.createElement('div', { children: [utils.createTable([
-                window.gematikLabels.ig.FHIR_Parameter_Label,
-                window.gematikLabels.ig.FHIR_Type_Label,
-                window.gematikLabels.ig.FHIR_Documentation_Label,
-                // window.gematikLabels.ig.FHIR_Expectation_Label
+                gematikLabels.ig.FHIR_Parameter_Label,
+                gematikLabels.ig.FHIR_Type_Label,
+                gematikLabels.ig.FHIR_Documentation_Label,
+                // gematikLabels.ig.FHIR_Expectation_Label
             ], searchParametersRows, true)] }));
         }
     }

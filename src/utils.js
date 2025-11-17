@@ -1,3 +1,5 @@
+import gematikLabels from './labels.js'
+
 const loadData = async (url) => {
     try {
         const response = await fetch(url);
@@ -46,12 +48,12 @@ const createCopyButton = (data, language = null) => {
     }
     // The Copy Button
     const buttonWrapper = createElement('div', { classes: ['gem-ig-copy-button-wrapper'] });
-    const button = createElement('button', { innerHTML: window.gematikLabels.apiDoc.Copy_Button_Label});
+    const button = createElement('button', { innerHTML: gematikLabels.apiDoc.Copy_Button_Label});
     // Add click event listener to copy button
     button.addEventListener('click', function () {
         navigator.clipboard.writeText(data).then(() => {
-            button.innerText = window.gematikLabels.apiDoc.Copied_Button_Label;
-            setTimeout(() => button.innerText = window.gematikLabels.apiDoc.Copy_Button_Label, 2000);
+            button.innerText = gematikLabels.apiDoc.Copied_Button_Label;
+            setTimeout(() => button.innerText = gematikLabels.apiDoc.Copy_Button_Label, 2000);
         }).catch(err => {
             console.error('Failed to copy text: ', err);
         });
@@ -63,13 +65,13 @@ const createCopyButton = (data, language = null) => {
 };
 
 const translateExpectation = (conformance) => ({
-    "SHALL": window.gematikLabels.requirements.SHALL,
-    "SHALL NOT": window.gematikLabels.requirements.SHALL_NOT,
-    "SHALL-NOT": window.gematikLabels.requirements.SHALL_NOT,
-    "SHOULD": window.gematikLabels.requirements.SHOULD,
-    "SHOULD NOT": window.gematikLabels.requirements.SHOULD_NOT,
-    "SHOULD-NOT": window.gematikLabels.requirements.SHOULD_NOT,
-    "MAY": window.gematikLabels.requirements.MAY
+    "SHALL": gematikLabels.requirements.SHALL,
+    "SHALL NOT": gematikLabels.requirements.SHALL_NOT,
+    "SHALL-NOT": gematikLabels.requirements.SHALL_NOT,
+    "SHOULD": gematikLabels.requirements.SHOULD,
+    "SHOULD NOT": gematikLabels.requirements.SHOULD_NOT,
+    "SHOULD-NOT": gematikLabels.requirements.SHOULD_NOT,
+    "MAY": gematikLabels.requirements.MAY
 }[conformance] || conformance);
 
 
@@ -102,7 +104,7 @@ function toJson(value) {
 }
 
 function removeLeadingSlash(str) {
-  return str.startsWith('/') ? str.slice(1) : str;
+    return str.startsWith('/') ? str.slice(1) : str;
 }
 
 export default {
