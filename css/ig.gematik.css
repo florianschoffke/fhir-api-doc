@@ -188,7 +188,7 @@ pre {
     }
 
     .gem-ig-headline-container {
-        height: 150px;
+        height: 140px;
         background: #010e52;
     }
 }
@@ -335,3 +335,39 @@ a[href$=".yaml"]:not([no-download^="true"]):after {
     padding-left: 3px;
 } 
   
+
+.gem-ig-user-table {
+    width: 330px; 
+    border: 1px solid black;
+}
+
+/* ============ gematik ba ============= */
+
+.gem-ig-badge {
+    border-radius: 3px; 
+    padding: 3px 7px !important;
+}
+
+.gem-ig-badge-bg-orange {
+    background-color: #F5CD47;
+}
+
+.gem-ig-badge-bg-grey {
+    background-color: #A0ADBD;
+}
+
+.gem-ig-badge-bg-green {
+    background-color: #51CB9A;
+}
+
+.gem-ig-badge-bg-blue {
+    background-color: #5898FC;
+}
+
+.gem-ig-badge-bg-red {
+    background-color: #F8716E;
+}
+
+.gem-ig-badge-bg-darkblue {
+    background-color: #3E6F8F;
+}

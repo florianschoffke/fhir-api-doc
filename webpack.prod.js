@@ -12,7 +12,13 @@ module.exports = merge(common, {
     plugins: [
         new CopyWebpackPlugin({
             patterns: [
-                { from: 'css/*.css', to: '[name][ext]' }, // Kopiert alle CSS-Dateien aus css in dist
+                { 
+                  from: 'css/*.css',
+                  to: '[name][ext]', // Kopiert alle CSS-Dateien aus css in dist
+                  globOptions: {
+                    ignore: ['**/ig.apidoc.gematik.css'],
+                  },
+                },
                 { 
                   from: path.resolve(__dirname, "node_modules/swagger-ui-dist/LICENSE"),
                   to: "swagger-ui-es-bundle.LICENSE.txt"

@@ -1,312 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/favicon.png" sizes="any" type="image/png">
-    <title>FHIR Library Test</title>
-    <!-- <link rel="stylesheet" href="../src/style.css"> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/edge-dark.min.css"> -->
-     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/base16/atelier-savanna.min.css"> -->
-    <link href="/ig.gematik.css" rel="stylesheet" />
-    <script src="/ig.gematik.min.js"></script>
-    <link href="/ig.req.gematik.css" rel="stylesheet" />
-    <script src="/ig.req.gematik.min.js"></script>
-    <link href="/edge-dark.min.css" rel="stylesheet" />
-    <link href="/ig.apidoc.gematik.css" rel="stylesheet" />
-    <script src="/ig.apidoc.gematik.min.js"></script>
-</head>
-<body>
-    <h1>FHIR API DOC</h1>
-    <p><a href="/">API DOC</a></p>
-    <p><a href="/req.html">Req</a></p>
-    <p><a href="/base.html">Base</a></p>
-    <p><a href="/parse.html">Parse</a></p>
-    <p><a href="/bibliography.html">Bibliography</a></p>
-    <p><a href="/openapi.html">OpenAPI</a></p>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="/favicon.png" sizes="any" type="image/png">
+        <title>FHIR Library Test</title>
+        <link href="/ig.gematik.css" rel="stylesheet" />
+        <script src="/ig.gematik.min.js"></script>
+        <link href="/ig.req.gematik.css" rel="stylesheet" />
+        <script src="/ig.req.gematik.min.js"></script>
+        <link href="/edge-dark.min.css" rel="stylesheet" />
+        <script src="/ig.api.doc.gematik.min.js"></script>
+    </head>
+    <body>
+        <h1>IG REQ</h1>
+        <p><a href="/">Requirements</a></p>
+        <p><a href="/base.html">Base</a></p>
+        <p><a href="/parse.html">Parse</a></p>
+        <p><a href="/cap.html">Cap</a></p>
+        <p><a href="/bibliography.html">Bibliography</a></p>
+        <p><a href="/openapi.html">OpenAPI</a></p>
 
-    <gem-ig-api-doc>
+        <h2>
+            Lorem Ipsum
+        </h2>
+        <requirement key="REQ-00001" version="1" actor="Service" title="Test Anforderung" conformance="SHALL">
+            <meta lockversion="true"/>
+            <actor name="EPA-Audit-Service"/>
+            <actor name="EPA-Medication-Service">
+                <testProcedure id="Produkttest"/>
+                <testProcedure id="Produktgutachten"/>
+            </actor>
+            <actor name="EPA-PS">
+                <testProcedure id="Produkttest"/>
+            </actor>
+            Der Anbieter des ePA-Aktensystems MUSS den in diesem Leitfaden definierten MHD Service implementieren und dabei 
+            die Vorgaben der FHIR-Spezifikation berücksichtigen. Der MHD Service MUSS den logischen IHE ITI Akteur Document 
+            Responder mit seinen Schnittstellen Find Document References [ITI-67] und Retrieve Document [ITI-68] implementieren. 
+            Der Anbieter des ePA-Aktensystems MUSS die Konformität der MHD-Service-Implementierung in einem Zulassungsverfahren nachweisen.
+            <a href="http://hl7.org/fhir/R4/index.html">FHIR-Spezifikation</a>
+        </requirement>
 
-      <textarea data-apidoc-data="yaml" id="GET">
-        get:
-          headerParams:
-            - name: "x-test"
-              expectation: "DARF NICHT"
-              type: "string"
-              description: "Testdata"
-          responseExamples:
-            - name: "EIN INCLUDE EXAMPLE"
-              type: JSON
-              data: '{"resourceType": "Include"}'
-            - name: |
-                EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE - EIN INCLUDE EXAMPLE
-              type: JSON
-              data: '{"resourceType": "Include"}'
-      </textarea> 
-      <textarea data-apidoc-data="yaml">
-          base: "[BASE]"
-          paths:
-            /epa/medication/api/v1/fhir/Medication:
-              include: 
-                - "#GET"
-              get:
-                contentTypes:
-                  - "application/fhir+xml"
-                  - "application/fhir+json"
-                description: |
-                  Gibt eine Liste von <code>Medikamenten-Ressourcen</code> zurück. 
-                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
-                  nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-                  sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
-                  Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit 
-                  amet. Lorem ipsum dolor sit amet, c
-                operationId: "listMedications_MedicationSvc"
-                headerParams:
-                  - name: "x-insurantid"
-                    expectation: "MUSS"
-                    type: "string"
-                    description: "Health Record Identifier"
-                  - name: "x-useragent"
-                    expectation: "KANN"
-                    type: "string"
-                    description: "User Agent Information"
-                fhir:
-                  capabilityStatement:
-                    url: '/CapabilityStatement-epa-capabilitystatement-medication.json'
-                    forResourceType: 'Medication'
-                  searchParams:
-                    - name: "_id"
-                      definition: "http://hl7.org/fhir/SearchParameter/Resource-id"
-                      type: "token"
-                      expectation: "MUSS"
-                      documentation: "Resource​.id"
-                    - name: "_lastUpdated"
-                      definition: "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated"
-                      type: "date"
-                      expectation: "MUSS"
-                      documentation: "Resource.​meta.​lastUpdated"
-                    - name: "identifier"
-                      definition: "http://hl7.org/fhir/SearchParameter/clinical-identifier"
-                      type: "token"
-                      expectation: "MUSS"
-                      documentation: "Medication.identifier"
-                  searchInclude:
-                    - "Medication:ingredient"
-                  searchRevInclude:
-                    - "MedicationRequest:medication"
-                    - "MedicationDispense:medication"
-                    - "MedicationStatement:medication"
-                    - "Medication:ingredient"
-                    - "Provenance:target"
-                responseExamples:
-                  - name: "application/fhir+json"
-                    type: JSON
-                    data: '{"resourceType": "Medication"}'
-                  - name: "Load XML"
-                    type: XML
-                    url: '/Bundle-example-searchset-medication.xml'
-                  - name: "Load Json"
-                    type: JSON
-                    url: '/Bundle-example-searchset-medication.json'
-                  - name: "Load HTML"
-                    type: HTML
-                    urrl: '/Bundle-example-searchset-medication.xml.html'
-                responses:
-                  - statusCode: '200'
-                    description: "Successful operation"
-                    errorCode: "-"
-                    note: "-"
-                  - statusCode: '400'
-                    description: "Unknown search parameter Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed "
-                    errorCode: "Test"
-                    note: "Test"
-                  - statusCode: '404'
-                    description: "Keine Medikation gefunden"
+        <requirement key="REQ-00001" version="1" actor="Service" title="Test Anforderung" conformance="SHALL">
+            <meta lockversion="true"/>
+            <actor name="EPA-Audit-Service" />
+            <actor name="EPA-Medication-Service">
+                <testProcedure id="Produkttest"/>
+                <testProcedure id="Produktgutachten"/>
+            </actor>
+            Der Anbieter des ePA-Aktensystems MUSS den in diesem Leitfaden definierten MHD Service implementieren und dabei 
+            die Vorgaben der FHIR-Spezifikation berücksichtigen. Der MHD Service MUSS den logischen IHE ITI Akteur Document 
+            Responder mit seinen Schnittstellen Find Document References [ITI-67] und Retrieve Document [ITI-68] implementieren. 
+            Der Anbieter des ePA-Aktensystems MUSS die Konformität der MHD-Service-Implementierung in einem Zulassungsverfahren nachweisen.
+            <a href="http://hl7.org/fhir/R4/index.html">FHIR-Spezifikation</a>
+        </requirement>
 
-              post:
-                description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
-                operationId: "listMedications_MedicationSvc"
-                headerParams:
-                  - name: "x-insurantid"
-                    expectation: "MUSS"
-                    type: "string"
-                    description: "Health Record Identifier"
-                  - name: "x-useragent"
-                    expectation: "KANN"
-                    type: "string"
-                    description: "User Agent Information"
-                fhir:
-                  searchParams:
-                    - name: "_id"
-                      definition: "http://hl7.org/fhir/SearchParameter/Resource-id"
-                      type: "token"
-                      expectation: "MUSS"
-                      documentation: "Resource​.id"
-                    - name: "_lastUpdated"
-                      definition: "http://hl7.org/fhir/SearchParameter/Resource-lastUpdated"
-                      type: "date"
-                      expectation: "MUSS"
-                      documentation: "Resource.​meta.​lastUpdated"
-                    - name: "identifier"
-                      definition: "http://hl7.org/fhir/SearchParameter/clinical-identifier"
-                      type: "token"
-                      expectation: "MUSS"
-                      documentation: "Medication.identifier"
-                  searchInclude:
-                    - "Medication:ingredient"
-                  searchRevInclude:
-                    - "MedicationRequest:medication"
-                    - "MedicationDispense:medication"
-                    - "MedicationStatement:medication"
-                    - "Medication:ingredient"
-                    - "Provenance:target"
-                requestExamples:
-                  - name: "application/fhir+json"
-                    type: JSON
-                    data: '{"resourceType": "Medication"}'
-                  - name: "Load XML"
-                    type: XML
-                    url: '/Bundle-example-searchset-medication.xml'
-                  - name: "Load Json"
-                    type: JSON
-                    url: '/Bundle-example-searchset-medication.json'
-                responseExamples:
-                - name: "Data JSON"
-                  type: JSON
-                  data: '{"resourceType": "Medication"}'
-                - name: "Load XML"
-                  type: XML
-                  url: '/Bundle-example-searchset-medication.xml'
-                - name: "Load Json"
-                  type: JSON
-                  url: '/Bundle-example-searchset-medication.json'
-                responses:
-                - statusCode: '200'
-                  description: "Successful operation"
-                  errorCode: "-"
-                  note: "-"
-                - statusCode: '400'
-                  description: "Unknown search parameter Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed "
-                  errorCode: "Test"
-                  note: "Test"
-                - statusCode: '404'
-                  description: "Keine Medikation gefunden"
+        <p>
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
+            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores 
+            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem 
+            ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et 
+            dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit 
+            amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam 
+            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, 
+            no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in 
+            vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan 
+            et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. 
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet 
+            dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit 
+            lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
+        </p>
 
-            /MedicationRequest:
-              put:
-                description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
-                operationId: "listMedications_MedicationSvc"
-                fhir:
-                  capabilityStatement:
-                    url: '/CapabilityStatement-epa-capabilitystatement-medication.json'
-                    forResourceType: 'MedicationRequest'
-            /epa/medication/api/v1/fhir/MedicationDispense:
-              delete:
-                base: "http://foo.bar"
-                operationId: "listMedications_MedicationSvc"
-                fhir:
-                  capabilityStatement:
-                    url: '/CapabilityStatement-epa-capabilitystatement-medication.json'
-                    forResourceType: 'MedicationDispense'
-              head:
-                operationId: "HEAD"
-              patch:
-                operationId: "PATCH"
-        </textarea>
-      </gem-ig-api-doc>
+        <requirement key="REQ-00001" version="3" actor="Service" title="Test Anforderung" conformance="SHALL">
+            Der Anbieter des ePA-Aktensystems MUSS den in diesem Leitfaden definierten MHD Service implementieren und dabei 
+            die Vorgaben der FHIR-Spezifikation berücksichtigen. Der MHD Service MUSS den logischen IHE ITI Akteur Document 
+            Responder mit seinen Schnittstellen Find Document References [ITI-67] und Retrieve Document [ITI-68] implementieren. 
+            Der Anbieter des ePA-Aktensystems MUSS die Konformität der MHD-Service-Implementierung in einem Zulassungsverfahren nachweisen.
+            <a href="http://hl7.org/fhir/R4/index.html">FHIR-Spezifikation</a>
+        </requirement>
 
-      <gem-ig-api-doc>
-        <textarea data-apidoc-data="yaml" id="GET">
-              headerParams:
-                - name: "x-include"
-                  expectation: "KANN"
-                  type: "string"
-                  description: "Include"
-              responseExamples:
-                - name: "EIN INCLUDE EXAMPLE"
-                  type: JSON
-                  data: '{"resourceType": "Include"}'
+        <requirement key="REQ-00002" version="1" actor="Service" title="Test Anforderung Test">
+            Der Anbieter des ePA-Aktensystems MUSS den in diesem Leitfaden definierten MHD Service implementieren und dabei 
+            die Vorgaben der FHIR-Spezifikation berücksichtigen. Der MHD Service MUSS den logischen IHE ITI Akteur Document 
+            Responder mit seinen Schnittstellen Find Document References [ITI-67] und Retrieve Document [ITI-68] implementieren. 
+            Der Anbieter des ePA-Aktensystems MUSS die Konformität der MHD-Service-Implementierung in einem Zulassungsverfahren nachweisen.
+            <a href="http://hl7.org/fhir/R4/index.html">FHIR-Spezifikation</a>
+        </requirement>
 
-        </textarea>
-        <textarea data-apidoc-data="yaml" id="POST">
-            headerParams:
-              - name: "x-include"
-                expectation: "KANN"
-                type: "string"
-                description: "Include"
-            responseExamples:
-              - name: "EIN INCLUDE EXAMPLE"
-                type: JSON
-                data: '{"resourceType": "Include"}'
-        </textarea>
-        <textarea data-apidoc-data="yaml">
-          base: "[base]"
-          paths:
-            /epa/medication/api/v1/fhir/MedicationReeuest:
-              post:
-                include: 
-                  - "#GET"
-                description: "Gibt eine Liste von Medikamenten-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
-                operationId: "listMedications_MedicationSvc"
-                fhir:
-                  capabilityStatement:
-                    url: '/CapabilityStatement-epa-capabilitystatement-medication.json'
-                    forResourceType: 'MedicationRequest'
-                headerParams:
-                  - name: "x-request-id"
-                    expectation: "KANN"
-                    type: "string"
-                    description: "RequestId"
-        </textarea>
-        <textarea data-apidoc-data="yaml">
-          base: "[base]"
-          paths:
-            /epa/patient/api/v1/fhir/Patient:
-              post:
-                include: 
-                  - "#GET"
-                description: "Gibt eine Liste von Patient-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
-                operationId: "listPatient"
-                fhir:
-                  capabilityStatement:
-                    url: '/CapabilityStatement-epa-patient-server.json'
-                    forResourceType: 'Patient'
-                headerParams:
-                  - name: "X-Request-ID"
-                    expectation: "KANN"
-                    type: "string"
-                    description: "RequestId"
-        </textarea>
-        <textarea data-apidoc-data="yaml">
-          base: "[base]"
-          paths:
-            /epa/patient/api/v1/fhir/Patient:
-              get:
-                include: 
-                  - "#GET"
-                description: "Gibt eine Liste von Patient-Ressourcen zurück. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, c"
-                operationId: "listPatient"
-                fhir:
-                  capabilityStatement:
-                    url: '/CapabilityStatement-epa-patient-server-merged.json'
-                    forResourceType: 'Patient'
-                headerParams:
-                  - name: "X-Request-ID"
-                    expectation: "KANN"
-                    type: "string"
-                    description: "RequestId"
-        </textarea>
-      </gem-ig-api-doc>
+        <div style="width: 800px; min-height: 20px;">
+            <requirement version="3" actor="Primärsystem" title="Test Anforderung 2">
+                Der Anbieter des ePA-Aktensystems MUSS den in diesem Leitfaden definierten MHD Service implementieren und dabei 
+                die Vorgaben der FHIR-Spezifikation berücksichtigen. Der MHD Service MUSS den logischen IHE ITI Akteur Document 
+                Responder mit seinen Schnittstellen Find Document References [ITI-67] und Retrieve Document [ITI-68] implementieren. 
+                Der Anbieter des ePA-Aktensystems MUSS die Konformität der MHD-Service-Implementierung in einem Zulassungsverfahren nachweisen.
+            </requirement>
+        </div>
 
-      <pre>
-        <code class=" language-plaintext">
-{
-  "errorCode": "statusMismatch"
-}
-        </code>
-      </pre>
+        <requirement
+            actor="MHD Service, Service 2, Service 3,MHD Service, Service 2, Service 3, MHD Service, Service 2, Service 3, MHD Service, Service 2, Service 3,MHD Service, Service 2, Service 3 ,MHD Service, Service 2, Service 3"
+            title="Unterstützung von GET und POST für Suchanfragen"
+            conformance="SHOULD">
+            Der Document Responder MUSS sowohl GET- als auch POST-basierte Suchanfragen unterstützen, wie in der <a href="http://hl7.org/fhir/R4/http.html#search">FHIR HTTP Spezifikation</a> festgelegt.
+        </requirement>
 
-</body>
+
+        <requirement
+            actor="MHD Service"
+            title="Unterstützung von GET und POST für Suchanfragen"
+            conformance="SHALL NOT">
+            Der Document Responder DARF NICHT sowohl GET- als auch POST-basierte Suchanfragen unterstützen, wie in der <a href="http://hl7.org/fhir/R4/http.html#search">FHIR HTTP Spezifikation</a> festgelegt.
+        </requirement>
+
+        <requirement
+            actor="MHD Service"
+            title="Zugriffsrechte im Document Responder gemäß Legal Policy">
+            Der Document Responder MUSS die gesetzlich verbindlichen Regelungen der Zugriffsrechte bzgl. der Berufsgruppen und Datenkategorien aus der <a href="https://gemspec.gematik.de/docs/gemSpec/gemSpec_Aktensystem_ePAfueralle/gemSpec_Aktensystem_ePAfueralle_V1.2.5/#3.10">Legal Policy</a> berücksichtigen (d.h. er DARF Dokumente ohne Leserecht NICHT für die Suche und Herausgabe berücksichtigen). Ferner DARF der Document Responder NICHT Dokumente berücksichtigen, die durch eine <i>General Deny Policy</i> verborgen wurden. Die generelle Ausführung des Document Responder ist ausschließlich für befugte Nutzgruppen der nachstehenden Liste durchzuführen:
+            <figure>
+                <table class="regular">
+                    <thead><tr><th>professionOID</th></tr></thead>
+                    <tbody>
+                    <tr><td>oid_praxis_arzt</td></tr>
+                    <tr><td>oid_krankenhaus</td></tr>
+                    <tr><td>oid_institution-vorsorge-reha</td></tr>
+                    <tr><td>oid_zahnarztpraxis</td></tr>
+                    <tr><td>oid_praxis_psychotherapeut</td></tr>
+                    <tr><td>oid_institution-oegd</td></tr>
+                    <tr><td>oid_öffentliche_apotheke</td></tr>
+                    <tr><td>oid_institution-pflege</td></tr>
+                    <tr><td>oid_institution-geburtshilfe</td></tr>
+                    <tr><td>oid_praxis-physiotherapeut</td></tr>
+                    <tr><td>oid_praxis-ergotherapeut</td></tr>
+                    <tr><td>oid_praxis-logopaede</td></tr>
+                    <tr><td>oid_praxis-podologe</td></tr>
+                    <tr><td>oid_praxis-ernaehrungstherapeut</td></tr>
+                    <tr><td>oid_institution-arbeitsmedizin</td></tr>
+                    <tr><td>oid_versicherter</td></tr>
+                    </tbody>
+                </table>
+                <figcaption>Tabelle: Befugbare Nutzergruppen mit Ausführungsrecht von Suche und Herausgabe von Dokumenten</figcaption>
+                </figure>
+        </requirement>
+    </body>
 </html>
+

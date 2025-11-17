@@ -157,7 +157,7 @@ function enableExamples() {
 }
 
 
-function renderCapabilityStatementData(data, resourceType, what, parent) {
+function renderCapabilityStatementTableData(data, resourceType, what, parent) {
     const fhirData = fhir.parseFhirCapabilityStatement(data, resourceType);
     if(what == 'search') {
         if (fhirData.searchParams?.length) {
@@ -167,13 +167,13 @@ function renderCapabilityStatementData(data, resourceType, what, parent) {
                 name,
                 `<code>${type}</code>`,
                 documentation,
-                expectation
+                // expectation
             ]);
             parent.appendChild(utils.createElement('div', { children: [utils.createTable([
                 window.gematikLabels.ig.FHIR_Parameter_Label,
                 window.gematikLabels.ig.FHIR_Type_Label,
                 window.gematikLabels.ig.FHIR_Documentation_Label,
-                window.gematikLabels.ig.FHIR_Expectation_Label
+                // window.gematikLabels.ig.FHIR_Expectation_Label
             ], searchParametersRows, true)] }));
         }
     }
@@ -189,14 +189,14 @@ function renderCapabilityStatementData(data, resourceType, what, parent) {
 }
 
 
-function fhirData() {
-    const capDivs = document.querySelectorAll('div[data-fhir-capabilitystatement-url]');
+function fhirDataTable() {
+    const capDivs = document.querySelectorAll('div[data-table-fhir-capabilitystatement-url]');
     capDivs.forEach(div => {
-        const capUrl = div.getAttribute('data-fhir-capabilitystatement-url');
-        const resourceType = div.getAttribute('data-fhir-resource-type');
-        const what = div.getAttribute('data-fhir-capabilitystatement-render');
+        const capUrl = div.getAttribute('data-table-fhir-capabilitystatement-url');
+        const resourceType = div.getAttribute('data-table-fhir-resource-type');
+        const what = div.getAttribute('data-table-fhir-capabilitystatement-render');
         if(capUrl && resourceType) {
-            utils.loadData(capUrl).then(data => renderCapabilityStatementData(data, resourceType, what, div));
+            utils.loadData(capUrl).then(data => renderCapabilityStatementTableData(data, resourceType, what, div));
         }
     });
 }
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadImages();
         enableExamples();
         renderCodeBlocks();
-        fhirData();
+        fhirDataTable();
     } catch (error) {
         console.error('Error initializing functions:', error);
     }
