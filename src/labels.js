@@ -1,4 +1,3 @@
-
 const gematikLabels = window.gematikLabels || {};
 
 gematikLabels.requirements = {
@@ -7,7 +6,7 @@ gematikLabels.requirements = {
     SHOULD: "SOLL",
     SHOULD_NOT: "SOLL NICHT",
     MAY: "KANN",
-    ...(window.gematikLabels.requirements || {}),
+    ...(window.gematikLabels?.requirements || {}),
 };
 
 gematikLabels.ig = {
@@ -17,7 +16,7 @@ gematikLabels.ig = {
     FHIR_Type_Label: "Type",
     FHIR_Expectation_Label: "Service Anforderung",
     FHIR_Documentation_Label: "Beschreibung",
-    ...(window.gematikLabels.ig || {}),
+    ...(window.gematikLabels?.ig || {}),
 };
 
 gematikLabels.apiDoc = {
@@ -41,6 +40,8 @@ gematikLabels.apiDoc = {
     OperationId_Label: "OperationId",
     Copy_Button_Label: "Code kopieren",
     Copied_Button_Label: "Code wird kopiert",
-    ...(window.gematikLabels.apiDoc || {}),
+    ...(window.gematikLabels?.apiDoc || {}),
 }
+
+export default gematikLabels;
   
