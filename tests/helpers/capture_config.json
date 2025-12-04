@@ -1,0 +1,17 @@
+{
+  "tmpFolder": "./tmp",
+  "sourceFolders": [
+    "./dist",
+    "./css",
+    "./dev-helpers"
+  ],
+  "pages": [
+    "index.html",
+    "base.html",
+    "parse.html",
+    "cap.html",
+    "bibliography.html",
+    "openapi.html"
+  ],
+  "debug": false
+}

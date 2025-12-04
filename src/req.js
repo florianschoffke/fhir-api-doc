@@ -1,6 +1,4 @@
-
 import utils from './utils.js';
-
 
 document.addEventListener("DOMContentLoaded", () => {
     renderRequirements();
@@ -8,30 +6,26 @@ document.addEventListener("DOMContentLoaded", () => {
     addDataAnchorToRequirementLink();
 });
 
-
 function addDataAnchorToRequirementLink() {
     document.querySelectorAll(".requirement-link").forEach(function (link) {
         let anchor = link.getAttribute("data-anchor");
-        if (anchor) {
+        if (anchor && link.href) {
             link.href = link.href + "#" + anchor;
         }
     });
 }
 
-
 function removeActorTags(xmlString) {
-    xmlString = xmlString.replace(/<actor\b[^>]*\/>/gi, '');
     xmlString = xmlString.replace(/<actor\b[^>]*>[\s\S]*?<\/actor>/gi, '');
+    xmlString = xmlString.replace(/<actor\b[^>]*\/>/gi, '');
     return xmlString;
 }
-
 
 function removeMetaTags(xmlString) {
-    xmlString = xmlString.replace(/<meta\b[^>]*\/?>/gi, '');
     xmlString = xmlString.replace(/<meta\b[^>]*>[\s\S]*?<\/meta>/gi, '');
+    xmlString = xmlString.replace(/<meta\b[^>]*\/?>/gi, '');
     return xmlString;
 }
-
 
 function cleanRequirementDescription(desc) {
     desc = removeActorTags(desc);
@@ -41,7 +35,7 @@ function cleanRequirementDescription(desc) {
 
 function renderRequirements() {
     const requirements = document.querySelectorAll('requirement');
-  
+
     requirements.forEach(req => {
 
         const reqKey = req.getAttribute('key') || '';
@@ -55,7 +49,7 @@ function renderRequirements() {
         const combinedReqKey = reqKey && reqVersion > 0
             ? `${reqKey}-${formattedVersion}` 
             : reqKey;
-        
+
         // actor with attribute version for backwards compatibility
         let actorText = req.getAttribute('actor') || '';
         const actors = req.querySelectorAll('actor') || [];
@@ -121,10 +115,8 @@ function hashLinkHighlightTarget(targetId) {
     }
 }
 
-
 function hashLinkHighlight() {
-
-    const hash = window.location.hash.substring(1)
+    const hash = window.location.hash.substring(1);
     if (hash) {
         hashLinkHighlightTarget(hash);
     }
@@ -136,3 +128,13 @@ function hashLinkHighlight() {
         }
     });
 }
+
+export default {
+    addDataAnchorToRequirementLink,
+    removeActorTags,
+    removeMetaTags,
+    cleanRequirementDescription,
+    renderRequirements,
+    hashLinkHighlightTarget,
+    hashLinkHighlight
+};
