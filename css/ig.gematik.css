@@ -76,9 +76,9 @@ table td {
 
 }
 
-table.release-notes tr {
+/* table.release-notes tr {
     border: 0px;
-}
+} */
 
 table.release-notes td {
     max-width: 650px;
@@ -118,6 +118,7 @@ table td.bibliography-desc {
     background: inherit !important;
 }
 
+
 .no-stripe th {
     border-bottom: #d6ecff solid 1px;
     border-left: #d6ecff solid 1px;
@@ -136,6 +137,18 @@ table td.bibliography-desc {
 
 .no-stripe tr > td:last-child {
     border-right: #d6ecff solid 1px;
+}
+
+.release-notes th {
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.release-notes tr {
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
 }
 
 pre {
