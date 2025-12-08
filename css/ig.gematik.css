@@ -61,7 +61,6 @@ table {
 table th {
     background: #d6ecff;
     padding: 4px;
-    border: #d6ecff solid 1px;
 }
 
 table tr:nth-child(even) {
@@ -74,8 +73,11 @@ table tr:nth-child(odd) {
 
 table td {
     padding: 4px;
-    border: #e4e4e4 solid 1px;
 
+}
+
+table.release-notes tr {
+    border: 0px;
 }
 
 table.release-notes td {
@@ -114,6 +116,14 @@ table td.bibliography-desc {
 .no-stripe tr:nth-child(even),
 .no-stripe tr:nth-child(odd) {
     background: inherit !important;
+}
+
+.no-stripe th {
+    border-bottom: #d6ecff solid 1px;
+}
+
+.no-stripe td {
+    border-bottom: #e4e4e4 solid 1px;
 }
 
 pre {
