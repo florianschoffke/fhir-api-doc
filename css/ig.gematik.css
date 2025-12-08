@@ -139,15 +139,13 @@ table td.bibliography-desc {
     border-right: #d6ecff solid 1px;
 }
 
-.release-notes th {
+.release-notes tbody td {
     border-bottom: 0px;
     border-left: 0px;
     border-right: 0px;
 }
 
-.release-notes tr {
-    border-bottom: 0px;
-    border-left: 0px;
+.release-notes tbody tr > td:last-child {
     border-right: 0px;
 }
 
