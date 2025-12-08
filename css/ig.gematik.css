@@ -120,10 +120,22 @@ table td.bibliography-desc {
 
 .no-stripe th {
     border-bottom: #d6ecff solid 1px;
+    border-left: #d6ecff solid 1px;
+    border-right: 0px;
+}
+
+.no-stripe tr > th:last-child {
+    border-right: #d6ecff solid 1px;
 }
 
 .no-stripe td {
-    border-bottom: #e4e4e4 solid 1px;
+    border-bottom: #d6ecff solid 1px;
+    border-left: #d6ecff solid 1px;
+    border-right: 0px;
+}
+
+.no-stripe tr > td:last-child {
+    border-right: #d6ecff solid 1px;
 }
 
 pre {
