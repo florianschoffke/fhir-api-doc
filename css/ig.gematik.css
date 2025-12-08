@@ -73,6 +73,7 @@ table tr:nth-child(odd) {
 
 table td {
     padding: 4px;
+    border: #e4e4e4 solid 1px;
 
 }
 
