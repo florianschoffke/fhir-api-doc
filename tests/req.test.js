@@ -224,7 +224,7 @@ describe('renderRequirements', () => {
         req.renderRequirements();
     
         const actorSpan = document.querySelector('.gem-req-actor');
-        expect(actorSpan.textContent).toBe('User1, User2');
+        expect(actorSpan.innerHTML).toBe('User1<br>User2');
     });
 
     test('should prioritize child actor elements over attribute', () => {
@@ -254,7 +254,28 @@ describe('renderRequirements', () => {
         req.renderRequirements();
     
         const actorSpan = document.querySelector('.gem-req-actor');
-        expect(actorSpan.textContent).toBe('User1, User2');
+        expect(actorSpan.innerHTML).toBe('User1<br>User2');
+    });
+
+    test('should render testProcedure values alongside actor names', () => {
+        document.body.innerHTML = `
+      <requirement key="REQ" version="1">
+        Description
+        <actor name="actor1">
+            <testProcedure id="testProcedure1"></testProcedure>
+            <testProcedure id="testProcedure2"></testProcedure>
+        </actor>
+        <actor name="actor2">
+            <testProcedure id="testProcedure3"></testProcedure>
+        </actor>
+        <actor name="actor3"></actor>
+      </requirement>
+    `;
+
+        req.renderRequirements();
+
+        const actorSpan = document.querySelector('.gem-req-actor');
+        expect(actorSpan.innerHTML).toBe('actor1: testProcedure1, testProcedure2<br>actor2: testProcedure3<br>actor3');
     });
 
     test('should add anchor link to heading', () => {

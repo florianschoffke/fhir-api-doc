@@ -57,8 +57,18 @@ function renderRequirements() {
             actorText = Array.from(actors)
                 .map(actor => {
                     const name = actor.getAttribute('name');
-                    return name;
-                }).filter(Boolean).join(', ');
+                    if (!name) {
+                        return null;
+                    }
+
+                    const testProcedures = Array.from(actor.querySelectorAll('testProcedure'))
+                        .map(testProcedure => testProcedure.getAttribute('id'))
+                        .filter(Boolean);
+
+                    return testProcedures.length > 0
+                        ? `${name}: ${testProcedures.join(', ')}`
+                        : name;
+                }).filter(Boolean).join('<br>');
         }
 
         const titleText = req.getAttribute('title') || '';
