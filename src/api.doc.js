@@ -615,21 +615,18 @@ function getLocalProfileUrl(profileUrl) {
     if (profileUrl.startsWith('./') && profileUrl.endsWith('.json')) {
         return profileUrl;
     }
-    const profileId = profileUrl.split('|')[0].replace(/\/+$/, '').split('/').pop();
+    const profileId = profileUrl.split('|')[0].replace(/\/+$/, '').split('/').pop()?.replace(/_/g, '-');
     return profileId ? `./StructureDefinition-${profileId}.json` : null;
 }
 
-function appendDataModels(parent, operationDefinition) {
-    const operation = utils.toJson(operationDefinition);
-    const profileReferences = [
-        { usage: 'Eingabe', profileUrl: operation?.inputProfile },
-        { usage: 'Ausgabe', profileUrl: operation?.outputProfile }
-    ].filter(({ profileUrl }) => profileUrl).map(({ usage, profileUrl }) => ({
-        usage,
-        jsonUrl: getLocalProfileUrl(profileUrl),
-        htmlUrl: getLocalProfileUrl(profileUrl)?.replace(/\.json$/, '.html')
-    })).filter(({ jsonUrl }) => jsonUrl);
+function getProfileId(profileUrl) {
+    if (typeof profileUrl !== 'string') {
+        return '';
+    }
+    return profileUrl.split('|')[0].replace(/\/+$/, '').split('/').pop() || '';
+}
 
+function appendDataModelsFromReferences(parent, profileReferences) {
     if (profileReferences.length === 0) {
         return;
     }
@@ -644,16 +641,20 @@ function appendDataModels(parent, operationDefinition) {
     parent.appendChild(dataModelsHeader);
     parent.appendChild(dataModelsContainer);
 
-    Promise.all(profileReferences.map(async ({ usage, jsonUrl, htmlUrl }) => {
-        const profile = utils.toJson(await utils.loadData(jsonUrl, false));
-        if (!profile) {
+    Promise.all(profileReferences.map(async ({ usage, jsonUrl, htmlUrl, profile, display, label, displayPrefix, displaySuffix, type, description }) => {
+        const loadedProfile = profile || (jsonUrl ? utils.toJson(await utils.loadData(jsonUrl, false)) : null);
+        if (!loadedProfile && !display && !htmlUrl) {
             return null;
         }
+        const profileTitle = label || loadedProfile?.title || loadedProfile?.name || loadedProfile?.id || display;
+        const profileLabel = `${displayPrefix || ''}${profileTitle}${displaySuffix || ''}`;
         return [
             usage,
-            `<a href="${htmlUrl}">${profile.title || profile.name || profile.id}</a>`,
-            `<code>${profile.type || ''}</code>`,
-            profile.description || ''
+            htmlUrl && loadedProfile
+                ? `${displayPrefix || ''}<a href="${htmlUrl}">${profileTitle}</a>${displaySuffix || ''}`
+                : profileLabel,
+            `<code>${loadedProfile?.type || type || ''}</code>`,
+            loadedProfile?.description || description || ''
         ];
     })).then(rows => {
         const validRows = rows.filter(Boolean);
@@ -669,6 +670,58 @@ function appendDataModels(parent, operationDefinition) {
             dataModelsContainer.remove();
         }
     });
+}
+
+function appendDataModels(parent, operationDefinition) {
+    const operation = utils.toJson(operationDefinition);
+    const profileReferences = [
+        { usage: 'Eingabe', profileUrl: operation?.inputProfile },
+        { usage: 'Ausgabe', profileUrl: operation?.outputProfile }
+    ].filter(({ profileUrl }) => profileUrl).map(({ usage, profileUrl }) => ({
+        usage,
+        jsonUrl: getLocalProfileUrl(profileUrl),
+        htmlUrl: getLocalProfileUrl(profileUrl)?.replace(/\.json$/, '.html')
+    })).filter(({ jsonUrl }) => jsonUrl);
+
+    appendDataModelsFromReferences(parent, profileReferences);
+}
+
+function appendResourceDataModels(parent, fhirData, interaction, resourceType) {
+    const profileReferences = [];
+    const resourceProfiles = (fhirData.profiles || []).map(profileUrl => ({
+        profileUrl,
+        display: getProfileId(profileUrl),
+        type: resourceType,
+        jsonUrl: getLocalProfileUrl(profileUrl),
+        htmlUrl: getLocalProfileUrl(profileUrl)?.replace(/\.json$/, '.html')
+    }));
+
+    if (['read', 'vread', 'history-instance', 'history-type', 'conditional-read'].includes(interaction)) {
+        if (['history-instance', 'history-type'].includes(interaction)) {
+            profileReferences.push({ usage: 'Ausgabe', display: `Bundle (${resourceType})`, type: 'Bundle', description: 'FHIR-History-Bundle' });
+        } else {
+            profileReferences.push(...resourceProfiles.map(profile => ({ usage: 'Ausgabe', ...profile })));
+        }
+    } else if (['search-type', '_search'].includes(interaction)) {
+        const entryProfile = resourceProfiles[0];
+        profileReferences.push({
+            usage: 'Ausgabe',
+            display: entryProfile?.display || resourceType,
+            label: entryProfile?.display || resourceType,
+            displayPrefix: 'Bundle (',
+            displaySuffix: ')',
+            jsonUrl: entryProfile?.jsonUrl,
+            htmlUrl: entryProfile?.htmlUrl,
+            type: 'Bundle',
+            description: `FHIR-Suchergebnis für ${resourceType}`
+        });
+    } else if (['create', 'conditional-create', 'update', 'conditional-update'].includes(interaction)) {
+        profileReferences.push(...resourceProfiles.map(profile => ({ usage: 'Eingabe', ...profile })));
+    } else if (interaction === 'patch') {
+        profileReferences.push({ usage: 'Eingabe', display: 'Parameters', type: 'Parameters', description: 'FHIR-Patch-Parameter' });
+    }
+
+    appendDataModelsFromReferences(parent, profileReferences);
 }
 
 
@@ -707,6 +760,7 @@ function renderCapabilityStatementResourceApiDocumentation(parent, capability, r
     appendHeaderInfo(operationMainBlock, fhirData.headerParams, fhirData.formats, MAP_METHODS[interaction]);
     const searchParameters = ['conditional-update', 'conditional-delete', 'search-type', 'read', 'vread', 'update', 'patch', 'delete', 'create'].includes(_interaction) ? fhirData.searchParams : [];
     appendSearchParameters(operationMainBlock, searchParameters, MAP_METHODS[interaction], fhirData.formats);
+    appendResourceDataModels(operationMainBlock, fhirData, interaction, resourceType);
 
 
     if (fhirData.searchInclude || fhirData.searchRevInclude) {
@@ -802,6 +856,7 @@ export default {
     appendResponseInfo,
     appendSearchParameters,
     appendDataModels,
+    appendResourceDataModels,
     renderCapabilityStatementResourceApiDocumentation,
     renderCapabilityStatementOperationApiDocumentation,
     renderCustomApiDocumentation,
