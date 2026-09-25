@@ -1,12 +1,14 @@
 import gematikLabels from './labels.js'
 
-const loadData = async (url) => {
+const loadData = async (url, logErrors = true) => {
     try {
         const response = await fetch(url);
         if (!response.ok) throw new Error(`Response status: ${response.status}`);
         return await response.text();
     } catch (error) {
-        console.error(error.message);
+        if (logErrors) {
+            console.error(error.message);
+        }
         return "";
     }
 };

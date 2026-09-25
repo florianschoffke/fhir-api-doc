@@ -1660,6 +1660,14 @@ describe('apiDoc.appendInfoBox', () => {
         expect(operationDiv.innerHTML).toContain('<b>test-operation-id</b>');
     });
 
+    it('should link operationId to the OperationDefinition HTML page', () => {
+        apiDoc.appendInfoBox(parent, 'test-operation-id', [], null, './OperationDefinition-test-operation.json');
+
+        const operationLink = parent.querySelector('a');
+        expect(operationLink.getAttribute('href')).toBe('./OperationDefinition-test-operation.html');
+        expect(operationLink.innerHTML).toBe('<b>test-operation-id</b>');
+    });
+
     it('should append formats when provided as array', () => {
         apiDoc.appendInfoBox(parent, null, ['application/json', 'application/xml'], null);
     
@@ -2314,6 +2322,41 @@ describe('appendSearchParameters', () => {
 
         const sectionHeader = parent.querySelector('.operation-block-section-header');
         expect(sectionHeader.textContent).toBe(gematikLabels.apiDoc.SearchParams_Header);
+    });
+});
+
+describe('appendDataModels', () => {
+    it('renders linked input and output profiles', async () => {
+        global.fetch = jest.fn(url => Promise.resolve({
+            ok: true,
+            text: () => Promise.resolve(JSON.stringify(url.includes('Input') ? {
+                title: 'Input profile',
+                type: 'Parameters',
+                description: 'Input description'
+            } : {
+                title: 'Output profile',
+                type: 'Bundle',
+                description: 'Output description'
+            }))
+        }));
+        const parent = document.createElement('div');
+
+        apiDoc.appendDataModels(parent, {
+            inputProfile: 'https://gematik.de/fhir/tiflow-erezept/StructureDefinition/Input',
+            outputProfile: 'https://gematik.de/fhir/tiflow-erezept/StructureDefinition/Output'
+        });
+        await new Promise(resolve => setTimeout(resolve, 0));
+
+        const table = parent.querySelector('.data-models-table');
+        expect(parent.querySelector('.operation-block-section-header').textContent)
+            .toBe(gematikLabels.apiDoc.DataModels_Header);
+        expect(Array.from(table.querySelectorAll('th')).map(cell => cell.textContent))
+            .toEqual(['Verwendung', 'Profil', 'Type', 'Beschreibung']);
+        expect(table.rows[1].cells[0].textContent).toBe('Eingabe');
+        expect(table.rows[1].cells[1].querySelector('a').getAttribute('href'))
+            .toBe('./StructureDefinition-Input.html');
+        expect(table.rows[1].cells[2].textContent).toBe('Parameters');
+        expect(table.rows[1].cells[3].textContent).toBe('Input description');
     });
 });
 
