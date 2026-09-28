@@ -27,10 +27,12 @@ const defaultIg = {
 const defaultApiDoc = {
     ContentTypes_Label: "Content Types",
     HeaderParams_Header: "HTTP Header-Parameter",
-    DataModels_Header: "Datenmodelle",
+    DataModels_Header: "Datenstruktur",
     Parameter_Label: "Parameter",
     Profile_Label: "Profil",
     Usage_Label: "Verwendung",
+    Input_Label: "Eingabe",
+    Output_Label: "Ausgabe",
     Type_Label: "Type",
     Expectation_Label: "Service Anforderung",
     Description_Label: "Beschreibung",

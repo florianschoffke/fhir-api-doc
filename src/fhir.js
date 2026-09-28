@@ -201,6 +201,9 @@ function parseFhirCapabilityStatement(data, resourceType, interactionCode = "sea
             ...(resourceDetails.profile ? [resourceDetails.profile] : []),
             ...(Array.isArray(resourceDetails.supportedProfile) ? resourceDetails.supportedProfile : [])
         ];
+        const supportedProfiles = Array.isArray(resourceDetails.supportedProfile)
+            ? resourceDetails.supportedProfile
+            : [];
 
         return {
             ...(conditional ? { enabled } : {}),
@@ -208,6 +211,7 @@ function parseFhirCapabilityStatement(data, resourceType, interactionCode = "sea
             searchInclude: resourceDetails.searchInclude,
             searchRevInclude: resourceDetails.searchRevInclude,
             ...(profiles.length > 0 ? { profiles } : {}),
+            ...(supportedProfiles.length > 0 ? { supportedProfiles } : {}),
             headerParams: headers,
             responseInfos: responses,
             formats: capabilityStatement.format,

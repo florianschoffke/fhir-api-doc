@@ -2351,12 +2351,13 @@ describe('appendDataModels', () => {
         expect(parent.querySelector('.operation-block-section-header').textContent)
             .toBe(gematikLabels.apiDoc.DataModels_Header);
         expect(Array.from(table.querySelectorAll('th')).map(cell => cell.textContent))
-            .toEqual(['Verwendung', 'Profil', 'Type', 'Beschreibung']);
+            .toEqual(['Verwendung', 'Type', 'Profil']);
         expect(table.rows[1].cells[0].textContent).toBe('Eingabe');
-        expect(table.rows[1].cells[1].querySelector('a').getAttribute('href'))
+        expect(table.rows[1].cells[2].querySelector('a').getAttribute('href'))
             .toBe('./StructureDefinition-Input.html');
-        expect(table.rows[1].cells[2].textContent).toBe('Parameters');
-        expect(table.rows[1].cells[3].textContent).toBe('Input description');
+        expect(table.rows[1].cells[2].textContent)
+            .toContain('https://gematik.de/fhir/tiflow-erezept/StructureDefinition/Input');
+        expect(table.rows[1].cells[1].textContent).toBe('Parameters');
     });
 });
 
