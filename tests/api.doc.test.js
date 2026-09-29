@@ -1665,6 +1665,8 @@ describe('apiDoc.appendInfoBox', () => {
 
         const operationLink = parent.querySelector('a');
         expect(operationLink.getAttribute('href')).toBe('./OperationDefinition-test-operation.html');
+        expect(operationLink.getAttribute('target')).toBe('_blank');
+        expect(operationLink.getAttribute('rel')).toBe('noopener noreferrer');
         expect(operationLink.innerHTML).toBe('<b>test-operation-id</b>');
     });
 
@@ -2355,6 +2357,10 @@ describe('appendDataModels', () => {
         expect(table.rows[1].cells[0].textContent).toBe('Eingabe');
         expect(table.rows[1].cells[2].querySelector('a').getAttribute('href'))
             .toBe('./StructureDefinition-Input.html');
+        expect(table.rows[1].cells[2].querySelector('a').getAttribute('target'))
+            .toBe('_blank');
+        expect(table.rows[1].cells[2].querySelector('a').getAttribute('rel'))
+            .toBe('noopener noreferrer');
         expect(table.rows[1].cells[2].textContent)
             .toContain('https://gematik.de/fhir/tiflow-erezept/StructureDefinition/Input');
         expect(table.rows[1].cells[1].textContent).toBe('Parameters');

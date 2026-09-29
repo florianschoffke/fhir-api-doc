@@ -474,7 +474,11 @@ function appendInfoBox(parent, operationId=null, formats=[], description=null, o
         });
         if (operationDefinitionUrl) {
             const operationLink = utils.createElement('a', {
-                attributes: { href: operationDefinitionUrl.replace(/\.json$/, '.html') },
+                attributes: {
+                    href: operationDefinitionUrl.replace(/\.json$/, '.html'),
+                    target: '_blank',
+                    rel: 'noopener noreferrer'
+                },
                 innerHTML: `<b>${operationId}</b>`
             });
             operationIdElement.appendChild(operationLink);
@@ -645,7 +649,7 @@ function appendDataModelsFromReferences(parent, profileReferences, includeDescri
             usage,
             `<code>${loadedProfile?.type || type || ''}</code>`,
             htmlUrl && loadedProfile
-                ? `${displayPrefix || ''}<a href="${htmlUrl}">${profileTitle}</a>${displaySuffix || ''}`
+                ? `${displayPrefix || ''}<a href="${htmlUrl}" target="_blank" rel="noopener noreferrer">${profileTitle}</a>${displaySuffix || ''}`
                 : profileLabel
         ];
         if (includeDescription) {
@@ -709,7 +713,10 @@ function appendResourceDataModels(parent, fhirData) {
         const htmlUrl = jsonUrl?.replace(/\.json$/, '.html');
         const profile = jsonUrl ? utils.toJson(await utils.loadData(jsonUrl, false)) : null;
         const profileLink = htmlUrl && profile
-            ? utils.createElement('a', { attributes: { href: htmlUrl }, innerHTML: profileUrl })
+            ? utils.createElement('a', {
+                attributes: { href: htmlUrl, target: '_blank', rel: 'noopener noreferrer' },
+                innerHTML: profileUrl
+            })
             : utils.createElement('span', { innerHTML: profileUrl });
         return utils.createElement('li', { children: [profileLink] });
     })).then(items => items.forEach(item => profileList.appendChild(item)));

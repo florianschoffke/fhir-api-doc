@@ -27,7 +27,7 @@ const defaultIg = {
 const defaultApiDoc = {
     ContentTypes_Label: "Content Types",
     HeaderParams_Header: "HTTP Header-Parameter",
-    DataModels_Header: "Datenstruktur",
+    DataModels_Header: "FHIR Profile",
     Parameter_Label: "Parameter",
     Profile_Label: "Profil",
     Usage_Label: "Verwendung",
