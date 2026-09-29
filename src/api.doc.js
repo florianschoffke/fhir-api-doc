@@ -648,7 +648,7 @@ function appendDataModelsFromReferences(parent, profileReferences, includeDescri
         const row = [
             usage,
             `<code>${loadedProfile?.type || type || ''}</code>`,
-            htmlUrl && loadedProfile
+            htmlUrl
                 ? `${displayPrefix || ''}<a href="${htmlUrl}" target="_blank" rel="noopener noreferrer">${profileTitle}</a>${displaySuffix || ''}`
                 : profileLabel
         ];
@@ -711,8 +711,7 @@ function appendResourceDataModels(parent, fhirData) {
     Promise.all(supportedProfiles.map(async profileUrl => {
         const jsonUrl = getLocalProfileUrl(profileUrl);
         const htmlUrl = jsonUrl?.replace(/\.json$/, '.html');
-        const profile = jsonUrl ? utils.toJson(await utils.loadData(jsonUrl, false)) : null;
-        const profileLink = htmlUrl && profile
+        const profileLink = htmlUrl
             ? utils.createElement('a', {
                 attributes: { href: htmlUrl, target: '_blank', rel: 'noopener noreferrer' },
                 innerHTML: profileUrl

@@ -2367,6 +2367,28 @@ describe('appendDataModels', () => {
     });
 });
 
+describe('appendResourceDataModels', () => {
+    it('links supportedProfile canonicals without fetching profile JSON', async () => {
+        global.fetch = jest.fn();
+        const parent = document.createElement('div');
+
+        apiDoc.appendResourceDataModels(parent, {
+            supportedProfiles: [
+                'https://gematik.de/fhir/erp/StructureDefinition/GEM_ERP_PR_Task'
+            ]
+        });
+        await new Promise(resolve => setTimeout(resolve, 0));
+
+        const profileLink = parent.querySelector('a');
+        expect(profileLink.getAttribute('href')).toBe('./StructureDefinition-GEM-ERP-PR-Task.html');
+        expect(profileLink.textContent)
+            .toBe('https://gematik.de/fhir/erp/StructureDefinition/GEM_ERP_PR_Task');
+        expect(profileLink.getAttribute('target')).toBe('_blank');
+        expect(profileLink.getAttribute('rel')).toBe('noopener noreferrer');
+        expect(global.fetch).not.toHaveBeenCalled();
+    });
+});
+
 describe('conditional resource rendering', () => {
     const capability = { rest: [{ resource: [{
         type: 'Patient', conditionalUpdate: true, conditionalDelete: 'single',
